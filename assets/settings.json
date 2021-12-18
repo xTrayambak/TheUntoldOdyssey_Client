@@ -18,7 +18,6 @@
         "god_rays": true,
         "max_framerate": 120,
         "vignette": true,
-        "wireframe": true,
         "installDependencies": true
     },
     "debugging": {
@@ -29,7 +28,7 @@
     },
     "networking": {
         "proxy": [
-            {"ip": "tuoserverhost.replit.com", "port": 5050}
+            {"ip": "localhost", "port": 5050}
         ],
         "auth_server": "waveauthserver.pythonanywhere.com"
     }

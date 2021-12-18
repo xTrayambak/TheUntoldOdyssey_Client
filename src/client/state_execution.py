@@ -16,6 +16,7 @@ from panda3d.core import CardMaker, TextNode, GeoMipTerrain, Texture, TextureSta
 from src.client.loader import getAsset, getAllFromCategory
 from src.client.log import log
 from src.client.shaderutil import loadAllShaders
+from src.client.settingsreader import getSetting
 
 from pyglet.gl import gl_info as gpu_info
 
@@ -39,21 +40,26 @@ def connectingPage(instance):
     instance.clear()
 
     mangabey_font = instance.loader.loadFont(getAsset("fonts", "mangabey"))
+    edgegalaxy_font = instance.loader.loadFont(getAsset("fonts", "edgegalaxy"))
 
     image = random.choice(getAllFromCategory("loading_screen_images"))
 
+    path = image["path"]
+    author_name = image["author"]
+
     background = OnscreenImage(
-        image = image, scale = 1,
+        image = path, scale = 1,
         parent = instance.render2d,
         pos = (0, 0, 0)
     )
 
     label_connecting = TextNode(name = "node_text_connect")
     label_connecting.setText(f"Connecting to [{instance.networkClient.connectingTo}]; locating host and establishing connection.")
-    label_connecting.setTextColor((0,0,0,1))
+    label_connecting.setTextColor((0.1,0.1,0.1,1))
     label_connecting.setAlign(TextNode.ACenter)
+    label_connecting.setFont(mangabey_font)
     label_connectingNode = instance.aspect2d.attachNewNode(label_connecting)
-    label_connectingNode.setScale(0.07)
+    label_connectingNode.setScale(0.1)
 
     label_tuo = TextNode(name = "node_tuo_version")
     label_tuo.setText("TUO "+instance.version)
@@ -62,6 +68,14 @@ def connectingPage(instance):
     label_tuo.setFont(mangabey_font)
     label_tuoNode = instance.aspect2d.attachNewNode(label_tuo)
     label_tuoNode.setScale(0.07)
+
+    label_artist = TextNode(name = "node_artist")
+    label_artist.setText(f"@{author_name}")
+    label_artist.setTextColor((0,0,0,1))
+    label_artist.setAlign(TextNode.ARight)
+    label_artist.setFont(mangabey_font)
+    label_artistNode = instance.aspect2d.attachNewNode(label_artist)
+    label_artistNode.setScale(0.07)
 
     label_gpu = TextNode(name = "node_text_gpu")
     label_gpu.setText("OpenGL " +gpu_info.get_version())
@@ -73,10 +87,12 @@ def connectingPage(instance):
 
     label_gpuNode.setPos((-1.9, 0, -0.8))
     label_tuoNode.setPos((-1.9, 0, -0.9))
+    label_artistNode.setPos((1.9, 0, -0.9))
 
     instance.workspace.add_ui("connecting_screen_status", label_connecting)
     instance.workspace.add_ui("gpu_text", label_gpu)
     instance.workspace.add_ui("tuo_ver_text", label_tuo)
+    instance.workspace.add_ui("artist_text", label_artist)
     instance.workspace.add_ui("background_connecting_screen", background)
 
 
@@ -85,7 +101,8 @@ def mainMenu(instance):
     #instance.state = GameStates.MENU
     log("The player is currently on the main menu.")
 
-    def _cmd_ingame():  instance.networkClient.connect("www.google.com", 80, instance)
+    addr, port = getSetting("networking", "proxy")[0]["ip"], getSetting("networking", "proxy")[0]["port"]
+    def _cmd_ingame():  instance.networkClient.connect(addr, port, instance)
 
     #tuoLogo = OnscreenImage(image = getAsset("images", "logo_default"), pos = (0, 0, 0))
     play_button = DirectButton(text = "PLAY",

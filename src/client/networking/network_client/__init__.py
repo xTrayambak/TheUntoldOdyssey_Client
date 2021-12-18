@@ -2,6 +2,7 @@ from src.client.log import log
 
 import socket
 import threading
+import time
 
 BUFFER_SIZE = 2048
 
@@ -30,9 +31,12 @@ class NetworkClient:
         self.connectingTo = address + ":" +str(port)
         instance.change_state(5)
         log("Connecting to <{}:{}>, locating host, this may take a few seconds.".format(address, port), "Worker/NetworkClient")
-        self.socket.connect((address, port))
-        self.running = True
-        return self.start_heartbeat()
+        try:
+            self.socket.connect((address, port))
+            self.running = True
+            return self.start_heartbeat()
+        except Exception as e:
+            instance.workspace.getComponent("ui", "connecting_screen_status").setText("An error occured whilst connecting to the servers.\n\n"+str(e))
 
     def start_heartbeat(self):
         thread = createThread(self._start_heartbeat)
