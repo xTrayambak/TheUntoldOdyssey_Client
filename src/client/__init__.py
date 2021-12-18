@@ -33,7 +33,7 @@ class TUO(ShowBase):
         log("Panda3D initialized.")
 
         ### START DEFINING VARIABLES ###
-        self.state = GameStates.INGAME
+        self.state = GameStates.MENU
         self.workspace = Workspace()
         self.ambienceManager = AmbienceManager()
         self.inputManager = InputManager()

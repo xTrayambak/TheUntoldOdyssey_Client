@@ -23,5 +23,8 @@
     },
     "shader_directory": {"path": "assets/shaders/"},
     "links": {"eula": "https://pastebin.com/EzrBbWVG"},
-    "splash_texts": {"path": "assets/shaders/splashes"}
+    "splash_texts": {"path": "assets/shaders/splashes"},
+    "fonts": {
+        "mangabey": "assets/fonts/mangabey/MangabeyRegular.otf"
+    }
 }

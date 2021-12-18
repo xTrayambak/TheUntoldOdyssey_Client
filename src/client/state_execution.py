@@ -38,6 +38,8 @@ def loadingScreen(instance):
 def connectingPage(instance):
     instance.clear()
 
+    mangabey_font = instance.loader.loadFont(getAsset("fonts", "mangabey"))
+
     image = random.choice(getAllFromCategory("loading_screen_images"))
 
     background = OnscreenImage(
@@ -57,6 +59,7 @@ def connectingPage(instance):
     label_tuo.setText("TUO "+instance.version)
     label_tuo.setTextColor((0,0,0,1))
     label_tuo.setAlign(TextNode.ALeft)
+    label_tuo.setFont(mangabey_font)
     label_tuoNode = instance.aspect2d.attachNewNode(label_tuo)
     label_tuoNode.setScale(0.07)
 
@@ -64,6 +67,7 @@ def connectingPage(instance):
     label_gpu.setText("OpenGL " +gpu_info.get_version())
     label_gpu.setTextColor((0,0,0,1))
     label_gpu.setAlign(TextNode.ALeft)
+    label_gpu.setFont(mangabey_font)
     label_gpuNode = instance.aspect2d.attachNewNode(label_gpu)
     label_gpuNode.setScale(0.07)
 
