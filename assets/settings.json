@@ -1,0 +1,31 @@
+{
+    "keybinds": {
+        "forward": "w",
+        "backward": "s",
+        "left": "a",
+        "right": "d",
+        "quit": "escape",
+
+        "inventory": "i",
+        "trade_menu": "p",
+        "server_list": "`",
+        
+        "spyglass_zoom": "q"
+    },
+    "video": {
+        "god_rays": true,
+        "max_framerate": 120,
+        "vignette": true,
+        "wireframe": true,
+        "installDependencies": true
+    },
+    "audio": {
+        "volume": 100
+    },
+    "networking": {
+        "proxy": [
+            {"ip": "tuoserverhost.replit.com", "port": 5050}
+        ],
+        "auth_server": "waveauthserver.pythonanywhere.com"
+    }
+}
