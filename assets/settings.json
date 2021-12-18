@@ -10,7 +10,9 @@
         "trade_menu": "p",
         "server_list": "`",
         
-        "spyglass_zoom": "q"
+        "spyglass_zoom": "q",
+        
+        "wireframe_toggle": "tab"
     },
     "video": {
         "god_rays": true,
@@ -18,6 +20,9 @@
         "vignette": true,
         "wireframe": true,
         "installDependencies": true
+    },
+    "debugging": {
+        
     },
     "audio": {
         "volume": 100

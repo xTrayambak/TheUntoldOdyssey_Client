@@ -33,14 +33,14 @@ class TUO(ShowBase):
         log("Panda3D initialized.")
 
         ### START DEFINING VARIABLES ###
-        self.state = GameStates.MENU
+        self.state = GameStates.INGAME
         self.workspace = Workspace()
         self.ambienceManager = AmbienceManager()
         self.inputManager = InputManager()
         self.networkClient = NetworkClient()
 
         self.version = VERSION
-
+        self.wireframeIsOn = False
         self.inputManager.hook(self)
 
         self.win.requestProperties(PROPERTIES)
