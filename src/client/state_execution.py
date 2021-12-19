@@ -22,8 +22,8 @@ from src.client.settingsreader import getSetting
 from pyglet.gl import gl_info as gpu_info
 from math import sin
 
-SIN_VAL_DIV = 20
-SIN_VAL_AFTER_DIV = 15
+SIN_VAL_DIV = 15
+SIN_VAL_AFTER_DIV = 10
 
 def quitting(instance):
     instance.quit()
@@ -131,7 +131,7 @@ def mainMenu(instance):
     spl_scrn_txt_node = instance.render2d.attachNewNode(splash_screen_text)
     spl_scrn_txt_node.setScale(0.08)
     spl_scrn_txt_node.setPos((0.5, 0, 0.5))
-    spl_scrn_txt_node.setHpr(LVecBase3(0.5, 0.5, 0.5))
+    spl_scrn_txt_node.setHpr(LVecBase3(3.5, 0, 3.5))
 
     class Menu:
         elapsed = 0
@@ -141,10 +141,10 @@ def mainMenu(instance):
     def _splsh_txt_pop(task):
         Menu.elapsed += 1
         Clock.tick()
-        _SIN_VAL_DIV = SIN_VAL_DIV + (Clock.dt/10)
+        _SIN_VAL_DIV = SIN_VAL_DIV + (Clock.dt/15)
         sin_Val = clip(
             sin(Menu.elapsed / _SIN_VAL_DIV) / SIN_VAL_AFTER_DIV,
-            0,
+            0.04,
             1
         )
 
@@ -154,6 +154,7 @@ def mainMenu(instance):
             return Task.done
         if instance.state != instance.states_enum.MENU:
             return Task.done
+
         return Task.cont
 
     instance.taskMgr.add(_splsh_txt_pop, "splsh_txt_pop")
