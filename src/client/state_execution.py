@@ -148,7 +148,10 @@ def mainMenu(instance):
             1
         )
 
-        spl_scrn_txt_node.setScale(sin_Val)
+        try:
+            spl_scrn_txt_node.setScale(sin_Val)
+        except AssertionError:
+            return Task.done
         if instance.state != instance.states_enum.MENU:
             return Task.done
         return Task.cont
@@ -170,7 +173,7 @@ def mainMenu(instance):
 
     ## PACK INTO WORKSPACE HIERARCHY ##
     instance.workspace.add_ui("play_btn", play_button)
-    instance.workspace.add_ui("splash_text", splash_screen_text)
+    instance.workspace.add_ui("splash_text", spl_scrn_txt_node)
     #instance.workspace.add_ui("settings_btn", settings_button)
     #instance.workspace.add_ui("quit_btn", quit_button)
 

@@ -28,5 +28,5 @@ class AmbienceManager:
                     song = choice(self.songs)
                     if song["conditions"]["playsIn"] == GAMESTATES_TO_STRING[instance.state]:
                         instance.loader.loadSfx(song["path"]).play()
-                        sleep(randint(100, 250))
+                        sleep(randint(500, 2500))
                         seed(randint(-0x7FFFFF, 0x7FFFFF))

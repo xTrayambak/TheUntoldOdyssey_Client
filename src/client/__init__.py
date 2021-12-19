@@ -65,7 +65,10 @@ class TUO(ShowBase):
             log(f"Removing UI object '{name}'", "Worker/UIClear")
             obj = self.workspace.objects["ui"][name]
 
-            obj.destroy()
+            try:
+                obj.destroy()
+            except AttributeError:
+                obj.removeNode()
 
         gc.collect()
 
