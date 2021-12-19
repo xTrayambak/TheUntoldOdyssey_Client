@@ -10,7 +10,7 @@
     "songs": {
         "song001": {"path": "assets/music/gone.mp3", "conditions": {"playsIn": "ingame"}},
         "song002": {"path": "assets/music/harbinger_of_joy.mp3", "conditions":{"playsIn": "ingame"}},
-        "song003": {"path": "assets/music/unlighted.mp3", "conditions": {"playsIn": "never"}},
+        "song003": {"path": "assets/music/unlighted.mp3", "conditions": {"playsIn": "menu"}},
         "song004": {"path": "assets/music/white_phantom.mp3", "conditions": {"playsIn": "end_credits"}}
     },
     "maps": {
@@ -24,7 +24,7 @@
     },
     "shader_directory": {"path": "assets/shaders/"},
     "links": {"eula": "https://pastebin.com/EzrBbWVG"},
-    "splash_texts": {"path": "assets/shaders/splashes"},
+    "splash_texts": {"path": "assets/splashes"},
     "fonts": {
         "mangabey": "assets/fonts/mangabey/MangabeyRegular.otf",
         "edgegalaxy": "assets/fonts/edgeofthegalaxy/regular.otf"

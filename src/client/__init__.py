@@ -16,6 +16,7 @@ from src.client.workspace import Workspace
 from src.client.managers.ambience import AmbienceManager
 from src.client.managers.input import InputManager
 from src.client.networking import NetworkClient
+from src.client.managers.presence import RPCManager
 
 import gc
 
@@ -38,6 +39,9 @@ class TUO(ShowBase):
         self.ambienceManager = AmbienceManager()
         self.inputManager = InputManager()
         self.networkClient = NetworkClient()
+        self.rpcManager = RPCManager(self)
+
+        self.states_enum = GameStates
 
         self.version = VERSION
         self.wireframeIsOn = False
@@ -79,7 +83,9 @@ class TUO(ShowBase):
 
         TUO.start_internal_game -> self.update
                                 -> self.ambienceManager.update <args=[self]>
+                                -> self.rpcManager.run
         """
+        self.rpcManager.run()
         self.update()
         self.ambienceManager.update(self)
 

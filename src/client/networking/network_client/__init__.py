@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from src.client.log import log
 
 import socket

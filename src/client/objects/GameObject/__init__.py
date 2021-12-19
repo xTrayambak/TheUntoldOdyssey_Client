@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 class GameObject:
     def __init__(self, name, workspace):
         self.parent = None

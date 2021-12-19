@@ -13,12 +13,12 @@ class GameStates(Enum):
 
 
 GAMESTATES_TO_STRING = {
-    GameStates.LOADING: "loading",
-    GameStates.MENU: "menu",
-    GameStates.SETTINGS: "settings",
-    GameStates.INGAME: "ingame",
-    GameStates.END_CREDITS: "end_credits",
-    GameStates.CONNECTING: "connecting_to_server"
+    GameStates.LOADING: "On the Loading Screen",
+    GameStates.MENU: "On the Menu",
+    GameStates.SETTINGS: "In the Settings Menu",
+    GameStates.INGAME: "In-Game",
+    GameStates.END_CREDITS: "Watching the end credits",
+    GameStates.CONNECTING: "Connecting to the server"
 }
 
 GAMESTATE_TO_FUNC = {

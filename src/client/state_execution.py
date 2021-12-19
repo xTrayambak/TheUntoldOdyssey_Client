@@ -10,8 +10,9 @@ import random
 from direct.gui.OnscreenImage import OnscreenImage
 from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectLabel import DirectLabel
+from direct.task import Task
 
-from panda3d.core import CardMaker, TextNode, GeoMipTerrain, Texture, TextureStage, AmbientLight
+from panda3d.core import CardMaker, TextNode, GeoMipTerrain, Texture, TextureStage, AmbientLight, ClockObject, LVecBase3
 
 from src.client.loader import getAsset, getAllFromCategory
 from src.client.log import log
@@ -19,6 +20,10 @@ from src.client.shaderutil import loadAllShaders
 from src.client.settingsreader import getSetting
 
 from pyglet.gl import gl_info as gpu_info
+from math import sin
+
+SIN_VAL_DIV = 20
+SIN_VAL_AFTER_DIV = 15
 
 def quitting(instance):
     instance.quit()
@@ -35,6 +40,9 @@ def loadingScreen(instance):
 
     syntax_logo_texture = instance.loader.loadTexture(getAsset("images", "syntax_logo_default"))
     card.setTexture(syntax_logo_texture)
+
+def clip(value, lower, upper):
+    return lower if value < lower else upper if value > upper else value
 
 def connectingPage(instance):
     instance.clear()
@@ -98,6 +106,9 @@ def connectingPage(instance):
 
 def mainMenu(instance):
     instance.clear()
+    SPLASHES = open(
+        getAsset("splash_texts", "path")
+    ).readlines()
     #instance.state = GameStates.MENU
     log("The player is currently on the main menu.")
 
@@ -112,6 +123,40 @@ def mainMenu(instance):
                                 
     )
 
+    splash_screen_text = TextNode(name = "splash_screen_text")
+    splash_screen_text.setAlign(TextNode.ACenter)
+    spl_txt = random.choice(SPLASHES)
+    splash_screen_text.setText(spl_txt)
+
+    spl_scrn_txt_node = instance.render2d.attachNewNode(splash_screen_text)
+    spl_scrn_txt_node.setScale(0.08)
+    spl_scrn_txt_node.setPos((0.5, 0, 0.5))
+    spl_scrn_txt_node.setHpr(LVecBase3(0.5, 0.5, 0.5))
+
+    class Menu:
+        elapsed = 0
+
+    Clock = ClockObject()
+
+    def _splsh_txt_pop(task):
+        Menu.elapsed += 1
+        Clock.tick()
+        _SIN_VAL_DIV = SIN_VAL_DIV + (Clock.dt/10)
+        sin_Val = clip(
+            sin(Menu.elapsed / _SIN_VAL_DIV) / SIN_VAL_AFTER_DIV,
+            0,
+            1
+        )
+
+        spl_scrn_txt_node.setScale(sin_Val)
+        if instance.state != instance.states_enum.MENU:
+            return Task.done
+        return Task.cont
+
+    instance.taskMgr.add(_splsh_txt_pop, "splsh_txt_pop")
+
+    
+
     """
     settings_button = DirectButton(text = "SETTINGS",
                                 text_scale = 0.1,
@@ -125,6 +170,7 @@ def mainMenu(instance):
 
     ## PACK INTO WORKSPACE HIERARCHY ##
     instance.workspace.add_ui("play_btn", play_button)
+    instance.workspace.add_ui("splash_text", splash_screen_text)
     #instance.workspace.add_ui("settings_btn", settings_button)
     #instance.workspace.add_ui("quit_btn", quit_button)
 
