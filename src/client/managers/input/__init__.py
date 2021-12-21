@@ -21,8 +21,6 @@ WIREFRAME_KEY = getSetting("keybinds", "wireframe_toggle")
 
 FPS_TOGGLE = getSetting("keybinds", "fps_toggle")
 
-wireframe_on = False
-
 class InputManager:
     def __init__(self):
         pass

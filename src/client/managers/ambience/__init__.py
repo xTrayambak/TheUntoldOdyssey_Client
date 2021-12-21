@@ -22,7 +22,7 @@ class AmbienceManager:
         log("Initializing Ambience Manager.")
         self.instance = instance
         self.running = True
-        instance.taskMgr.add(self._update, "_update_ambience")
+        instance.spawnNewTask("_update_ambience", self._update)
 
     async def _update(self, task):
         if self.running == False:

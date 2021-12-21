@@ -26,6 +26,8 @@
     "splash_texts": {"path": "assets/splashes"},
     "fonts": {
         "mangabey": "assets/fonts/mangabey/MangabeyRegular.otf",
-        "edgegalaxy": "assets/fonts/edgeofthegalaxy/regular.otf"
+        "edgegalaxy": "assets/fonts/edgeofthegalaxy/regular.otf",
+        "really": "assets/fonts/really/really.ttf",
+        "rondal": "assets/fonts/rondal/rondal.ttf"
     }
 }

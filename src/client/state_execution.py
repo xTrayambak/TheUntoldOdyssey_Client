@@ -105,30 +105,40 @@ def connectingPage(instance):
 
 
 def mainMenu(instance):
+    ## Clear all UI. ##
     instance.clear()
 
     edgegalaxy_font = instance.fontLoader.load("edgegalaxy")
+    really_font = instance.fontLoader.load("really")
 
+    ## Get splash texts. ##
     SPLASHES = open(
         getAsset("splash_texts", "path")
     ).readlines()
-    #instance.state = GameStates.MENU
+
+
     log("The player is currently on the main menu.")
 
+    ## Networking stuff ##
     addr, port = getSetting("networking", "proxy")[0]["ip"], getSetting("networking", "proxy")[0]["port"]
     def _cmd_ingame():  
         instance.networkClient.connect(instance, addr, port)
         instance.networkClient.send({"action": "authenticate","username": "xTrayambak", "password": "joemama123"})
 
-    tuoLogo = OnscreenImage(image = getAsset("images", "logo_default"), pos = (0, 0, 0.5), scale=0.7)
-    tuoLogo.setImage(getAsset("images", "logo_default"))
-    tuoLogo.setTransparency(TransparencyAttrib.MAlpha)
+    ## UI stuff. ##
+    _card = CardMaker("tuoLogo")
+    card = instance.render2d.attachNewNode(_card.generate())
+
+    tuoLogo_tex = instance.loader.loadTexture(getAsset("images", "logo_default"))
+    card.setTexture(tuoLogo_tex)
+    card.setScale(0.5)
+    card.setPos((-0.2, 0, 0.3))
 
     play_button = DirectButton(text = "PLAY",
                                 text_scale = 0.1, 
                                 pos = (0, 0, 0),
-                                command = _cmd_ingame
-                                
+                                command = _cmd_ingame,
+                                text0_font = really_font
     )
 
     splash_screen_text = TextNode(name = "splash_screen_text")
@@ -161,6 +171,7 @@ def mainMenu(instance):
             spl_scrn_txt_node.setScale(sin_Val)
         except AssertionError:
             return Task.done
+
         if instance.state != instance.states_enum.MENU:
             return Task.done
 
@@ -182,7 +193,7 @@ def mainMenu(instance):
     ## PACK INTO WORKSPACE HIERARCHY ##
     instance.workspace.add_ui("play_btn", play_button)
     instance.workspace.add_ui("splash_text", spl_scrn_txt_node)
-    instance.workspace.add_ui("tuoLogo", tuoLogo)
+    instance.workspace.add_ui("tuoLogo", card)
     #instance.workspace.add_ui("settings_btn", settings_button)
     #instance.workspace.add_ui("quit_btn", quit_button)
 

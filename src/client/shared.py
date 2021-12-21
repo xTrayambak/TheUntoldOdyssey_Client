@@ -26,8 +26,8 @@ GAMESTATES_TO_STRING = {
     GameStates.MENU: "On the Menu",
     GameStates.SETTINGS: "In the Settings Menu",
     GameStates.INGAME: "In-Game",
-    GameStates.END_CREDITS: "Watching the end credits",
-    GameStates.CONNECTING: "Connecting to the server"
+    GameStates.END_CREDITS: "Watching the End Credits",
+    GameStates.CONNECTING: "Connecting to The Server"
 }
 
 GAMESTATE_TO_FUNC = {
