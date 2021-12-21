@@ -2,8 +2,11 @@
 class GameHandler:
     def __init__(self):
         from src.client.libinstaller import installAllLibraries
+
         #installAllLibraries()
+
         from src.client import TUO
+
         self.tuo = TUO()
 
         self.tuo.setFrameRateMeter(True)

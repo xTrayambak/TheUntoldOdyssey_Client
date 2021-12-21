@@ -47,8 +47,8 @@ def clip(value, lower, upper):
 def connectingPage(instance):
     instance.clear()
 
-    mangabey_font = instance.loader.loadFont(getAsset("fonts", "mangabey"))
-    edgegalaxy_font = instance.loader.loadFont(getAsset("fonts", "edgegalaxy"))
+    mangabey_font = instance.fontLoader.load("mangabey")
+
 
     image = random.choice(getAllFromCategory("loading_screen_images"))
 
@@ -106,6 +106,9 @@ def connectingPage(instance):
 
 def mainMenu(instance):
     instance.clear()
+
+    edgegalaxy_font = instance.fontLoader.load("edgegalaxy")
+
     SPLASHES = open(
         getAsset("splash_texts", "path")
     ).readlines()
@@ -113,7 +116,9 @@ def mainMenu(instance):
     log("The player is currently on the main menu.")
 
     addr, port = getSetting("networking", "proxy")[0]["ip"], getSetting("networking", "proxy")[0]["port"]
-    def _cmd_ingame():  instance.networkClient.connect(addr, port, instance)
+    def _cmd_ingame():  
+        instance.networkClient.connect(instance, addr, port)
+        instance.networkClient.send({"action": "authenticate","username": "xTrayambak", "password": "joemama123"})
 
     #tuoLogo = OnscreenImage(image = getAsset("images", "logo_default"), pos = (0, 0, 0))
     play_button = DirectButton(text = "PLAY",
@@ -127,11 +132,12 @@ def mainMenu(instance):
     splash_screen_text.setAlign(TextNode.ACenter)
     spl_txt = random.choice(SPLASHES)
     splash_screen_text.setText(spl_txt)
+    splash_screen_text.setFont(edgegalaxy_font)
 
     spl_scrn_txt_node = instance.render2d.attachNewNode(splash_screen_text)
     spl_scrn_txt_node.setScale(0.08)
     spl_scrn_txt_node.setPos((0.5, 0, 0.5))
-    spl_scrn_txt_node.setHpr(LVecBase3(3.5, 0, 3.5))
+    spl_scrn_txt_node.setHpr(LVecBase3(5.5, 0, 5.5))
 
     class Menu:
         elapsed = 0
@@ -157,7 +163,7 @@ def mainMenu(instance):
 
         return Task.cont
 
-    instance.taskMgr.add(_splsh_txt_pop, "splsh_txt_pop")
+    instance.spawnNewTask("splsh_txt_pop", _splsh_txt_pop)
 
     
 
@@ -175,6 +181,7 @@ def mainMenu(instance):
     ## PACK INTO WORKSPACE HIERARCHY ##
     instance.workspace.add_ui("play_btn", play_button)
     instance.workspace.add_ui("splash_text", spl_scrn_txt_node)
+    #instance.workspace.add_ui("tuoLogo", tuoLogo)
     #instance.workspace.add_ui("settings_btn", settings_button)
     #instance.workspace.add_ui("quit_btn", quit_button)
 

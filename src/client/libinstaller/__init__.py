@@ -2,6 +2,7 @@ from src.client.log import log
 
 from os import system
 
+
 LIBRARIES = open("assets/requirements", "r").readlines()
 
 def install(_lib: str):

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-from enum import Enum
+from enum import IntEnum, Enum
 
 from src.client.state_execution import *
 
-class GameStates(Enum):
+class GameStates(IntEnum, Enum):
     LOADING = 0
     MENU = 1
     SETTINGS = 2
@@ -11,6 +11,15 @@ class GameStates(Enum):
     END_CREDITS = 4,
     CONNECTING = 5
 
+
+GAMESTATES_TO_BLANDSTRING = {
+    GameStates.LOADING: "loading",
+    GameStates.MENU: "menu",
+    GameStates.SETTINGS: "settings",
+    GameStates.INGAME: "ingame",
+    GameStates.END_CREDITS: "end_credits",
+    GameStates.CONNECTING: "connecting"
+}
 
 GAMESTATES_TO_STRING = {
     GameStates.LOADING: "On the Loading Screen",

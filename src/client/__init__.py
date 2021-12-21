@@ -17,6 +17,7 @@ from src.client.managers.ambience import AmbienceManager
 from src.client.managers.input import InputManager
 from src.client.networking import NetworkClient
 from src.client.managers.presence import RPCManager
+from src.client.fontloader import FontLoader
 
 import gc
 
@@ -40,6 +41,7 @@ class TUO(ShowBase):
         self.inputManager = InputManager()
         self.networkClient = NetworkClient()
         self.rpcManager = RPCManager(self)
+        self.fontLoader = FontLoader(self)
 
         self.states_enum = GameStates
 
@@ -49,16 +51,15 @@ class TUO(ShowBase):
 
         self.win.requestProperties(PROPERTIES)
 
-    def add_ui_component(self, component):
-        self.ui.append(component)
-
-    def remove_all_ui_components(self):
-        for component in self.ui:
-            component.destroy()
+    def poll(self, task):
+        raise NotImplementedError("Not implemented yet; wait.")
 
     def change_state(self, state: int):
         self.state = GameStates(state)
         self.update()
+
+    def spawnNewTask(self, name, function):
+        return self.taskMgr.add(function, name)
 
     def clear(self):
         for name in self.workspace.objects["ui"]:

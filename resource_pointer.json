@@ -4,8 +4,7 @@
         "syntax_logo_default": "assets/img/syntaxlogo.png"
     },
     "loading_screen_images": {
-        "image001": {"path":"assets/img/loading001.png", "author": "Arima Afios, Lead Artist"},
-        "image002": {"path": "assets/img/loading002.jpg", "author": "Nerd, Nerd Inc."}
+        "image001": {"path":"assets/img/loading001.png", "author": "Arima Afios, Lead Artist"}
     },
     "songs": {
         "song001": {"path": "assets/music/gone.mp3", "conditions": {"playsIn": "ingame"}},

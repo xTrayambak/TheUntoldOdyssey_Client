@@ -1,28 +1,18 @@
 #!/usr/bin/env python3
 from src.client.log import log
+from src.client.settingsreader import getSetting
+from src.client.networking.network_client.listener import GameActionListener
 
-import socket
 import threading
-import time
-
-BUFFER_SIZE = 2048
-
-RESULT_HEARTBEAT_FAILURE = 0
-RESULT_HEARTBEAT_SUCCESS = 1
-
-def createThread(function, args = ()):
-    thr = threading.Thread(target = function, args = args)
-    return thr
+from PodSixNet.Connection import connection
 
 class NetworkClient:
     def __init__(self):
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.running = False
-
         self.connectingTo = "???"
-        log("Network client initialized.")
-
-    def connect(self, address, port, instance):
+        self.connection = None
+        self.gameActionListener = GameActionListener()
+        
+    def connect(self, instance, address=getSetting("networking", "proxy")[0]["ip"], port=getSetting("networking", "proxy")[0]["port"]):
         """
         Connect to a TCP server, and start the network packet exchange "heartbeat".
 
@@ -31,32 +21,17 @@ class NetworkClient:
         """
         self.connectingTo = address + ":" +str(port)
         instance.change_state(5)
+
         log("Connecting to <{}:{}>, locating host, this may take a few seconds.".format(address, port), "Worker/NetworkClient")
         try:
-            self.socket.connect((address, port))
-            self.running = True
-            return self.start_heartbeat()
+            self.gameActionListener.Connect((address, port))
+            self.gameActionListener.Send({"action": "authenticate", "username": "xTrayambak", "password": "joe"})
         except Exception as e:
+            log(str(e), "Error/NetworkClient")
             instance.workspace.getComponent("ui", "connecting_screen_status").setText("An error occured whilst connecting to the servers.\n\n"+str(e))
 
-    def start_heartbeat(self):
-        thread = createThread(self._start_heartbeat)
-        log("Starting network server-to-client node TCP connection heartbeat.", "Worker/Thread-{}".format(3))
-        thread.start()
-
-    def _start_heartbeat(self):
-        while self.running:
-            result = self.heartbeat()
-            if result == RESULT_HEARTBEAT_FAILURE: 
-                break
-
-    def heartbeat(self):
-        data = self.socket.recv(BUFFER_SIZE)
-
-        if data is None:
-            return RESULT_HEARTBEAT_FAILURE
-        
-        return RESULT_HEARTBEAT_SUCCESS
-        
     def send(self, data):
-        self.socket.send(data)
+        self.gameActionListener.Send(data)
+
+    def run(self, instance):
+        instance.taskMgr.add("network_pump", self.connection.Pump)
