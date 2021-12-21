@@ -47,6 +47,7 @@ class TUO(ShowBase):
 
         self.version = VERSION
         self.wireframeIsOn = False
+        self.fpsCounterIsOn = False
         self.inputManager.hook(self)
 
         self.win.requestProperties(PROPERTIES)
@@ -55,13 +56,39 @@ class TUO(ShowBase):
         raise NotImplementedError("Not implemented yet; wait.")
 
     def change_state(self, state: int):
+        """
+        Change the game's story/part "state"; basically tell the game at which point of gameplay it should switch to.
+        Eg. menu, loading screen, in-game or connecting screen.
+
+        This is controlled by an Enum, feel free to change it anytime as nothing too technical changes with it.
+        Why am I writing docs? Oh wait, yeah, this will probably be open source so 7 year old script kiddies don't accuse
+        me of integrating trackers or a Bitcoin miner into the game.
+        """
         self.state = GameStates(state)
         self.update()
 
     def spawnNewTask(self, name, function):
+        """
+        Create a new coroutine/task with the name `name` and task/function `function`.
+        This function will be called every frame by Panda3D, TUO has no control over it's calling rate once it's hooked.
+
+        !! WARNING !!
+
+        The Task system is a single-threaded cycle-process! Do not call time.sleep or any other thread-pausing function on it!
+        It will cause the entire Panda3D rendering system to freeze entirely!
+        Instead, in order to block the task/coroutine, call Task.delay inside the task function!
+
+        :: ARGS
+
+        `name` :: The name of the function; required by Panda3D.\n
+        `function` :: The function to be converted to a task/coroutine and called by Panda3D.
+        """
         return self.taskMgr.add(function, name)
 
     def clear(self):
+        """
+        Clear all UI objects on the screen using NodePath.removeNode
+        """
         for name in self.workspace.objects["ui"]:
             log(f"Removing UI object '{name}'", "Worker/UIClear")
             obj = self.workspace.objects["ui"][name]

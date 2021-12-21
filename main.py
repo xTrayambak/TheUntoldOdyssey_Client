@@ -9,8 +9,6 @@ class GameHandler:
 
         self.tuo = TUO()
 
-        self.tuo.setFrameRateMeter(True)
-
     def run(self):
         """
         GameHandler.run() -> self.tuo.run()

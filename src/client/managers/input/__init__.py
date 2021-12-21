@@ -19,6 +19,8 @@ RIGHT_KEY = getSetting("keybinds", "right")
 QUIT_KEY = getSetting("keybinds", "quit")
 WIREFRAME_KEY = getSetting("keybinds", "wireframe_toggle")
 
+FPS_TOGGLE = getSetting("keybinds", "fps_toggle")
+
 wireframe_on = False
 
 class InputManager:
@@ -30,12 +32,17 @@ class InputManager:
 
         def wireframe(): 
             if instance.wireframeIsOn:
-                instance.wireframeIsOn = False
                 instance.wireframeOff()
             else:
-                instance.wireframeIsOn = True
                 instance.wireframeOn()
+
+            instance.wireframeIsOn = not instance.wireframeIsOn
+
+        def fps_toggle():
+            instance.fpsCounterIsOn = not instance.fpsCounterIsOn
+
+            instance.setFrameRateMeter(instance.fpsCounterIsOn)
 
         instance.accept(QUIT_KEY, instance.quit)
         instance.accept(WIREFRAME_KEY, wireframe)
-        
+        instance.accept(FPS_TOGGLE, fps_toggle)

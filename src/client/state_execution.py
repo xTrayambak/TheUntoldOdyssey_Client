@@ -12,7 +12,7 @@ from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectLabel import DirectLabel
 from direct.task import Task
 
-from panda3d.core import CardMaker, TextNode, GeoMipTerrain, Texture, TextureStage, AmbientLight, ClockObject, LVecBase3
+from panda3d.core import CardMaker, TextNode, GeoMipTerrain, Texture, TextureStage, AmbientLight, ClockObject, LVecBase3, TransparencyAttrib
 
 from src.client.loader import getAsset, getAllFromCategory
 from src.client.log import log
@@ -120,7 +120,10 @@ def mainMenu(instance):
         instance.networkClient.connect(instance, addr, port)
         instance.networkClient.send({"action": "authenticate","username": "xTrayambak", "password": "joemama123"})
 
-    #tuoLogo = OnscreenImage(image = getAsset("images", "logo_default"), pos = (0, 0, 0))
+    tuoLogo = OnscreenImage(image = getAsset("images", "logo_default"), pos = (0, 0, 0.5), scale=0.7)
+    tuoLogo.setImage(getAsset("images", "logo_default"))
+    tuoLogo.setTransparency(TransparencyAttrib.MAlpha)
+
     play_button = DirectButton(text = "PLAY",
                                 text_scale = 0.1, 
                                 pos = (0, 0, 0),
@@ -165,8 +168,6 @@ def mainMenu(instance):
 
     instance.spawnNewTask("splsh_txt_pop", _splsh_txt_pop)
 
-    
-
     """
     settings_button = DirectButton(text = "SETTINGS",
                                 text_scale = 0.1,
@@ -181,7 +182,7 @@ def mainMenu(instance):
     ## PACK INTO WORKSPACE HIERARCHY ##
     instance.workspace.add_ui("play_btn", play_button)
     instance.workspace.add_ui("splash_text", spl_scrn_txt_node)
-    #instance.workspace.add_ui("tuoLogo", tuoLogo)
+    instance.workspace.add_ui("tuoLogo", tuoLogo)
     #instance.workspace.add_ui("settings_btn", settings_button)
     #instance.workspace.add_ui("quit_btn", quit_button)
 

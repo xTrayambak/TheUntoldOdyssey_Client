@@ -13,7 +13,8 @@
         
         "spyglass_zoom": "q",
         
-        "wireframe_toggle": "tab"
+        "wireframe_toggle": "tab",
+        "fps_toggle": "f1"
     },
     "video": {
         "god_rays": true,
