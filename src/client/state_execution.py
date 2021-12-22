@@ -122,9 +122,10 @@ def mainMenu(instance):
     ## Networking stuff ##
     addr, port = getSetting("networking", "proxy")[0]["ip"], getSetting("networking", "proxy")[0]["port"]
     def _cmd_ingame():  
-        instance.networkClient.connect(instance, addr, port)
-        instance.networkClient.send({"action": "authenticate","username": "xTrayambak", "password": "joemama123"})
-
+        #instance.networkClient.connect(instance, addr, port)
+        #instance.networkClient.send({"action": "authenticate","username": "xTrayambak", "password": "joemama123"})
+        instance.changeState(3)
+    
     ## UI stuff. ##
     _card = CardMaker("tuoLogo")
     card = instance.render2d.attachNewNode(_card.generate())

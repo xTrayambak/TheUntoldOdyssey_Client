@@ -10,7 +10,8 @@
         "song001": {"path": "assets/music/gone.mp3", "conditions": {"playsIn": "ingame"}},
         "song002": {"path": "assets/music/harbinger_of_joy.mp3", "conditions":{"playsIn": "ingame"}},
         "song003": {"path": "assets/music/unlighted.mp3", "conditions": {"playsIn": "menu"}},
-        "song004": {"path": "assets/music/white_phantom.mp3", "conditions": {"playsIn": "end_credits"}}
+        "song004": {"path": "assets/music/white_phantom.mp3", "conditions": {"playsIn": "end_credits"}},
+        "song005": {"path": "assets/music/sonata.flac", "conditions": {"playsIn": "ingame"}}
     },
     "maps": {
         "overworld_map": {"path": "assets/cache/heightmap.png"}
