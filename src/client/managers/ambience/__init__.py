@@ -33,6 +33,7 @@ class AmbienceManager:
             pass
         else:
             if (0 == randint(6, 10) % 2): # 2 in 8 chance
+                self.stop_all_tracks()
                 song = choice(self.songs)
                 if song["conditions"]["playsIn"] == GAMESTATES_TO_BLANDSTRING[self.instance.state]:
                     _song = self.instance.loader.loadSfx(song["path"])
