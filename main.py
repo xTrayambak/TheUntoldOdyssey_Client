@@ -3,7 +3,7 @@ class GameHandler:
     def __init__(self):
         from src.client.libinstaller import installAllLibraries
 
-        #installAllLibraries()
+        installAllLibraries()
 
         from src.client import TUO
 
