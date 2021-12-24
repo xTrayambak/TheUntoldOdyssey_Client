@@ -23,7 +23,7 @@ class RPCManager:
             state = GAMESTATES_TO_STRING[self.instance.state],
             details = "Playing The Untold Odyssey, a MMORPG-camping experience developed by Syntax Studios!",
             buttons = [
-                {"label": "Get the Game for Free!", "url": "https://www.youtube.com/watch?v=v1POP-m76ac"},
+                {"label": "Get the Game for Free!", "url": "https://github.com/xTrayambak/TheUntoldOdyssey_Client/"},
                 {"label": "End User License Agreement", "url": getAsset("links", "eula")}
             ],
             large_text = "The Untold Odyssey {}".format(self.instance.version),
