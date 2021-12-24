@@ -14,6 +14,7 @@ class AmbienceManager:
         self.songs = getAllFromCategory("songs")
         self.running = True
         self.instance = None
+        self.tracks = []
 
     def update(self, instance):
         """
@@ -34,10 +35,18 @@ class AmbienceManager:
             if (0 == randint(6, 10) % 2): # 2 in 8 chance
                 song = choice(self.songs)
                 if song["conditions"]["playsIn"] == GAMESTATES_TO_BLANDSTRING[self.instance.state]:
-                    self.instance.loader.loadSfx(song["path"]).play()
+                    _song = self.instance.loader.loadSfx(song["path"])
+                    _song.play()
+                    self.tracks.append(_song)
                     delay = randint(40, 800)
                     log("Sleeping for {} minutes now.".format(delay / 60), "Worker/Ambience")
                     await Task.pause(delay)
                 seed(randint(-0x7FFFFF, 0x7FFFFF))
         
         return Task.cont
+
+    def stop_all_tracks(self):
+        for song in self.tracks:
+            song.stop()
+
+        self.tracks.clear()

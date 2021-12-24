@@ -124,7 +124,7 @@ def mainMenu(instance):
     def _cmd_ingame():  
         #instance.networkClient.connect(instance, addr, port)
         #instance.networkClient.send({"action": "authenticate","username": "xTrayambak", "password": "joemama123"})
-        instance.changeState(3)
+        instance.change_state(3)
     
     ## UI stuff. ##
     _card = CardMaker("tuoLogo")

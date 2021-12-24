@@ -5,7 +5,8 @@
         {"name": "Azrael", "role": "Music Composer and Moral Support", "picture": "assets/img/pictures/azrael.jpg"},
         {"name": "h_vn", "role": "Music Composer and Moral Support", "picture": "assets/img/pictures/hvn.jpg"},
         {"name": "NoobyLazer21 / Laz", "role": "Lead Character Designer", "picture": "assets/img/pictures/laz.jpg"},
-        {"name": "Arima Afios / Nat", "role": "Lead Artist", "picture": "assets/img/pictures/nat.jpg"}
+        {"name": "Arima Afios / Nat", "role": "Lead Artist", "picture": "assets/img/pictures/nat.jpg"},
+        {"name": "Wormsworth / Eleonora", "role": "Music Composer", "picture": "assets/img/pictures/eleonora.jpg"}
     ],
     "supporters": [
         {

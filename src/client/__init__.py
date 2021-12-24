@@ -67,6 +67,13 @@ class TUO(ShowBase):
         self.state = GameStates(state)
         self.update()
 
+        PROPERTIES = WindowProperties()
+        PROPERTIES.setTitle("The Untold Odyssey {} | {}".format(VERSION, GAMESTATES_TO_STRING[self.state]))
+
+        self.win.requestProperties(PROPERTIES)
+
+        self.ambienceManager.stop_all_tracks()
+
     def spawnNewTask(self, name, function):
         """
         Create a new coroutine/task with the name `name` and task/function `function`.

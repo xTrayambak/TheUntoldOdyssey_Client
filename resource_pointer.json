@@ -30,5 +30,8 @@
         "edgegalaxy": "assets/fonts/edgeofthegalaxy/regular.otf",
         "really": "assets/fonts/really/really.ttf",
         "rondal": "assets/fonts/rondal/rondal.ttf"
+    },
+    "sounds": {
+        "notification001": "assets/sounds/notification.wav"
     }
 }
