@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 class GameHandler:
     def __init__(self):
-        from src.client.libinstaller import installAllLibraries
+        from src.libinstaller import installAllLibraries
 
         installAllLibraries()
 

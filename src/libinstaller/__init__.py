@@ -1,4 +1,4 @@
-from src.client.log import log
+from src.log import log
 
 from os import system
 from pkg_resources import get_distribution, DistributionNotFound
