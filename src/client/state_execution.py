@@ -249,7 +249,7 @@ def inGameState(instance):
 
     terrain_light = AmbientLight("terrain_lighting")
     terrain_light.setColor((0.2, 0.5, 0.2, 1))
-    terrain_lightNP = gameMap_node.attachNewNode(terrain_light)
+    terrain_lightNP = gameMap.attachNewNode(terrain_light)
 
     """root_heightmap.setLightOff()
     root_heightmap.setLight(terrain_lightNP)"""
