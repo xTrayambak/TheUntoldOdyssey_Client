@@ -2,4 +2,3 @@ panda3d
 requests
 pyglet
 pypresence
-PodSixNet
