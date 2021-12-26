@@ -214,7 +214,7 @@ def inGameState(instance):
 
     TODO: Make it so that heightmap is downloaded from Syntax Studios API everytime the game launches.
     """
-    log("Requesting heightmap", "Worker/GeoMipTerrain")
+    """log("Requesting heightmap", "Worker/GeoMipTerrain")
     heightmap_mesh = GeoMipTerrain("overworld_terrain")
     heightmap_mesh.setHeightfield(getAsset("maps", "overworld_map")["path"])
     heightmap_mesh.setBlockSize(32)
@@ -229,7 +229,7 @@ def inGameState(instance):
     root_heightmap.setSz(2500)
 
     heightmap_mesh.generate()
-    log("Terrain generated from heightmap!", "Worker/GeoMipTerrain")
+    log("Terrain generated from heightmap!", "Worker/GeoMipTerrain")"""
 
 
     """

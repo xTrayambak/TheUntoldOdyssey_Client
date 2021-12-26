@@ -11,7 +11,9 @@
         "song002": {"path": "assets/music/harbinger_of_joy.mp3", "conditions":{"playsIn": "ingame"}},
         "song003": {"path": "assets/music/unlighted.mp3", "conditions": {"playsIn": "menu"}},
         "song004": {"path": "assets/music/white_phantom.mp3", "conditions": {"playsIn": "end_credits"}},
-        "song005": {"path": "assets/music/sonata.flac", "conditions": {"playsIn": "ingame"}}
+        "song005": {"path": "assets/music/sonata.flac", "conditions": {"playsIn": "ingame"}},
+        "song006": {"path": "assets/music/mist001.flac", "conditions": {"playsIn": "connecting"}},
+        "song007": {"path": "assets/music/mist002.flac", "conditions": {"playsIn": "menu"}}
     },
     "maps": {
         "overworld_map": {"path": "assets/cache/heightmap.png"}
