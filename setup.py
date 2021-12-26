@@ -23,13 +23,23 @@ setup(
                 '**/*.mp3',
                 '**/*.obj',
                 '**/*.ttf',
-                '**/*.rtf'
+                '**/*.rtf',
+                '**/*',
+                '**/*.prc',
+                '**/*.json',
+                '**/*.glsl',
+                '**/*.wav'
             ],
 
             # Include the OpenGL renderer and OpenAL audio plug-in
+            # Includes p3assimp to load more than just .bam models.
             'plugins': [
                 'pandagl',
                 'p3openal_audio',
+                'pandagles',
+                'pandagles2',
+                'pandadx9',
+                'p3assimp'
             ]
         }
     }

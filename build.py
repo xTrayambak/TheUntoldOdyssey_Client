@@ -13,6 +13,7 @@ def main():
     confirmation = input("Press any key to continue the building process . . . ")
 
     print("Initializing build process. Please wait as compiling the game may take a moment.")
+    
     system("python3 setup.py build_apps")
 
 if __name__ == "__main__":
