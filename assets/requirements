@@ -1,11 +1,5 @@
 panda3d
-urllib
-json
-logging
 requests
 pyglet
-os
-sys
-gc
 pypresence
 podsixnet

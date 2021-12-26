@@ -214,8 +214,8 @@ def inGameState(instance):
 
     TODO: Make it so that heightmap is downloaded from Syntax Studios API everytime the game launches.
     """
-    """log("Requesting heightmap", "Worker/GeoMipTerrain")
-    heightmap_mesh = GeoMipTerrain("overworld_terrain")
+    log("Requesting heightmap", "Worker/GeoMipTerrain")
+    """heightmap_mesh = GeoMipTerrain("overworld_terrain")
     heightmap_mesh.setHeightfield(getAsset("maps", "overworld_map")["path"])
     heightmap_mesh.setBlockSize(32)
     heightmap_mesh.setNear(20)
@@ -226,10 +226,14 @@ def inGameState(instance):
     root_heightmap.setTexture(TextureStage.getDefault(), instance.loader.loadTexture(getAsset("textures", "terrain_grass_1")["path"]))
     root_heightmap.setTexScale(TextureStage.getDefault(), 100)
     root_heightmap.reparentTo(instance.render)
-    root_heightmap.setSz(2500)
+    root_heightmap.setSz(5000)
 
-    heightmap_mesh.generate()
-    log("Terrain generated from heightmap!", "Worker/GeoMipTerrain")"""
+    heightmap_mesh.generate()"""
+    gameMap = instance.loader.loadModel(
+        getAsset("models", "map")
+    )
+    gameMap_node = gameMap.reparentTo(instance.render)
+    log("Terrain generated from heightmap!", "Worker/GeoMipTerrain")
 
 
     """
@@ -237,11 +241,18 @@ def inGameState(instance):
     using Panda3D's AmbientLight class.
     """
     log("Starting to calculate Ambient Lighting.", "Worker/Lighting")
-    lighting = AmbientLight("Lighting")
+    """lighting = AmbientLight("Lighting")
     lighting.setColor((0.2, 0.2, 0.2, 1))
     lighting_node = instance.render.attachNewNode(lighting)
     instance.render.setLight(lighting_node)
-    instance.workspace.services["lighting"] = {"object": lighting, "node": lighting_node}
+    instance.workspace.services["lighting"] = {"object": lighting, "node": lighting_node}"""
+
+    terrain_light = AmbientLight("terrain_lighting")
+    terrain_light.setColor((0.2, 0.5, 0.2, 1))
+    terrain_lightNP = gameMap_node.attachNewNode(terrain_light)
+
+    """root_heightmap.setLightOff()
+    root_heightmap.setLight(terrain_lightNP)"""
     log("Ambient light calculated and binded to Workspace.services!")
 
     """

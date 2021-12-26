@@ -35,5 +35,11 @@
     },
     "sounds": {
         "notification001": "assets/sounds/notification.wav"
+    },
+    "models": {
+        "map": "assets/models/map_cube_huge.obj",
+        "environment": {},
+        "items": {},
+        "entities": {}
     }
 }
