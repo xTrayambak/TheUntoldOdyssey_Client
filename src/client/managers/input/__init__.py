@@ -22,11 +22,10 @@ WIREFRAME_KEY = getSetting("keybinds", "wireframe_toggle")
 FPS_TOGGLE = getSetting("keybinds", "fps_toggle")
 
 class InputManager:
-    def __init__(self):
-        pass
+    def __init__(self, instance):
+        self.events = {
 
-    def hook(self, instance):
-        log("Hooking input system into TUO process.", "Worker/InputManager")
+        }
 
         def wireframe(): 
             if instance.wireframeIsOn:
@@ -41,6 +40,39 @@ class InputManager:
 
             instance.setFrameRateMeter(instance.fpsCounterIsOn)
 
-        instance.accept(QUIT_KEY, instance.quit)
-        instance.accept(WIREFRAME_KEY, wireframe)
-        instance.accept(FPS_TOGGLE, fps_toggle)
+        self.STR_TO_FUNC = {
+            "quit": instance.quit,
+            "fps_toggle": fps_toggle,
+            "wireframe_toggle": wireframe
+        }
+
+        self.instance = instance
+
+    def init(self):
+        keybinds = getSetting("keybinds")
+        for function in keybinds:
+            key = keybinds[function]
+            log(f"Binding function '{function}' to key '{key}'")
+            self.events.update({key: []})
+
+            self.listenfor(key)
+
+    def hookkey(self, key = QUIT_KEY, func = None):
+        self.events[key].append(func)
+    def listenfor(self, key):
+        def sudofunc():
+            for func in self.events[key]:
+                func()
+
+        self.instance.accept(key, sudofunc)
+
+    def hook(self):
+        log("Hooking input system into TUO process.", "Worker/InputManager")
+
+        _keybinds = getSetting("keybinds")
+        
+        for _func in _keybinds:
+            if _func in self.STR_TO_FUNC:
+                func = self.STR_TO_FUNC[_func]
+                key = _keybinds[_func]
+                self.hookkey(key, func)

@@ -39,7 +39,7 @@ class TUO(ShowBase):
         self.state = GameStates.MENU
         self.workspace = Workspace()
         self.ambienceManager = AmbienceManager()
-        self.inputManager = InputManager()
+        self.inputManager = InputManager(self)
         self.networkClient = NetworkClient()
         self.rpcManager = RPCManager(self)
         self.fontLoader = FontLoader(self)
@@ -49,7 +49,8 @@ class TUO(ShowBase):
         self.version = VERSION
         self.wireframeIsOn = False
         self.fpsCounterIsOn = False
-        self.inputManager.hook(self)
+        self.inputManager.init()
+        self.inputManager.hook()
 
         self.globalClock = ClockObject.getGlobalClock()
 

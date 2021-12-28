@@ -263,9 +263,10 @@ def inGameState(instance):
         cam_pos = instance.cam.getPos(instance.render)
         x, y, z = cam_pos
         y += 10
-        log(f"Vignette overlay set to ({x}, {y}, {z})")
-        #await Task.pause(1.5)
+        pitch = instance.cam.getP(instance.render)
         vignetteOverlay.setPos((x, y, z))
+        vignetteOverlay.lookAt(pitch)
+
 
         return Task.cont
 
