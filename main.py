@@ -19,7 +19,6 @@ class GameHandler:
         self.tuo.workspace.init(self.tuo)
         self.tuo.start_internal_game()
         self.tuo.run()
-        #self.tuo.quit()
 
 if __name__ == "__main__":
     game = GameHandler()

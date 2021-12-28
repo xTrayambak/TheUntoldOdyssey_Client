@@ -7,8 +7,9 @@ networking.
 Very good already, doesn't need too much refactoring later. Proud of this.
 """
 from direct.showbase.ShowBase import ShowBase
-from panda3d.core import loadPrcFile
+from pandac.PandaModules import loadPrcFile
 from pandac.PandaModules import WindowProperties
+from panda3d.core import ClockObject
 
 from src.client.log import log
 from src.client.shared import *
@@ -50,6 +51,8 @@ class TUO(ShowBase):
         self.fpsCounterIsOn = False
         self.inputManager.hook(self)
 
+        self.globalClock = ClockObject.getGlobalClock()
+
         self.win.requestProperties(PROPERTIES)
 
     def poll(self, task):
@@ -74,7 +77,7 @@ class TUO(ShowBase):
 
         self.ambienceManager.stop_all_tracks()
 
-    def spawnNewTask(self, name, function):
+    def spawnNewTask(self, name, function, args = None):
         """
         Create a new coroutine/task with the name `name` and task/function `function`.
         This function will be called every frame by Panda3D, TUO has no control over it's calling rate once it's hooked.
@@ -90,7 +93,7 @@ class TUO(ShowBase):
         `name` :: The name of the function; required by Panda3D.\n
         `function` :: The function to be converted to a task/coroutine and called by Panda3D.
         """
-        return self.taskMgr.add(function, name)
+        return self.taskMgr.add(function, name, extraArgs=args)
 
     def clear(self):
         """
@@ -123,7 +126,7 @@ class TUO(ShowBase):
                                 -> self.ambienceManager.update <args=[self]>
                                 -> self.rpcManager.run
         """
-        self.rpcManager.run()
+        #self.rpcManager.run()
         self.update()
         self.ambienceManager.update(self)
 

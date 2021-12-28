@@ -15,7 +15,7 @@ from direct.task import Task
 from panda3d.core import CardMaker, TextNode, GeoMipTerrain, Texture, TextureStage, AmbientLight, ClockObject, LVecBase3, TransparencyAttrib
 
 from src.client.loader import getAsset, getAllFromCategory
-from src.client.log import log
+from src.client.log import log, warn
 from src.client.shaderutil import loadAllShaders
 from src.client.settingsreader import getSetting
 
@@ -208,6 +208,12 @@ def inGameState(instance):
     #instance.state = GameStates.INGAME
     log("The player is in-game now.")
 
+
+    instance.globalClock.setMode(ClockObject.MNormal)
+    instance.globalClock.setFrameRate(120)
+
+    instance.set_background_color((0, 255, 245, 1))
+
     """
     Get heightmap, then cast it to the game
     using Panda3D's GeoMipTerrain class.
@@ -215,24 +221,11 @@ def inGameState(instance):
     TODO: Make it so that heightmap is downloaded from Syntax Studios API everytime the game launches.
     """
     log("Requesting heightmap", "Worker/GeoMipTerrain")
-    """heightmap_mesh = GeoMipTerrain("overworld_terrain")
-    heightmap_mesh.setHeightfield(getAsset("maps", "overworld_map")["path"])
-    heightmap_mesh.setBlockSize(32)
-    heightmap_mesh.setNear(20)
-    heightmap_mesh.setFar(100)
-    heightmap_mesh.setFocalPoint(instance.camera)
-
-    root_heightmap = heightmap_mesh.getRoot()
-    root_heightmap.setTexture(TextureStage.getDefault(), instance.loader.loadTexture(getAsset("textures", "terrain_grass_1")["path"]))
-    root_heightmap.setTexScale(TextureStage.getDefault(), 100)
-    root_heightmap.reparentTo(instance.render)
-    root_heightmap.setSz(5000)
-
-    heightmap_mesh.generate()"""
-    gameMap = instance.loader.loadModel(
+    vignetteOverlay = instance.loader.loadModel(
         getAsset("models", "map")
     )
-    gameMap_node = gameMap.reparentTo(instance.render)
+    vignetteOverlay.setPos((5, 5, 5))
+    vignetteOverlay_node = vignetteOverlay.reparentTo(instance.render)
     log("Terrain generated from heightmap!", "Worker/GeoMipTerrain")
 
 
@@ -241,18 +234,11 @@ def inGameState(instance):
     using Panda3D's AmbientLight class.
     """
     log("Starting to calculate Ambient Lighting.", "Worker/Lighting")
-    """lighting = AmbientLight("Lighting")
-    lighting.setColor((0.2, 0.2, 0.2, 1))
-    lighting_node = instance.render.attachNewNode(lighting)
-    instance.render.setLight(lighting_node)
-    instance.workspace.services["lighting"] = {"object": lighting, "node": lighting_node}"""
 
     terrain_light = AmbientLight("terrain_lighting")
     terrain_light.setColor((0.2, 0.5, 0.2, 1))
-    terrain_lightNP = gameMap.attachNewNode(terrain_light)
+    terrain_lightNP = vignetteOverlay.attachNewNode(terrain_light)
 
-    """root_heightmap.setLightOff()
-    root_heightmap.setLight(terrain_lightNP)"""
     log("Ambient light calculated and binded to Workspace.services!")
 
     """
@@ -263,4 +249,26 @@ def inGameState(instance):
     for _shd in shaders:
         instance.workspace.objects["shaders"].append(_shd)
 
-    
+    vignetteOverlay.set_shader_input("resolution", (instance.win.getXSize(), instance.win.getYSize()))
+    vignetteOverlay.setShader(instance.workspace.objects["shaders"][0]["shader"])
+
+    def arc():
+        vignetteOverlay.set_shader_input("resolution", (instance.win.getXSize(), instance.win.getYSize()))
+
+    async def followCamera_vignette(task):
+        if instance.state != instance.states_enum.INGAME:
+            warn("Vignette disabled.")
+            return Task.done
+
+        cam_pos = instance.cam.getPos(instance.render)
+        x, y, z = cam_pos
+        y += 10
+        log(f"Vignette overlay set to ({x}, {y}, {z})")
+        #await Task.pause(1.5)
+        vignetteOverlay.setPos((x, y, z))
+
+        return Task.cont
+
+    instance.spawnNewTask("followCamera_vignette", followCamera_vignette)
+
+    instance.accept("aspectRatioChanged", arc)
