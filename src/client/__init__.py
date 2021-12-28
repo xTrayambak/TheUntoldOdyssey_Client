@@ -43,6 +43,7 @@ class TUO(ShowBase):
         self.networkClient = NetworkClient()
         self.rpcManager = RPCManager(self)
         self.fontLoader = FontLoader(self)
+        self.player = None
 
         self.states_enum = GameStates
 

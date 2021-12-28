@@ -18,6 +18,7 @@ from src.client.loader import getAsset, getAllFromCategory
 from src.client.log import log, warn
 from src.client.shaderutil import loadAllShaders
 from src.client.settingsreader import getSetting
+from src.client.player import Player
 
 from pyglet.gl import gl_info as gpu_info
 from math import sin
@@ -215,33 +216,6 @@ def inGameState(instance):
     instance.set_background_color((0, 255, 245, 1))
 
     """
-    Get heightmap, then cast it to the game
-    using Panda3D's GeoMipTerrain class.
-
-    TODO: Make it so that heightmap is downloaded from Syntax Studios API everytime the game launches.
-    """
-    log("Requesting heightmap", "Worker/GeoMipTerrain")
-    vignetteOverlay = instance.loader.loadModel(
-        getAsset("models", "map")
-    )
-    vignetteOverlay.setPos((5, 5, 5))
-    vignetteOverlay_node = vignetteOverlay.reparentTo(instance.render)
-    log("Terrain generated from heightmap!", "Worker/GeoMipTerrain")
-
-
-    """
-    Calculate ambient lighting with shadows,
-    using Panda3D's AmbientLight class.
-    """
-    log("Starting to calculate Ambient Lighting.", "Worker/Lighting")
-
-    terrain_light = AmbientLight("terrain_lighting")
-    terrain_light.setColor((0.2, 0.5, 0.2, 1))
-    terrain_lightNP = vignetteOverlay.attachNewNode(terrain_light)
-
-    log("Ambient light calculated and binded to Workspace.services!")
-
-    """
     Apply visual shaders
     using Panda3D's built-in shader pipeline.
     """
@@ -249,27 +223,4 @@ def inGameState(instance):
     for _shd in shaders:
         instance.workspace.objects["shaders"].append(_shd)
 
-    vignetteOverlay.set_shader_input("resolution", (instance.win.getXSize(), instance.win.getYSize()))
-    vignetteOverlay.setShader(instance.workspace.objects["shaders"][0]["shader"])
-
-    def arc():
-        vignetteOverlay.set_shader_input("resolution", (instance.win.getXSize(), instance.win.getYSize()))
-
-    async def followCamera_vignette(task):
-        if instance.state != instance.states_enum.INGAME:
-            warn("Vignette disabled.")
-            return Task.done
-
-        cam_pos = instance.cam.getPos(instance.render)
-        x, y, z = cam_pos
-        y += 10
-        pitch = instance.cam.getP(instance.render)
-        vignetteOverlay.setPos((x, y, z))
-        vignetteOverlay.lookAt(pitch)
-
-
-        return Task.cont
-
-    instance.spawnNewTask("followCamera_vignette", followCamera_vignette)
-
-    instance.accept("aspectRatioChanged", arc)
+    instance.player = Player(instance, "player", "player")

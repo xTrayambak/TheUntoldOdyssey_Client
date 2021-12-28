@@ -14,9 +14,9 @@ from src.client.loader import getAsset
 class Entity:
     def __init__(self, name, instance, model):
         self.name = name
-        self.model = model
+        self.model = getAsset("models", "entities")[model]["path"]
         self.animations = {}
-        self.actor = Actor(models = model)
+        self.actor = Actor(models = self.model)
         self.instance = instance
 
         self.shaders = {}

@@ -1,0 +1,24 @@
+{
+    "death.void": [
+        "{} fell into the void",
+        "{} un-materialized",
+        "{} fell into the depths of nothing"
+    ],
+    "death.slain_melee": [
+        "{} was slain by {}",
+        "{} was killed by {}",
+        "{} was brutally stabbed by {}",
+        "{} thought it was funny to try their weapon on {}"
+    ],
+    "death.slain_ranged": [
+        "{} was shot by {}",
+        "{} got yeeted by {}"
+    ],
+    "death.unknown": [
+        "{} died."
+    ],
+    "death.boss_mediocre": [
+        "{} was",
+        "{} decided to visit"
+    ]
+}

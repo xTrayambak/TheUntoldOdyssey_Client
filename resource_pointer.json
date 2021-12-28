@@ -40,6 +40,8 @@
         "map": "assets/models/map_cube_huge.obj",
         "environment": {},
         "items": {},
-        "entities": {}
+        "entities": {
+            "player": {"path":"assets/models/character_test.obj"}
+        }
     }
 }
