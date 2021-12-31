@@ -43,7 +43,7 @@ class AmbienceManager:
                     if self.instance.state == GameStates.MENU or self.instance.state == GameStates.CONNECTING:
                         delay = randint(70, 150)
                     else:
-                        randint(70, 800)
+                        delay = randint(70, 800)
                     log("Sleeping for {} minutes now.".format(delay / 60), "Worker/Ambience")
                     await Task.pause(delay)
                 seed(randint(-0x7FFFFF, 0x7FFFFF))

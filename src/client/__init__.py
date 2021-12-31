@@ -9,6 +9,7 @@ Very good already, doesn't need too much refactoring later. Proud of this.
 from direct.showbase.ShowBase import ShowBase
 from pandac.PandaModules import loadPrcFile
 from pandac.PandaModules import WindowProperties
+from direct.filter.CommonFilters import CommonFilters
 from panda3d.core import ClockObject
 
 from src.client.log import log
@@ -52,6 +53,12 @@ class TUO(ShowBase):
         self.fpsCounterIsOn = False
         self.inputManager.init()
         self.inputManager.hook()
+
+        self.filters = CommonFilters(self.win, self.cam)
+
+        self.filtersSupported = self.filters.setCartoonInk()
+
+        log(f"Are graphics pipeline filters supported? [{self.filtersSupported}]")
 
         self.globalClock = ClockObject.getGlobalClock()
 

@@ -110,7 +110,7 @@ def mainMenu(instance):
     instance.clear()
 
     edgegalaxy_font = instance.fontLoader.load("edgegalaxy")
-    really_font = instance.fontLoader.load("really")
+    basic_font = instance.fontLoader.load("gentium_basic")
 
     ## Get splash texts. ##
     SPLASHES = open(
@@ -130,6 +130,7 @@ def mainMenu(instance):
     ## UI stuff. ##
     _card = CardMaker("tuoLogo")
     card = instance.render2d.attachNewNode(_card.generate())
+    card.setTransparency(TransparencyAttrib.MAlpha)
 
     tuoLogo_tex = instance.loader.loadTexture(getAsset("images", "logo_default"))
     card.setTexture(tuoLogo_tex)
@@ -140,7 +141,8 @@ def mainMenu(instance):
                                 text_scale = 0.1, 
                                 pos = (0, 0, 0),
                                 command = _cmd_ingame,
-                                text0_font = really_font
+                                text0_font = basic_font,
+                                text1_font = basic_font
     )
 
     splash_screen_text = TextNode(name = "splash_screen_text")
@@ -203,6 +205,10 @@ def endCredits(instance):
     instance.clear()
     log("End credits have started")
     #instance.state = GameStates.END_CREDITS
+
+def settings(instance):
+    instance.clear()
+
 
 def inGameState(instance):
     instance.clear()

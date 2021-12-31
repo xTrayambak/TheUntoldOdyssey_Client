@@ -31,7 +31,8 @@
         "mangabey": "assets/fonts/mangabey/MangabeyRegular.otf",
         "edgegalaxy": "assets/fonts/edgeofthegalaxy/regular.otf",
         "really": "assets/fonts/really/really.ttf",
-        "rondal": "assets/fonts/rondal/rondal.ttf"
+        "rondal": "assets/fonts/rondal/rondal.ttf",
+        "gentium_basic": "assets/fonts/basic/basic.ttf"
     },
     "sounds": {
         "notification001": "assets/sounds/notification.wav"
