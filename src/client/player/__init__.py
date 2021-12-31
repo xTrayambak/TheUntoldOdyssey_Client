@@ -1,4 +1,4 @@
-from panda3d.core import Vec3
+from panda3d.core import Vec3, TransparencyAttrib
 from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
 from direct.showbase.DirectObject import *
@@ -18,6 +18,9 @@ class Player():
 
 		self.entity = Entity(name, instance, model)
 
+	def init(self):
+		self.vignette()
+
 	def vignette(self):
 		if not getSetting("video", "vignette"): return
 		instance = self.instance
@@ -25,6 +28,9 @@ class Player():
 		self.vignetteOverlay = instance.loader.loadModel(
 			getAsset("models", "map")
 		)
+
+		self.vignetteOverlay.set_transparency(TransparencyAttrib.M_dual)
+		self.vignetteOverlay.set_alpha_scale(0)
 
 		self.vignetteOverlay_node = self.vignetteOverlay.reparentTo(instance.render)
 

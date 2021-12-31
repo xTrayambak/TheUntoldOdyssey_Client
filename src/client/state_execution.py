@@ -224,3 +224,4 @@ def inGameState(instance):
         instance.workspace.objects["shaders"].append(_shd)
 
     instance.player = Player(instance, "player", "player")
+    instance.player.init()
