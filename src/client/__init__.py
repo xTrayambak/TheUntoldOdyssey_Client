@@ -58,7 +58,7 @@ class TUO(ShowBase):
 
         self.filtersSupported = self.filters.setCartoonInk()
 
-        log(f"Are graphics pipeline filters supported? [{self.filtersSupported}]")
+        warn(f"Are graphics pipeline filters supported? [{self.filtersSupported}]")
 
         self.globalClock = ClockObject.getGlobalClock()
 
