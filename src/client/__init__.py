@@ -43,7 +43,7 @@ class TUO(ShowBase):
         self.networkClient = NetworkClient()
         self.rpcManager = RPCManager(self)
         self.fontLoader = FontLoader(self)
-        self.player = None
+        self.player = Player(self, "player", "player")
 
         self.states_enum = GameStates
 
@@ -128,7 +128,7 @@ class TUO(ShowBase):
                                 -> self.ambienceManager.update <args=[self]>
                                 -> self.rpcManager.run
         """
-        #self.rpcManager.run()
+        self.rpcManager.run()
         self.update()
         self.ambienceManager.update(self)
 

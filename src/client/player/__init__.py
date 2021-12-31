@@ -51,7 +51,10 @@ class Player():
 		cam_pos = self.instance.cam.getPos(self.instance.render)
 		x, y, z = cam_pos
 		y += 10
+
 		pitch = self.instance.cam.getP(self.instance.render)
+		heading = self.instance.cam.getH(self.instance.render)
+
 		self.vignetteOverlay.setPos((x, y, z))
 		self.vignetteOverlay.lookAt(pitch)
 

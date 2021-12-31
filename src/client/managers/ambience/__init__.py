@@ -39,7 +39,11 @@ class AmbienceManager:
                     _song = self.instance.loader.loadSfx(song["path"])
                     _song.play()
                     self.tracks.append(_song)
-                    delay = randint(70, 800)
+                    delay = 0
+                    if self.instance.state == GameStates.MENU or self.instance.state == GameStates.CONNECTING:
+                        delay = randint(70, 150)
+                    else:
+                        randint(70, 800)
                     log("Sleeping for {} minutes now.".format(delay / 60), "Worker/Ambience")
                     await Task.pause(delay)
                 seed(randint(-0x7FFFFF, 0x7FFFFF))

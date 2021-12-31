@@ -43,7 +43,12 @@ class InputManager:
         self.STR_TO_FUNC = {
             "quit": instance.quit,
             "fps_toggle": fps_toggle,
-            "wireframe_toggle": wireframe
+            "wireframe_toggle": wireframe,
+
+            "forward": "wip",
+            "backward": "wip",
+            "left": "wip",
+            "right": "wip"
         }
 
         self.instance = instance
