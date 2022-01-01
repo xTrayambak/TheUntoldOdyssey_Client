@@ -129,6 +129,7 @@ def mainMenu(instance):
     
     ## UI stuff. ##
     _card = CardMaker("tuoLogo")
+    
     card = instance.render2d.attachNewNode(_card.generate())
     card.setTransparency(TransparencyAttrib.MAlpha)
 

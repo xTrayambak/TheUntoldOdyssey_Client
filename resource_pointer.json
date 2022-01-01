@@ -42,7 +42,7 @@
         "environment": {},
         "items": {},
         "entities": {
-            "player": {"path":"assets/models/character_test.obj"}
+            "player": {"path":"assets/models/character_test.glb"}
         }
     }
 }

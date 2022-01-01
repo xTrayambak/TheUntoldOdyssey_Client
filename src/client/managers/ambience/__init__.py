@@ -26,6 +26,10 @@ class AmbienceManager:
         instance.spawnNewTask("_update_ambience", self._update)
 
     async def _update(self, task):
+        await Task.pause(
+            randint(20, 49)
+        )
+        
         if self.running == False:
             log("Ambience manager shutting down; self.running is False.", "Worker/Ambience")
             return Task.done
