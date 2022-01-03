@@ -9,12 +9,14 @@ Also, Navmesh time!!! :-D
 from direct.actor.Actor import Actor
 from random import randint
 
-from src.client.loader import getAsset
+from src.client.log import *
 
 class Entity:
-    def __init__(self, name, instance, model):
+    def __init__(self, name: str, instance, model: str):
         self.name = name
-        self.model = instance.loader.loadModel(getAsset("models", "entities")[model]["path"])
+        self.model = instance.objectLoader.loadObject(
+            name = "player", subcategory = "entities"
+        )
         self.animations = {}
         self.actor = Actor(models = self.model)
         self.instance = instance
@@ -23,8 +25,10 @@ class Entity:
 
         self.actor.reparentTo(self.instance.render)
 
-    def load_animation(self, name:str, type: str):
-        self.animations.update({name: getAsset("animations", name)})
+    def set_texture(self, name: str):
+        self.model.setTexture(
+            self.instance.textureLoader.loadTexture(name)
+        )
 
     def play_anim(self, name):
-        self.actor.play()
+        self.actor.play(name)

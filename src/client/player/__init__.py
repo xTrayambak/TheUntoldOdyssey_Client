@@ -18,9 +18,7 @@ class Player():
 
 		self.entity = Entity(name, instance, model)
 
-		self.entity.model.setTexture(
-			instance.textureLoader.loadTexture("character_default_skin"), 1
-		)
+		self.entity.set_texture("character_default_skin")
 
 	def init(self):
 		self.vignette()
