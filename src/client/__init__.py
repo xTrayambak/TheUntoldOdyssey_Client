@@ -20,6 +20,7 @@ from src.client.managers.input import InputManager
 from src.client.networking import NetworkClient
 from src.client.managers.presence import RPCManager
 from src.client.fontloader import FontLoader
+from src.client.textureloader import TextureLoader
 
 import gc
 
@@ -44,6 +45,7 @@ class TUO(ShowBase):
         self.networkClient = NetworkClient()
         self.rpcManager = RPCManager(self)
         self.fontLoader = FontLoader(self)
+        self.textureLoader = TextureLoader(self)
         self.player = Player(self, "player", "player")
 
         self.states_enum = GameStates

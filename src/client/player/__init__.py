@@ -18,6 +18,10 @@ class Player():
 
 		self.entity = Entity(name, instance, model)
 
+		self.entity.model.setTexture(
+			instance.textureLoader.loadTexture("character_default_skin"), 1
+		)
+
 	def init(self):
 		self.vignette()
 
@@ -56,7 +60,7 @@ class Player():
 		heading = self.instance.cam.getH(self.instance.render)
 
 		self.vignetteOverlay.setPos((x, y, z))
-		self.vignetteOverlay.lookAt(pitch)
+		self.vignetteOverlay.setHpr(pitch, heading, 0)
 
 		return Task.cont
 

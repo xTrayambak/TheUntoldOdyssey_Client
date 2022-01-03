@@ -19,7 +19,8 @@
         "overworld_map": {"path": "assets/cache/heightmap.png"}
     },
     "textures": {
-        "terrain_grass_1": {"path": "assets/textures/terrain/overworld_grass_1.jpg"}
+        "terrain_grass_1": {"path": "assets/textures/terrain/overworld_grass_1.jpg"},
+        "character_default_skin": {"path": "assets/textures/character_tex.jpg"}
     },
     "animations": {
         "walk_normal_1": {"path": "assets/animations/walk/normal.egg"}

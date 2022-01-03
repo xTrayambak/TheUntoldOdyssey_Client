@@ -19,7 +19,7 @@
     "video": {
         "god_rays": true,
         "max_framerate": 120,
-        "vignette": true,
+        "vignette": false,
         "installDependencies": true
     },
     "debugging": {

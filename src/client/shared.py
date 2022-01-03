@@ -37,3 +37,7 @@ GAMESTATE_TO_FUNC = {
     GameStates.INGAME: inGameState,
     GameStates.CONNECTING: connectingPage
 }
+
+"""
+Enums for defining types.
+"""

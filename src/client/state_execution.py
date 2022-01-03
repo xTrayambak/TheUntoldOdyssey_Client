@@ -229,3 +229,5 @@ def inGameState(instance):
     shaders = loadAllShaders()
     for _shd in shaders:
         instance.workspace.objects["shaders"].append(_shd)
+
+    instance.player.init()
