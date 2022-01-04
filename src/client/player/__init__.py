@@ -54,11 +54,8 @@ class Player():
 		x, y, z = cam_pos
 		y += 10
 
-		pitch = self.instance.cam.getP(self.instance.render)
-		heading = self.instance.cam.getH(self.instance.render)
-
 		self.vignetteOverlay.setPos((x, y, z))
-		self.vignetteOverlay.setHpr(pitch, heading, 0)
+		self.vignetteOverlay.setHpr(self.instance.cam.getHpr())
 
 		return Task.cont
 

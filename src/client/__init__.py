@@ -22,6 +22,7 @@ from src.client.managers.presence import RPCManager
 from src.client.fontloader import FontLoader
 from src.client.textureloader import TextureLoader
 from src.client.objectloader import ObjectLoader
+from src.client.syntaxutil import SyntaxUtil
 
 import gc
 
@@ -31,7 +32,7 @@ PROPERTIES = WindowProperties()
 PROPERTIES.setTitle("The Untold Odyssey {}".format(VERSION))
 
 class TUO(ShowBase):
-    def __init__(self):
+    def __init__(self, memory_max: int = 5000):
         log(f"The Untold Odyssey {VERSION} loaded up!")
         log("Initializing Panda3D rendering engine.")
         loadPrcFile("assets/config.prc")
@@ -48,15 +49,19 @@ class TUO(ShowBase):
         self.fontLoader = FontLoader(self)
         self.textureLoader = TextureLoader(self)
         self.objectLoader = ObjectLoader(self)
+        self.syntaxUtil = SyntaxUtil(self)
         self.player = Player(self, "player", "player")
 
         self.states_enum = GameStates
+        self.max_mem = memory_max
 
         self.version = VERSION
         self.wireframeIsOn = False
         self.fpsCounterIsOn = False
         self.inputManager.init()
         self.inputManager.hook()
+
+        self.syntaxUtil.hook()
 
         self.filters = CommonFilters(self.win, self.cam)
 
