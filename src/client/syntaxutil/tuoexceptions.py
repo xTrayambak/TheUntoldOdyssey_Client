@@ -12,3 +12,8 @@ class AuthenticationFailError(Exception):
     """
     This exception is raised when authentication fails.
     """
+
+class AnticheatTrigger(Exception):
+    """
+    THis exception is raised when the game detects you have a cheat installed.
+    """

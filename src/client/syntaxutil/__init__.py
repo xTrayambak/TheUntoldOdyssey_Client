@@ -1,21 +1,33 @@
 import psutil
 import gc
+import sys
 from direct.task import Task
+from requests import get
 
 from src.client.log import log, warn
-from src.client.syntaxutil.tuoexceptions import OutOfMemoryError, OpenGLError
-
-### I have absolutely no clue why the heck I need to divide the bytes by this voodoo doll number, but hey, atleast it works.
-MEM_CONVERSION_FACTOR = 1048576
+from src.client.syntaxutil.tuoexceptions import OutOfMemoryError, OpenGLError, AnticheatTrigger
+from src.client.shared import DATA_PROVIDER
 
 class SyntaxUtil:
     def __init__(self, instance):
         self.instance = instance
         self.process = psutil.Process()
+        self.cheatList = get(DATA_PROVIDER + "/api/v1/cheats").json()
 
     def hook(self):
         self.instance.spawnNewTask("syntaxutil_memcheck", self.memoryCheck)
+        self.instance.spawnNewTask("syntaxutil_processCheck", self.processCheck)
 
+    async def processCheck(self, task):
+        for proc in psutil.process_iter():
+            if proc.name().lower() in self.cheatList:
+                raise AnticheatTrigger(f"We have detected [{proc.name()}] is running on your device. To make sure you are not cheating, we have crashed TUO.")
+
+        return Task.cont
+
+    async def errorCheckGLSL(self, task):
+        pass
+    
     async def memoryCheck(self, task):
         memory_usage = self.process.memory_info().rss / (1024 * 1024)
         max_mem = self.instance.max_mem

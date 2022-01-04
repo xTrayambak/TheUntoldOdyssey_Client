@@ -38,6 +38,4 @@ GAMESTATE_TO_FUNC = {
     GameStates.CONNECTING: connectingPage
 }
 
-"""
-Enums for defining types.
-"""
+DATA_PROVIDER = "https://tuoDataDelivery.xtrayambak.repl.co/"
