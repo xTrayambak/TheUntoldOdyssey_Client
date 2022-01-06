@@ -45,7 +45,13 @@ class TUO(ShowBase):
         self.ambienceManager = AmbienceManager()
         self.inputManager = InputManager(self)
         self.networkClient = NetworkClient()
-        self.rpcManager = RPCManager(self)
+        self.rpcManager = None
+
+        try:
+            self.rpcManager = RPCManager(self)
+        except Exception as exc:
+            log(f"Failed to initialize Discord rich presence. [{exc}]")
+
         self.fontLoader = FontLoader(self)
         self.textureLoader = TextureLoader(self)
         self.objectLoader = ObjectLoader(self)
@@ -104,7 +110,7 @@ class TUO(ShowBase):
 
         The Task system is a single-threaded cycle-process! Do not call time.sleep or any other thread-pausing function on it!
         It will cause the entire Panda3D rendering system to freeze entirely!
-        Instead, in order to block the task/coroutine, call Task.delay inside the task function!
+        Instead, in order to block the task/coroutine, call Task.pause inside the task function!
 
         :: ARGS
 
@@ -144,7 +150,9 @@ class TUO(ShowBase):
                                 -> self.ambienceManager.update <args=[self]>
                                 -> self.rpcManager.run
         """
-        self.rpcManager.run()
+        if self.rpcManager != None:
+            self.rpcManager.run()
+            
         self.update()
         self.ambienceManager.update(self)
 

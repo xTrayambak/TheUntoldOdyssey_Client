@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-from src.client.libtraceback import log_traceback
-from src.client.log import log
 
 from argparse import ArgumentParser
 
@@ -10,19 +8,27 @@ argparser = ArgumentParser(
 argparser.add_argument("max_mem_usage", 
                         metavar = "m",
                         type = int,
-                        help = "The maximum amount of memory the game can use. (Defaults to 800 MB)"
+                        help = "The maximum amount of memory the game can use. (Defaults to 800 MB)",
+                        const = 800,
+                        nargs = "?"
 )
 
 class GameHandler:
     def __init__(self, max_mem: int = 800):
-        from src.client.libinstaller import installAllLibraries
+        from src.libinstaller import installAllLibraries
 
         installAllLibraries()
 
         from src.client.libtraceback import log_traceback
         from src.client import TUO
+        from src.client.log import log
 
-        self.tuo = TUO(max_mem)
+        try:
+            self.tuo = TUO(max_mem)
+        except Exception as exc:
+            log(f"An error occured whilst initializing the game. [{exc}]")
+            log_traceback()
+            exit(1)
 
     def run(self):
         """
@@ -31,6 +37,8 @@ class GameHandler:
 
         ===== CONVENIENCE FUNCTION TO START A GAME INSTANCE =====
         """
+        from src.client.libtraceback import log_traceback
+        from src.client.log import log
         try:
             self.tuo.workspace.init(self.tuo)
             self.tuo.start_internal_game()

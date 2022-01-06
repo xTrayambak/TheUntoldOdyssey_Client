@@ -1,8 +1,9 @@
-from src.client.log import log
-
 from subprocess import check_call as call
 from sys import executable
 from pkg_resources import get_distribution, DistributionNotFound
+
+def log(msg):
+    print(f"Pre-Client Initialization >> {msg}")
 
 def exists(package: str):
     try:

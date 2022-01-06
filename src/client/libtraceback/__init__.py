@@ -26,15 +26,44 @@ CRASH_TXTS = [
     "/o/ Buggy game dabs!"
 ]
 
-def get_extensions_string():
-    extensions = get_extensions()
+def get_extensions_string(max_limit: int = 9):
+    extensions = list(get_extensions())
 
     string = ""
+    _extStr = ""
+
     for _ext in extensions:
+        idx = extensions.index(_ext)
+        _extStr += f"{idx} >> {_ext}\n"
+
+        if idx >= max_limit:
+            string += f"\tand {len(extensions) - max_limit} more... [DUMPED TO gl_ext.log INSIDE '/assets/logs/']"
+            break
+
         string += f"\t{_ext}\n"
 
-def log_traceback(instance):
+    for _ext in extensions:
+        idx = extensions.index(_ext)
+        _extStr += f"{idx} >> {_ext}\n"
+
+    try:
+        file = open("assets/logs/gl_ext.log", "w")
+        file.write("~` The Untold Odyssey `~\n")
+        file.write("\tDumped OpenGL data.\n")
+        file.write(f":: Loaded OpenGL extensions ::\n{_extStr}")
+        file.close()
+    except Exception as exc:
+        log(f"FATAL >> Could not dump OpenGL renderer data to /assets/logs/gl_ext.log due to error.\n[{exc}]")
+
+    return string
+
+def log_traceback(instance=None):
     full_exc = sys.exc_info()
+
+    if instance == None:
+        VERSION = None
+    else:
+        VERSION = instance.version
     
     string = f"""
     The game has crashed, exiting.
@@ -47,7 +76,7 @@ def log_traceback(instance):
     OpenGL version: {get_version()}
     OpenGL extensions loaded: {get_extensions_string()}
 
-    The Untold Odyssey Version: {instance.version}
+    The Untold Odyssey Version: {VERSION}
     Python version: {sys.version}
 
     Platform: {sys.platform}
