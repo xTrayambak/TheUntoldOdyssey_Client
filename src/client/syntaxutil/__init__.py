@@ -4,7 +4,7 @@ import sys
 from direct.task import Task
 from requests import get
 
-from src.client.log import log, warn
+from src.log import log, warn
 from src.client.syntaxutil.tuoexceptions import OutOfMemoryError, OpenGLError, AnticheatTrigger
 from src.client.shared import DATA_PROVIDER
 
@@ -23,6 +23,7 @@ class SyntaxUtil:
             if proc.name().lower() in self.cheatList:
                 raise AnticheatTrigger(f"We have detected [{proc.name()}] is running on your device. To make sure you are not cheating, we have crashed TUO.")
 
+        await Task.pause(5)
         return Task.cont
 
     async def errorCheckGLSL(self, task):

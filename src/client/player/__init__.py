@@ -4,7 +4,7 @@ from direct.interval.IntervalGlobal import *
 from direct.showbase.DirectObject import *
 from direct.task import Task
 
-from src.client.log import *
+from src.log import log, warn
 from src.client.entity import Entity
 from src.client.loader import getAsset
 from src.client.settingsreader import getSetting
@@ -18,7 +18,7 @@ class Player():
 
 		self.entity = Entity(name, instance, model)
 
-		self.entity.set_texture("character_default_skin")
+		#self.entity.set_texture("character_default_skin")
 
 	def init(self):
 		self.vignette()

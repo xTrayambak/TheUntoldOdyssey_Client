@@ -2,7 +2,7 @@
 from direct.task import Task
 from src.client.loader import getAllFromCategory, getAsset
 from src.client.shared import GAMESTATES_TO_BLANDSTRING, GameStates
-from src.client.log import log
+from src.log import log, warn
 
 from random import randint, choice, seed
 from time import sleep

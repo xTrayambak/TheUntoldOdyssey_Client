@@ -20,7 +20,8 @@
     },
     "textures": {
         "terrain_grass_1": {"path": "assets/textures/terrain/overworld_grass_1.jpg"},
-        "character_default_skin": {"path": "assets/textures/character_tex.jpg"}
+        "character_default_skin": {"path": "assets/textures/character_tex.jpg"},
+        "sun_default": {"path": "assets/textures/sun.png"}
     },
     "animations": {
         "walk_normal_1": {"path": "assets/animations/walk/normal.egg"}
@@ -39,7 +40,7 @@
         "notification001": "assets/sounds/notification.wav"
     },
     "models": {
-        "map": "assets/models/map_cube_huge.obj",
+        "map": {"path":"assets/models/map_cube_huge.obj"},
         "environment": {},
         "items": {},
         "entities": {

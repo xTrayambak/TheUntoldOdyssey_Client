@@ -5,25 +5,31 @@ from argparse import ArgumentParser
 argparser = ArgumentParser(
     description = "Run The Untold Odyssey."
 )
-argparser.add_argument("max_mem_usage", 
+
+DEFAULT_MEM = 1500
+
+argparser.add_argument("memory", 
                         metavar = "m",
                         type = int,
-                        help = "The maximum amount of memory the game can use. (Defaults to 800 MB)",
-                        const = 800,
+                        help = f"The maximum amount of memory the game can use. (Defaults to {DEFAULT_MEM} MB)",
+                        const = DEFAULT_MEM,
                         nargs = "?"
 )
 
 class GameHandler:
-    def __init__(self, max_mem: int = 800):
+    def __init__(self, max_mem: int = DEFAULT_MEM):
         from src.libinstaller import installAllLibraries
-
+        from src.libtraceback import log_traceback
+        from src.log import log
+        
+        log("Trying to find any libraries that need to be installed.", "Worker/Bootstrap")
         installAllLibraries()
-
-        from src.client.libtraceback import log_traceback
-        from src.client import TUO
-        from src.client.log import log
+        log("Library installation process complete.", "Worker/Bootstrap")
 
         try:
+            log("Pre-bootup client initialization complete, now changing into client mode.")
+            from src.client import TUO
+            log("Changed into client mode. Now, the client code is going to be run.")
             self.tuo = TUO(max_mem)
         except Exception as exc:
             log(f"An error occured whilst initializing the game. [{exc}]")
@@ -37,10 +43,11 @@ class GameHandler:
 
         ===== CONVENIENCE FUNCTION TO START A GAME INSTANCE =====
         """
-        from src.client.libtraceback import log_traceback
-        from src.client.log import log
+        from src.libtraceback import log_traceback
+        from src.log import log
         try:
             self.tuo.workspace.init(self.tuo)
+            self.tuo.setFrameRateMeter(True)
             self.tuo.start_internal_game()
             self.tuo.run()
         except Exception as e:
@@ -52,7 +59,8 @@ class GameHandler:
 
 if __name__ == "__main__":
     args = argparser.parse_args()
-    mem_max = args.max_mem_usage
+    mem_max = args.memory
+    if mem_max == None: mem_max = DEFAULT_MEM
 
     game = GameHandler(mem_max)
     game.run()

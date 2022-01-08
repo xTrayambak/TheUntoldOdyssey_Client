@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import json
 
-from src.client.log import log
+from src.log import log, warn
 
 POINTER = "resource_pointer.json"
 

@@ -1,4 +1,4 @@
-from src.client.log import log
+from src.log import log, warn
 from src.client.loader import getAsset
 
 class FontLoader:

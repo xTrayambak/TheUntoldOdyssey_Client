@@ -1,7 +1,7 @@
 import pypresence
 
 from src.client.shared import GAMESTATES_TO_STRING, GameStates
-from src.client.log import log
+from src.log import log, warn
 from src.client.loader import getAsset
 
 from direct.task import Task

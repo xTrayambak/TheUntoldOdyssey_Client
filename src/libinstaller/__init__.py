@@ -2,8 +2,7 @@ from subprocess import check_call as call
 from sys import executable
 from pkg_resources import get_distribution, DistributionNotFound
 
-def log(msg):
-    print(f"Pre-Client Initialization >> {msg}")
+from src.log import warn, log
 
 def exists(package: str):
     try:
@@ -17,9 +16,10 @@ def installAllLibraries():
 
     for lib in libs:
         lib = lib.split("\n")[0]
-        if exists(lib): return
-        log("Installing library [{}]; querying PyPi.")
+        if not exists(lib):
+            warn(f"Library '{lib}' is not installed for the virtual environment.")
+            log(f"Installing library [{lib}]; querying PyPi.")
         
-        call(
-            [executable, "-m", "pip", "install", lib]
-        )
+            call(
+                [executable, "-m", "pip", "install", lib]
+            )

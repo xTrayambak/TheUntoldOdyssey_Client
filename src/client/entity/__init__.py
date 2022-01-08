@@ -9,21 +9,21 @@ Also, Navmesh time!!! :-D
 from direct.actor.Actor import Actor
 from random import randint
 
-from src.client.log import *
+from src.log import log, warn
 
 class Entity:
     def __init__(self, name: str, instance, model: str):
         self.name = name
-        self.model = instance.objectLoader.loadObject(
+        """self.model = instance.objectLoader.loadObject(
             name = "player", subcategory = "entities"
         )
         self.animations = {}
-        self.actor = Actor(models = self.model)
+        self.actor = Actor(models = self.model)"""
         self.instance = instance
 
         self.shaders = {}
 
-        self.actor.reparentTo(self.instance.render)
+        #self.actor.reparentTo(self.instance.render)
 
     def set_texture(self, name: str):
         self.model.setTexture(

@@ -4,7 +4,7 @@ from sys import maxsize
 
 from base64 import b64encode
 
-from src.client.log import log
+from src.log import log, warn
 
 class Cryptography:
     def init():

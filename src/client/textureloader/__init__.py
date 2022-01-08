@@ -1,4 +1,4 @@
-from src.client.log import *
+from src.log import log, warn
 from src.client.loader import getAsset
 
 class TextureLoader:

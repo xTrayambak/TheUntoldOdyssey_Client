@@ -7,7 +7,7 @@ Do not read, 5 years of my life have been cut off because of this atrocity.
 
 import os
 
-from src.client.log import log
+from src.log import log, warn
 from src.client.loader import getAsset
 from panda3d.core import Shader
 

@@ -12,13 +12,13 @@ from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectLabel import DirectLabel
 from direct.task import Task
 
-from panda3d.core import CardMaker, TextNode, GeoMipTerrain, Texture, TextureStage, AmbientLight, ClockObject, LVecBase3, TransparencyAttrib
+from panda3d.core import CardMaker, TextNode, GeoMipTerrain, Texture, TextureStage, PointLight, ClockObject, LVecBase3, TransparencyAttrib
 
 from src.client.loader import getAsset, getAllFromCategory
-from src.client.log import log, warn
+from src.log import log, warn
 from src.client.shaderutil import loadAllShaders
 from src.client.settingsreader import getSetting
-from src.client.player import Player
+from src.client.objects import Object
 
 from pyglet.gl import gl_info as gpu_info
 from math import sin
@@ -220,7 +220,7 @@ def inGameState(instance):
     instance.globalClock.setMode(ClockObject.MNormal)
     instance.globalClock.setFrameRate(120)
 
-    instance.set_background_color((0, 255, 245, 1))
+    #instance.set_background_color((0, 255, 245, 1))
 
     """
     Apply visual shaders
@@ -230,4 +230,28 @@ def inGameState(instance):
     for _shd in shaders:
         instance.workspace.objects["shaders"].append(_shd)
 
+    sun = Object(instance, "map")
+    sun.setTexture("sun_default")
+
+    sunlight = PointLight("sunlight")
+    sunlightNode = instance.render.attachNewNode(sunlight)
+    instance.render.setLight(sunlightNode)
+
+    sun.getObject().setLight(sunlightNode)
+    
+    instance.filters.setVolumetricLighting(sun.getObject(), 32, 0.5, 0.98)
+    instance.filters.setBloom(
+        (0.3, 0.4, 0.3, 0),
+        0.7,
+        1.4,
+        0.8,
+        1.0,
+        "medium"
+    )
+    instance.filters.setCartoonInk(
+        2,
+        (0, 0, 0, 1)
+    )
+
+    instance.workspace.services["lighting"] = (sunlight, sunlightNode)
     instance.player.init()

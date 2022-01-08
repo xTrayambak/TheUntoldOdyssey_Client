@@ -1,4 +1,4 @@
-from src.client.log import *
+from src.log import log, warn
 from src.client.loader import getAsset
 
 class ObjectLoader:
@@ -9,10 +9,10 @@ class ObjectLoader:
 
         }
 
-    def loadObject(self, name, subcategory: str = None, loadFromCache: bool = True):
+    def loadObject(self, name, loadFromCache: bool = True):
         if name in self.cache and loadFromCache: return self.cache[name]
 
-        path = getAsset("models", subcategory)[name]["path"]
+        path = getAsset("models", name)["path"]
 
         log(f"Loading 3D model '{name}' ({path})")
 

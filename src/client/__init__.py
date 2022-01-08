@@ -12,7 +12,7 @@ from pandac.PandaModules import WindowProperties
 from direct.filter.CommonFilters import CommonFilters
 from panda3d.core import ClockObject
 
-from src.client.log import log
+from src.log import log, warn
 from src.client.shared import *
 from src.client.workspace import Workspace
 from src.client.managers.ambience import AmbienceManager
@@ -23,6 +23,7 @@ from src.client.fontloader import FontLoader
 from src.client.textureloader import TextureLoader
 from src.client.objectloader import ObjectLoader
 from src.client.syntaxutil import SyntaxUtil
+from src.client.player import Player
 
 import gc
 
@@ -32,7 +33,7 @@ PROPERTIES = WindowProperties()
 PROPERTIES.setTitle("The Untold Odyssey {}".format(VERSION))
 
 class TUO(ShowBase):
-    def __init__(self, memory_max: int = 5000):
+    def __init__(self, memory_max: int = 800):
         log(f"The Untold Odyssey {VERSION} loaded up!")
         log("Initializing Panda3D rendering engine.")
         loadPrcFile("assets/config.prc")
@@ -73,7 +74,15 @@ class TUO(ShowBase):
 
         self.filtersSupported = self.filters.setCartoonInk()
 
-        warn(f"Are graphics pipeline filters supported? [{self.filtersSupported}]")
+        supportFS = {
+            True: "yes",
+            False: "no",
+            None: "?"
+        }
+
+        warn(f"Are graphics pipeline filters supported? [{supportFS[self.filtersSupported]}]")
+
+        del supportFS
 
         self.globalClock = ClockObject.getGlobalClock()
 

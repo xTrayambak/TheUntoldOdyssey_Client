@@ -2,9 +2,15 @@ import sys
 import os
 import random
 
-from pyglet.gl.gl_info import *
+try:
+    from pyglet.gl.gl_info import *
+except ModuleNotFoundError:
+    def get_extensions():  return "~~NONE~~: PYGLET NOT INSTALLED."
+    def get_vendor():  return "~~NONE~~: PYGLET NOT INSTALLED."
+    def get_version():  return "~~NONE~~: PYGLET NOT INSTALLED."
+    def get_renderer(): return "~~NONE~~: PYGLET NOT INSTALLED."
 
-from src.client.log import log, warn
+from src.log import log, warn
 
 CRASH_TXTS = [
     "Wait, you hadn't completed the ice bridge?",
@@ -23,7 +29,8 @@ CRASH_TXTS = [
     "Pay us 50$ to fix it!",
     "Your game has been freezed by the grass-toucher squad!",
     "This. Is. Sparta!!!!",
-    "/o/ Buggy game dabs!"
+    "/o/ Buggy game dabs!",
+    "There is a bug among us! Sorry, not sorry."
 ]
 
 def get_extensions_string(max_limit: int = 9):
