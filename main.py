@@ -24,9 +24,9 @@ class GameHandler:
         
         log("Trying to find any libraries that need to be installed.", "Worker/Bootstrap")
         installAllLibraries()
-        log("Library installation process complete.", "Worker/Bootstrap")
-
+        
         try:
+            log("Library installation process complete.", "Worker/Bootstrap")
             log("Pre-bootup client initialization complete, now changing into client mode.")
             from src.client import TUO
             log("Changed into client mode. Now, the client code is going to be run.")

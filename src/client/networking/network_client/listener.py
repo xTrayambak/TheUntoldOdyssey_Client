@@ -1,4 +1,4 @@
-from src.client.log import log
+from src.log import log
 
 from PodSixNet.Connection import ConnectionListener
 
