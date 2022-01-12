@@ -35,7 +35,8 @@ GAMESTATE_TO_FUNC = {
     GameStates.MENU: mainMenu,
     GameStates.END_CREDITS: endCredits,
     GameStates.INGAME: inGameState,
-    GameStates.CONNECTING: connectingPage
+    GameStates.CONNECTING: connectingPage,
+    GameStates.SETTINGS: settingsPage
 }
 
 DATA_PROVIDER = "https://tuoDataDelivery.xtrayambak.repl.co/"

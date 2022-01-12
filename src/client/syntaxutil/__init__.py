@@ -12,7 +12,10 @@ class SyntaxUtil:
     def __init__(self, instance):
         self.instance = instance
         self.process = psutil.Process()
-        self.cheatList = get(DATA_PROVIDER + "/api/v1/cheats").json()
+        try:
+            self.cheatList = get(DATA_PROVIDER + "/api/v1/cheats").json()
+        except:
+            self.cheatList = []
 
     def hook(self):
         self.instance.spawnNewTask("syntaxutil_memcheck", self.memoryCheck)
@@ -37,7 +40,7 @@ class SyntaxUtil:
 
         if used >= max_mem - 25:
             gc.collect()
-            warn(f"The game is using more than [50%] of the memory allocated! ({used}MB/{max_mem}MB)")
+            warn(f"The game is using more than [{max_mem} - 25] of the memory allocated! ({used}MB/{max_mem}MB)")
 
         if used >= max_mem - 5:
             warn(f"Game has run out of memory. {used} MB has been used, did the garbage collection fail?")

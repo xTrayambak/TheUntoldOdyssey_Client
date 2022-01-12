@@ -26,6 +26,7 @@ from src.client.syntaxutil import SyntaxUtil
 from src.client.player import Player
 
 import gc
+import simplepbr
 
 VERSION = open("VER").read()
 
@@ -59,6 +60,22 @@ class TUO(ShowBase):
         self.syntaxUtil = SyntaxUtil(self)
         self.player = Player(self, "player", "player")
 
+        #self.filters = CommonFilters(self.win, self.cam)
+        #self.filtersSupported = self.filters.setCartoonInk()
+
+        self.pbrPipeline = simplepbr.init(
+            msaa_samples = 2,
+            enable_shadows = True,
+            enable_fog = True,
+            use_occlusion_maps = True
+        )
+
+        if not self.pbrPipeline.use_330:
+            warn("The GPU is NOT capable of running OpenGL 3.30; shadows will not be enabled by SimplePBR.")
+            self.pbrPipeline.enable_shadows = False
+
+        self.pbrPipeline.enable_fog = True
+
         self.states_enum = GameStates
         self.max_mem = memory_max
 
@@ -70,17 +87,13 @@ class TUO(ShowBase):
 
         self.syntaxUtil.hook()
 
-        self.filters = CommonFilters(self.win, self.cam)
-
-        self.filtersSupported = self.filters.setCartoonInk()
-
         supportFS = {
             True: "yes",
             False: "no",
             None: "?"
         }
 
-        warn(f"Are graphics pipeline filters supported? [{supportFS[self.filtersSupported]}]")
+        #warn(f"Are graphics pipeline filters supported? [{supportFS[self.filtersSupported]}]")
 
         del supportFS
 
@@ -136,11 +149,9 @@ class TUO(ShowBase):
             log(f"Removing UI object '{name}'", "Worker/UIClear")
             obj = self.workspace.objects["ui"][name]
 
-            try:
-                obj.destroy()
-            except AttributeError:
-                obj.removeNode()
-
+            obj.removeNode()
+            del obj
+            
         gc.collect()
 
     def update(self):
@@ -161,6 +172,9 @@ class TUO(ShowBase):
         """
         if self.rpcManager != None:
             self.rpcManager.run()
+
+        log("Verifying PBR shaders.")
+        self.pbrPipeline.verify_shaders()
             
         self.update()
         self.ambienceManager.update(self)
