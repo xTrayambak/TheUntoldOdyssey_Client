@@ -48,6 +48,8 @@ class TUO(ShowBase):
         self.inputManager = InputManager(self)
         self.networkClient = NetworkClient()
         self.rpcManager = None
+        
+        self.clock = ClockObject()
 
         try:
             self.rpcManager = RPCManager(self)
@@ -82,8 +84,17 @@ class TUO(ShowBase):
         self.version = VERSION
         self.wireframeIsOn = False
         self.fpsCounterIsOn = False
+        self.settings = getAllSettings()
+
         self.inputManager.init()
         self.inputManager.hook()
+
+        self.clock.setMode(ClockObject.MForced)
+
+        log(f"Max framerate is capped to [{self.settings['video']['max_framerate']}] FPS.")
+        self.clock.setFrameRate(
+            self.settings["video"]["max_framerate"]
+        )
 
         self.syntaxUtil.hook()
 
@@ -97,12 +108,14 @@ class TUO(ShowBase):
 
         del supportFS
 
-        self.globalClock = ClockObject.getGlobalClock()
-
         self.win.requestProperties(PROPERTIES)
 
+        self.spawnNewTask("tuo-poll", self.poll)
+
     def poll(self, task):
-        raise NotImplementedError("Not implemented yet; wait.")
+        self.clock.tick()
+
+        return Task.cont
 
     def change_state(self, state: int):
         """

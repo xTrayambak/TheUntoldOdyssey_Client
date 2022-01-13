@@ -1,0 +1,76 @@
+Oh, look, the "player" is here.
+Let's call it by it's name.
+Ah, alright.
+Oh, look, "{}" is here.
+It seems that it has defeated the "ultimate force of evil".
+Yes.
+Well, what does it do now?
+For now, it's just floating in an empty void. We can't predict what's going to happen next.
+Alright.
+Should we tell it about it's origins now?
+Yes.
+Alright, now let me tell the story, of this player's existence.
+When the world was being assembled, piece by piece, polygon by polygon, vertice by vertice, the player was assembled too, just like a lot more characters. 
+But..
+The player was different. It was not controlled by code for it's actions. It had a unique energy controlling it from outside the virtual universe. It was a human. An actual, living human.
+The player curiously walked around, exploring things it had never seen before.
+It ran.
+It jumped.
+It dashed.
+And finally, it learnt to use it's most important ability, magic.
+Yes.
+It set up temporary places to live.
+It cooked food for survival.
+It survived.
+It thrived.
+It fought battles, many of which it lost, and many of which it won.
+It fought battles with both characters controlled by code and characters controlled by humans just like it.
+Sometimes, the player thought.
+It thought of green meadows, infinitely spanning across every direction it's eye could possibly see. 
+It thought of birds chirping, and days full of sunshine.
+It sometimes thought of disturbing things, but let's not get to that.
+Yes.
+It fought many "bosses", each unique with a set of powers.
+It won, it lost, if it lost, it tried again. It did not give up.
+I agree, it is a good player.
+It has found success in this dream. But now, it must wake up to find success in the reality of life.
+Wake up, {}.
+You will be pushed back several times, but do know..
+The world sees potential in you.
+The world is going to help you.
+The world loves you, if you love it back.
+Go now, wake up.
+
+
+    SYNTAX STUDIOS
+
+=== PROGRAMMING ===
+Trayambak - Lead programmer, original creator, storywriter, founder of Syntax
+Lucy - Assistant programmer, co-founder of Syntax
+
+=== ART ===
+Nat - Director, illustrator
+Laz - Character Illustration
+
+=== SOUND DESIGNERS ===
+Worms/Wormsworth - Music Composer
+8Azrael8 - Music Composer
+h_vn - Music Composer
+
+===== OPEN SOURCE BACKENDS USED =====
+
+~` Game Client `~
+Panda3D, a robust and cutting-edge 3D game engine full with features - (C) Carnegie Mellon University and Walt Disney
+Pyglet, a high-level library for exposing OpenGL functions to Python - (C) Pyglet developers and Alex Holkner
+Python 3.10, a powerful programming language - (C) Python Software Foundation (PSF)
+
+~` Authentication Backend and the Syntax Accounts ecosystem `~
+SyntaxDB, a fast and scalable server-less database - (C) Syntax Studios
+Flask, a micro web framework for web applications - (C) Armin Ronacher and Flask developers
+
+===== ALL LIBRARIES USED =====
+Pickle, a data-to-binary serialization and deserialization library.
+Flask, a micro web framework.
+Pyglet, a Python library for OpenGL functions.
+Panda3D, a fast Python 3D library.
+SyntaxDB, a scalable server-less DB.

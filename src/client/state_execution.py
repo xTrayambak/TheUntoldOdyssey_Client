@@ -10,13 +10,14 @@ import random
 from direct.gui.DirectGui import *
 from direct.task import Task
 
-from panda3d.core import CardMaker, TextNode, GeoMipTerrain, Texture, TextureStage, PointLight, ClockObject, LVecBase3, LVecBase4f, TransparencyAttrib
+from panda3d.core import CardMaker, TextNode, GeoMipTerrain, Texture, TextureStage, PointLight, ClockObject, LVecBase3, LVecBase4f, TransparencyAttrib, AmbientLight
 
 from src.client.loader import getAsset, getAllFromCategory
 from src.log import log, warn
 from src.client.shaderutil import loadAllShaders
-from src.client.settingsreader import getAllSettings, getSetting
+from src.client.settingsreader import *
 from src.client.objects import Object
+from src.client.tasks import *
 
 from pyglet.gl import gl_info as gpu_info
 from math import sin
@@ -42,6 +43,9 @@ def loadingScreen(instance):
 
 def clip(value, lower, upper):
     return lower if value < lower else upper if value > upper else value
+
+class Menu:
+    elapsed = 0
 
 def connectingPage(instance):
     instance.clear()
@@ -129,15 +133,17 @@ def mainMenu(instance):
         instance.change_state(2)
     
     ## UI stuff. ##
-    _card = CardMaker("tuoLogo")
-    
-    card = instance.render2d.attachNewNode(_card.generate())
-    card.setTransparency(TransparencyAttrib.MAlpha)
 
     tuoLogo_tex = instance.loader.loadTexture(getAsset("images", "logo_default"))
-    card.setTexture(tuoLogo_tex)
-    card.setScale(0.9)
-    card.setPos((-0, 0, 0.3))
+
+    tuoLogo = OnscreenImage(
+        image = tuoLogo_tex,
+        pos = LVecBase3(-0, 0, 0.5)
+    )
+
+    tuoLogo.setTransparency(TransparencyAttrib.MAlpha)
+    tuoLogo.setScale(0.5)
+    
 
     play_button = DirectButton(text = "PLAY",
                                 text_scale = 0.1, 
@@ -163,39 +169,16 @@ def mainMenu(instance):
     spl_scrn_txt_node = instance.render2d.attachNewNode(splash_screen_text)
     spl_scrn_txt_node.setScale(0.08)
     spl_scrn_txt_node.setPos((0.5, 0, 0.5))
-    spl_scrn_txt_node.setHpr(LVecBase3(8.8, 0, 8.8))
+    spl_scrn_txt_node.setHpr(LVecBase3(-8.8, 0, -8.8))
 
-    class Menu:
-        elapsed = 0
-
-    Clock = ClockObject()
-
-    def _splsh_txt_pop(task):
-        Menu.elapsed += 1
-        Clock.tick()
-        _SIN_VAL_DIV = SIN_VAL_DIV + (Clock.dt/15)
-        sin_Val = clip(
-            sin(Menu.elapsed / _SIN_VAL_DIV) / SIN_VAL_AFTER_DIV,
-            0.04,
-            1
-        )
-
-        try:
-            spl_scrn_txt_node.setScale(sin_Val)
-        except AssertionError:
-            return Task.done
-
-        if instance.state != instance.states_enum.MENU:
-            return Task.done
-
-        return Task.cont
-
-    instance.spawnNewTask("splsh_txt_pop", _splsh_txt_pop)
+    instance.spawnNewTask(
+        "mainmenu-splash_screen_pop", splash_screen_pop, (None, instance, spl_scrn_txt_node, clip)
+    )
 
     ## PACK INTO WORKSPACE HIERARCHY ##
     instance.workspace.add_ui("play_btn", play_button)
     instance.workspace.add_ui("splash_text", spl_scrn_txt_node)
-    instance.workspace.add_ui("tuoLogo", card)
+    instance.workspace.add_ui("tuoLogo", tuoLogo)
     instance.workspace.add_ui("settingsBtn", settings_button)
 
 def endCredits(instance):
@@ -203,7 +186,7 @@ def endCredits(instance):
     log("End credits have started")
     #instance.state = GameStates.END_CREDITS
 
-def settingsPage(instance):
+def settingsPage(instance, previous_state: int = 1):
     instance.clear()
 
     basicFont = instance.fontLoader.load("gentium_basic")
@@ -211,27 +194,35 @@ def settingsPage(instance):
     settings = getAllSettings()
 
     def FPS_change():
-        instance.globalClock.setMode(ClockObject.MForced)
-        instance.globalClock.setFrameRate(fps_slider['value'])
+        instance.clock.setMode(ClockObject.MForced)
+        instance.clock.setFrameRate(fps_slider['value'])
 
-    button = DirectButton(
-        text = "Volumetric Lighting",
-        text_font = basicFont,
-        scale = 0.1,
-        color = LVecBase4f(55, 250, 90, 0)
-    )
+        settings['video']['max_framerate'] = int(fps_slider['value'])
+
+    def close():
+        instance.change_state(previous_state)
+        dumpSetting(settings)
 
     fps_header = DirectLabel(
         text = "Framerate", scale = 0.2, pos = (-0.1, 0, -0.1), text_font = basicFont
     )
 
     fps_slider = DirectSlider(
-        range = (10, 120), value = 60, pageSize = 3, command = FPS_change,
+        range = (10, 120), value = settings['video']['max_framerate'], pageSize = 3, command = FPS_change,
         scale = 0.5, pos = (0, 0, -0.2)
     )
 
+    back_button = DirectButton(
+        text = "BACK", text_font = basicFont,
+        pos = (0, 0, -0.9), command = close,
+        scale = 0.4
+    )
+
+
+
     instance.workspace.add_ui("fps_text", fps_header)
     instance.workspace.add_ui("fps_slider", fps_slider)
+    instance.workspace.add_ui("back_button", back_button)
 
 def inGameState(instance):
     instance.clear()
@@ -250,30 +241,16 @@ def inGameState(instance):
 
     sun = Object(instance, "map")
     sun.setTexture("sun_default")
+    sun.getObject().setPos(LVecBase3(0, 0, 25))
 
     sunlight = PointLight("sunlight")
     sunlightNode = instance.render.attachNewNode(sunlight)
+    sunlightNode.setPos(LVecBase3(10, sin(instance.clock.frame_count), 0))
     
     instance.render.setLight(sunlightNode)
 
-    map = Object(instance, "map")
-    map.setPos(LVecBase3(0, 0, -5))
-
-    sun.getObject().setLight(sunlightNode)
-    
-    #instance.filters.setVolumetricLighting(sun.getObject(), 32, 0.5, 0.98)
-    """instance.filters.setBloom(
-        (0.3, 0.4, 0.3, 0),
-        0.7,
-        1.4,
-        0.8,
-        1.0,
-        "medium"
-    )
-    instance.filters.setCartoonInk(
-        2,
-        (0, 0, 0, 1)
-    )"""
+    map = Object(instance, "items")
+    map.setPos(LVecBase3(0, 0, 0))
 
     instance.workspace.services["lighting"] = (sunlight, sunlightNode)
     instance.player.init()

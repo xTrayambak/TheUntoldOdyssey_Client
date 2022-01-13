@@ -7,7 +7,7 @@ class Object:
         self.instance = instance
         self.model = instance.objectLoader.loadObject(model)
 
-        self.model.reparentTo(self.instance.render)
+        self.model.reparentTo(instance.render)
 
     def setTexture(self, texture: str):
         self.model.setTexture(

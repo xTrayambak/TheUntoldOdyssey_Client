@@ -42,7 +42,7 @@
     "models": {
         "map": {"path":"assets/models/map_cube_huge.obj"},
         "environment": {},
-        "items": {"monke": "assets/models/monke.egg"},
+        "items": {"path": "assets/models/monke.egg"},
         "entities": {
             "player": {"path":"assets/models/character_test.glb"}
         }
