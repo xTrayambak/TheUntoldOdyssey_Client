@@ -24,6 +24,7 @@ from src.client.textureloader import TextureLoader
 from src.client.objectloader import ObjectLoader
 from src.client.syntaxutil import SyntaxUtil
 from src.client.player import Player
+from src.client.translationutil import TranslationUtility
 
 import gc
 import simplepbr
@@ -47,6 +48,9 @@ class TUO(ShowBase):
         self.ambienceManager = AmbienceManager()
         self.inputManager = InputManager(self)
         self.networkClient = NetworkClient()
+        self.translator = TranslationUtility(
+            getSetting("language")
+        )
         self.rpcManager = None
         
         self.clock = ClockObject()
@@ -66,7 +70,7 @@ class TUO(ShowBase):
         #self.filtersSupported = self.filters.setCartoonInk()
 
         self.pbrPipeline = simplepbr.init(
-            msaa_samples = 2,
+            msaa_samples = getSetting("video", "antialiasing_levels"),
             enable_shadows = True,
             enable_fog = True,
             use_occlusion_maps = True

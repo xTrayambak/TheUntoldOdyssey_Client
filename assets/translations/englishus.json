@@ -1,0 +1,19 @@
+{
+    "ui": {
+        "play": "Play",
+        "settings": "Settings",
+
+        "settingmenu": {
+            "video_settings": {
+                "title": "Video Settings"
+            },
+            "accessibility": {
+                "title": "Accessibility"
+            }
+        }
+    },
+
+    "dialogs": {
+        
+    }
+}

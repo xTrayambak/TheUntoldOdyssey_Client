@@ -145,7 +145,7 @@ def mainMenu(instance):
     tuoLogo.setScale(0.5)
     
 
-    play_button = DirectButton(text = "PLAY",
+    play_button = DirectButton(text = instance.translator.translate(category = "ui", text="thistextdoesnotexist"),
                                 text_scale = 0.1, 
                                 pos = (0, 0, 0),
                                 command = _cmd_ingame,
@@ -193,36 +193,52 @@ def settingsPage(instance, previous_state: int = 1):
 
     settings = getAllSettings()
 
+    videoFrame = DirectFrame(
+        frameColor = (0.5, 0.5, 0.5, 1),
+        frameSize = (-1, 1, -1, 1)
+    )
+
+    def hideVF():
+        if videoFrame.is_hidden():
+            videoFrame.show()
+        else:
+            videoFrame.hide()
+
+    videoFrameButton = DirectButton(
+        text = "Video Settings",
+        pos = (-1, 0, 0.5),
+        scale = 0.2,
+        command = hideVF
+    )
+
+    videoFrame.setPos(
+        LVecBase3(1, 0, -0)
+    )
+
+    fps_header = DirectLabel(
+        text = "Framerate", scale = 0.2, pos = (-0.2, 0, 0.8), text_font = basicFont,
+        parent = videoFrame
+    )
+
     def FPS_change():
         instance.clock.setMode(ClockObject.MForced)
         instance.clock.setFrameRate(fps_slider['value'])
 
         settings['video']['max_framerate'] = int(fps_slider['value'])
 
+        fps_header.setText(f"{int(fps_slider['value'])} FPS")
+
     def close():
         instance.change_state(previous_state)
         dumpSetting(settings)
 
-    fps_header = DirectLabel(
-        text = "Framerate", scale = 0.2, pos = (-0.1, 0, -0.1), text_font = basicFont
-    )
-
     fps_slider = DirectSlider(
         range = (10, 120), value = settings['video']['max_framerate'], pageSize = 3, command = FPS_change,
-        scale = 0.5, pos = (0, 0, -0.2)
+        scale = 0.5, pos = (-0.2, 0, 0.5),
+        parent = videoFrame
     )
 
-    back_button = DirectButton(
-        text = "BACK", text_font = basicFont,
-        pos = (0, 0, -0.9), command = close,
-        scale = 0.4
-    )
-
-
-
-    instance.workspace.add_ui("fps_text", fps_header)
-    instance.workspace.add_ui("fps_slider", fps_slider)
-    instance.workspace.add_ui("back_button", back_button)
+    instance.workspace.add_ui("videoFrame", videoFrame)
 
 def inGameState(instance):
     instance.clear()
