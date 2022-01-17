@@ -47,7 +47,7 @@ class TUO(ShowBase):
         self.workspace = Workspace()
         self.ambienceManager = AmbienceManager()
         self.inputManager = InputManager(self)
-        self.networkClient = NetworkClient()
+        self.networkClient = NetworkClient(self)
         self.translator = TranslationUtility(
             getSetting("language")
         )
@@ -83,6 +83,7 @@ class TUO(ShowBase):
         self.pbrPipeline.enable_fog = True
 
         self.states_enum = GameStates
+        self.languages_enum = Language
         self.max_mem = memory_max
 
         self.version = VERSION
@@ -101,16 +102,6 @@ class TUO(ShowBase):
         )
 
         self.syntaxUtil.hook()
-
-        supportFS = {
-            True: "yes",
-            False: "no",
-            None: "?"
-        }
-
-        #warn(f"Are graphics pipeline filters supported? [{supportFS[self.filtersSupported]}]")
-
-        del supportFS
 
         self.win.requestProperties(PROPERTIES)
 

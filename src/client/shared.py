@@ -11,7 +11,6 @@ class GameStates(IntEnum, Enum):
     END_CREDITS = 4,
     CONNECTING = 5
 
-
 GAMESTATES_TO_BLANDSTRING = {
     GameStates.LOADING: "loading",
     GameStates.MENU: "menu",
@@ -38,5 +37,12 @@ GAMESTATE_TO_FUNC = {
     GameStates.CONNECTING: connectingPage,
     GameStates.SETTINGS: settingsPage
 }
+
+class Language:
+    ENGLISH = "english"
+    HINDI = "hindi"
+    THAI = "thai"
+    BAHASAINDONESIA = "bahasaindonesia"
+    MALAY = "malay"
 
 DATA_PROVIDER = "https://tuoDataDelivery.xtrayambak.repl.co/"

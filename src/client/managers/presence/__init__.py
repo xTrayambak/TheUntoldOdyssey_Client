@@ -14,9 +14,12 @@ class RPCManager:
     def run(self):
         log("Rich presence started. Binding RPCManager._run to taskManager.", "Worker/RPCManager")
         taskManager = self.instance.taskMgr
-        self.presenceClient.connect()
+        try:
+            self.presenceClient.connect()
 
-        taskManager.add(self._run, "run_rpc")
+            taskManager.add(self._run, "run_rpc")
+        except:
+            warn("RPC Client binding failed.")
 
     def _run(self, task):
         self.presenceClient.update(

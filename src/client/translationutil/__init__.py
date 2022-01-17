@@ -16,14 +16,14 @@ class TranslationUtility:
             self.language = language.lower()
 
             self.translations = json.load(
-                open(TRANSLATION_PATH + language + ".json", "r")
+                open(TRANSLATION_PATH + language + ".json", "r", encoding = 'utf-8')
             )
 
     def update(self, language: str):
         self.language = language.lower()
 
         self.translations = json.load(
-            open(TRANSLATION_PATH + language + ".json", "r")
+            open(TRANSLATION_PATH + language + ".json", "r", encoding = 'utf-8')
         )
 
     def translate(self, category: str, text: str):

@@ -113,6 +113,14 @@ def mainMenu(instance):
 
     edgegalaxy_font = instance.fontLoader.load("edgegalaxy")
     basic_font = instance.fontLoader.load("gentium_basic")
+    kritidev_font = instance.fontLoader.load("kritidev020")
+
+    default_font = basic_font
+
+    """if getSetting("language") == instance.languages_enum.HINDI:
+        log("Language is set to Hindi, font being used is set to Kriti Dev 020.")
+        default_font = kritidev_font"""
+
 
     ## Get splash texts. ##
     SPLASHES = open(
@@ -125,9 +133,7 @@ def mainMenu(instance):
     ## Networking stuff ##
     addr, port = getSetting("networking", "proxy")[0]["ip"], getSetting("networking", "proxy")[0]["port"]
     def _cmd_ingame():  
-        #instance.networkClient.connect(instance, addr, port)
-        #instance.networkClient.send({"action": "authenticate","username": "xTrayambak", "password": "joemama123"})
-        instance.change_state(3)
+        instance.networkClient.connect()
 
     def _cmd_settings():
         instance.change_state(2)
@@ -145,19 +151,19 @@ def mainMenu(instance):
     tuoLogo.setScale(0.5)
     
 
-    play_button = DirectButton(text = instance.translator.translate(category = "ui", text="thistextdoesnotexist"),
+    play_button = DirectButton(text = "Play",
                                 text_scale = 0.1, 
                                 pos = (0, 0, 0),
                                 command = _cmd_ingame,
-                                text_font = basic_font
+                                text_font = default_font
     )
 
     settings_button = DirectButton(
-        text = "SETTINGS",
+        text = "Settings",
         text_scale = 0.1,
         pos = (0, 0, 0.2),
         command = _cmd_settings,
-        text_font = basic_font
+        text_font = default_font
     )
 
     splash_screen_text = TextNode(name = "splash_screen_text")

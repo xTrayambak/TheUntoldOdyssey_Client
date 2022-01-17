@@ -1,37 +1,32 @@
 #!/usr/bin/env python3
 from src.log import log
 from src.client.settingsreader import getSetting
-from src.client.networking.network_client.listener import GameActionListener
 
-import threading
-from PodSixNet.Connection import connection
+from panda3d.core import QueuedConnectionManager, QueuedConnectionListener, QueuedConnectionReader, ConnectionWriter
+from direct.task import Task
 
 class NetworkClient:
-    def __init__(self):
+    def __init__(self, instance):
         self.connectingTo = "???"
-        self.connection = None
-        self.gameActionListener = GameActionListener()
-        
-    def connect(self, instance, address=getSetting("networking", "proxy")[0]["ip"], port=getSetting("networking", "proxy")[0]["port"]):
-        """
-        Connect to a TCP server, and start the network packet exchange "heartbeat".
 
-        NetworkClient.connect -> NetworkClient.start_heartbeat -> NetworkClient._start_heartbeat <THREADED>
-                              -> socket.connect [args=address, port]    
-        """
-        self.connectingTo = address + ":" +str(port)
-        instance.change_state(5)
+        self.cManager = QueuedConnectionManager()
+        self.cListener = QueuedConnectionListener(self.cManager, 0)
+        self.cReader = QueuedConnectionReader(self.cManager, 0)
+        self.cWriter = ConnectionWriter(self.cManager, 0)
 
-        log("Connecting to <{}:{}>, locating host, this may take a few seconds.".format(address, port), "Worker/NetworkClient")
-        try:
-            self.gameActionListener.Connect((address, port))
-            self.gameActionListener.Send({"action": "authenticate", "username": "xTrayambak", "password": "joe"})
-        except Exception as e:
-            log(str(e), "Error/NetworkClient")
-            instance.workspace.getComponent("ui", "connecting_screen_status").setText("An error occured whilst connecting to the servers.\n\n"+str(e))
+        self.instance = instance
 
-    def send(self, data):
-        self.gameActionListener.Send(data)
+    def poll(self, task):
+        if self.instance.state != self.instance.states_enum.INGAME:
+            return Task.done
+            
+        return Task.cont
 
-    def run(self, instance):
-        instance.taskMgr.add("network_pump", self.connection.Pump)
+    def connect(self):
+        ip_address = getSetting("networking", "proxy")["ip"]
+        port = getSetting("networking", "proxy")["port"]
+
+        log(f"Connecting to [{ip_address}:{port}]", "Worker/Connection")
+
+        self.instance.spawnNewTask(self.poll, "networkclient-poll")
+        self.instance.change_state(5)
