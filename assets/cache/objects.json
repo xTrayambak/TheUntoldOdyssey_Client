@@ -1,0 +1,8 @@
+[
+    {
+        "name": "myBrick",
+        "position": [0, 0, 0],
+        "texture": "",
+        "model": "map"
+    }
+]

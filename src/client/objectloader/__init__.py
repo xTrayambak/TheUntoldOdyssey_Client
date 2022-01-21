@@ -18,6 +18,8 @@ class ObjectLoader:
 
         model = self.instance.loader.loadModel(path)
 
+        model.reparentTo(self.instance.render)
+
         self.cache.update({name: model})
 
         return model

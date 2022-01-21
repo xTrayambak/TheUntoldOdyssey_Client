@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from argparse import ArgumentParser
+import os
 
 argparser = ArgumentParser(
     description = "Run The Untold Odyssey."
@@ -24,15 +25,13 @@ class GameHandler:
         
         log("Trying to find any libraries that need to be installed.", "Worker/Bootstrap")
         installAllLibraries()
-
-        log("Library installation process complete.", "Worker/Bootstrap")
-        log("Pre-bootup client initialization complete, now changing into client mode.")
-        from src.client import TUO
-        log("Changed into client mode. Now, the client code is going to be run.")
-        self.tuo = TUO(max_mem)
         
         try:
-            """"""
+            log("Library installation process complete.", "Worker/Bootstrap")
+            log("Pre-bootup client initialization complete, now changing into client mode.")
+            from src.client import TUO
+            log("Changed into client mode. Now, the client code is going to be run.")
+            self.tuo = TUO(max_mem)
         except Exception as exc:
             log(f"An error occured whilst initializing the game. [{exc}]")
             log_traceback()
@@ -46,16 +45,21 @@ class GameHandler:
         ===== CONVENIENCE FUNCTION TO START A GAME INSTANCE =====
         """
         from src.libtraceback import log_traceback
-        from src.log import log
-        try:
+        from src.log import log, warn
+        if os.path.exists("DEBUG_MODE"):
+            warn("The Untold Odyssey: DEBUG MODE")
             self.tuo.workspace.init(self.tuo)
-            self.tuo.setFrameRateMeter(True)
             self.tuo.start_internal_game()
             self.tuo.run()
-        except Exception as e:
-            log(f"Caught exception whilst running game: {str(e)}", "GameHandler/Run")
-            log_traceback(self.tuo)
-            exit(1)
+        else:
+            try:
+                self.tuo.workspace.init(self.tuo)
+                self.tuo.start_internal_game()
+                self.tuo.run()
+            except Exception as e:
+                log(f"Caught exception whilst running game: {str(e)}", "GameHandler/Run")
+                log_traceback(self.tuo)
+                exit(1)
 
         exit(0)
 

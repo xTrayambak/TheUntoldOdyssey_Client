@@ -47,5 +47,8 @@
         "entities": {
             "player": {"path":"assets/models/character_test.glb"}
         }
+    },
+    "mapobjects": {
+        "path": "assets/cache/objects.json"
     }
 }

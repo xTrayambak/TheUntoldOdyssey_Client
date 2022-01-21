@@ -100,10 +100,10 @@ def connectingPage(instance):
     label_tuoNode.setPos((-1.9, 0, -0.9))
     label_artistNode.setPos((1.9, 0, -0.9))
 
-    instance.workspace.add_ui("connecting_screen_status", label_connecting)
-    instance.workspace.add_ui("gpu_text", label_gpu)
-    instance.workspace.add_ui("tuo_ver_text", label_tuo)
-    instance.workspace.add_ui("artist_text", label_artist)
+    instance.workspace.add_ui("connecting_screen_status", label_connectingNode)
+    instance.workspace.add_ui("gpu_text", label_gpuNode)
+    instance.workspace.add_ui("tuo_ver_text", label_tuoNode)
+    instance.workspace.add_ui("artist_text", label_artistNode)
     instance.workspace.add_ui("background_connecting_screen", background)
 
 
@@ -168,8 +168,7 @@ def mainMenu(instance):
 
     splash_screen_text = TextNode(name = "splash_screen_text")
     splash_screen_text.setAlign(TextNode.ACenter)
-    spl_txt = random.choice(SPLASHES)
-    splash_screen_text.setText(spl_txt)
+    splash_screen_text.setText(random.choice(SPLASHES))
     splash_screen_text.setFont(edgegalaxy_font)
 
     spl_scrn_txt_node = instance.render2d.attachNewNode(splash_screen_text)
@@ -252,6 +251,7 @@ def inGameState(instance):
     log("The player is in-game now.")
 
     #instance.set_background_color((0, 255, 245, 1))
+    instance.mapLoader.load()
 
     """
     Apply visual shaders
@@ -261,18 +261,11 @@ def inGameState(instance):
     for _shd in shaders:
         instance.workspace.objects["shaders"].append(_shd)
 
-    sun = Object(instance, "map")
-    sun.setTexture("sun_default")
-    sun.getObject().setPos(LVecBase3(0, 0, 25))
-
     sunlight = PointLight("sunlight")
     sunlightNode = instance.render.attachNewNode(sunlight)
     sunlightNode.setPos(LVecBase3(10, sin(instance.clock.frame_count), 0))
     
     instance.render.setLight(sunlightNode)
-
-    map = Object(instance, "items")
-    map.setPos(LVecBase3(0, 0, 0))
 
     instance.workspace.services["lighting"] = (sunlight, sunlightNode)
     instance.player.init()

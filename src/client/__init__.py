@@ -25,6 +25,7 @@ from src.client.objectloader import ObjectLoader
 from src.client.syntaxutil import SyntaxUtil
 from src.client.player import Player
 from src.client.translationutil import TranslationUtility
+from src.client.maploader import MapLoader
 
 import gc
 import simplepbr
@@ -64,6 +65,7 @@ class TUO(ShowBase):
         self.textureLoader = TextureLoader(self)
         self.objectLoader = ObjectLoader(self)
         self.syntaxUtil = SyntaxUtil(self)
+        self.mapLoader = MapLoader(self)
         self.player = Player(self, "player", "player")
 
         #self.filters = CommonFilters(self.win, self.cam)
@@ -157,8 +159,10 @@ class TUO(ShowBase):
             log(f"Removing UI object '{name}'", "Worker/UIClear")
             obj = self.workspace.objects["ui"][name]
 
-            obj.removeNode()
-            del obj
+            try:
+                obj.removeNode()
+            except:
+                obj.destroy()
             
         gc.collect()
 
