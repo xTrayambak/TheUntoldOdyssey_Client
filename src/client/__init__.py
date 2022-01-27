@@ -26,6 +26,7 @@ from src.client.syntaxutil import SyntaxUtil
 from src.client.player import Player
 from src.client.translationutil import TranslationUtility
 from src.client.maploader import MapLoader
+from src.client.libnarrator import NarratorUtil
 
 import gc
 import simplepbr
@@ -49,6 +50,7 @@ class TUO(ShowBase):
         self.ambienceManager = AmbienceManager()
         self.inputManager = InputManager(self)
         self.networkClient = NetworkClient(self)
+        self.narrator = NarratorUtil()
         self.translator = TranslationUtility(
             getSetting("language")
         )
@@ -88,6 +90,8 @@ class TUO(ShowBase):
         self.languages_enum = Language
         self.max_mem = memory_max
 
+        self.inGameTime = 0.0
+
         self.version = VERSION
         self.wireframeIsOn = False
         self.fpsCounterIsOn = False
@@ -110,6 +114,11 @@ class TUO(ShowBase):
         self.spawnNewTask("tuo-poll", self.poll)
 
     def poll(self, task):
+        """
+        Poll the in-game clock responsible for some fancy mathematics.
+
+        TUO.poll -> TUO.clock.tick
+        """
         self.clock.tick()
 
         return Task.cont

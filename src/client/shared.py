@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+Contains the data that is going to be shared amongst multiple client scripts so circular imports don't happen.
+"""
 from enum import IntEnum, Enum
 
 from src.client.state_execution import *

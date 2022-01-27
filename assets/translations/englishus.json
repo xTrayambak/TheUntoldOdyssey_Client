@@ -2,6 +2,7 @@
     "ui": {
         "play": "Play",
         "settings": "Settings",
+        "exit": "Exit",
 
         "settingmenu": {
             "video_settings": {

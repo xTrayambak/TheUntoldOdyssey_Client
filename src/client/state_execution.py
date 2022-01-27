@@ -8,9 +8,10 @@ import gc
 import random
 
 from direct.gui.DirectGui import *
+from direct.gui import DirectGuiGlobals as DGG
 from direct.task import Task
 
-from panda3d.core import CardMaker, TextNode, GeoMipTerrain, Texture, TextureStage, PointLight, ClockObject, LVecBase3, LVecBase4f, TransparencyAttrib, AmbientLight
+from panda3d.core import CardMaker, TextNode, GeoMipTerrain, Texture, TextureStage, DirectionalLight, ClockObject, LVecBase3, LVecBase4f, TransparencyAttrib, AmbientLight
 
 from src.client.loader import getAsset, getAllFromCategory
 from src.log import log, warn
@@ -18,6 +19,8 @@ from src.client.shaderutil import loadAllShaders
 from src.client.settingsreader import *
 from src.client.objects import Object
 from src.client.tasks import *
+
+from src.client.ui.button import Button
 
 from pyglet.gl import gl_info as gpu_info
 from math import sin
@@ -48,6 +51,11 @@ class Menu:
     elapsed = 0
 
 def connectingPage(instance):
+    """
+    The "connecting to servers, please wait" page.
+
+    (Arima your art is amazing xddddd)
+    """
     instance.clear()
 
     mangabey_font = instance.fontLoader.load("mangabey")
@@ -106,8 +114,12 @@ def connectingPage(instance):
     instance.workspace.add_ui("artist_text", label_artistNode)
     instance.workspace.add_ui("background_connecting_screen", background)
 
+    return "connected-to-game"
 
 def mainMenu(instance):
+    """
+    Main menu, you can go to the settings menu or play from here, or exit.
+    """
     ## Clear all UI. ##
     instance.clear()
 
@@ -117,9 +129,9 @@ def mainMenu(instance):
 
     default_font = basic_font
 
-    """if getSetting("language") == instance.languages_enum.HINDI:
+    if getSetting("language") == instance.languages_enum.HINDI:
         log("Language is set to Hindi, font being used is set to Kriti Dev 020.")
-        default_font = kritidev_font"""
+        default_font = kritidev_font
 
 
     ## Get splash texts. ##
@@ -149,21 +161,31 @@ def mainMenu(instance):
 
     tuoLogo.setTransparency(TransparencyAttrib.MAlpha)
     tuoLogo.setScale(0.5)
-    
 
-    play_button = DirectButton(text = "Play",
+    play_button = Button(text = instance.translator.translate("ui", "play"),
                                 text_scale = 0.1, 
                                 pos = (0, 0, 0),
                                 command = _cmd_ingame,
-                                text_font = default_font
+                                text_font = default_font,
+                                instance = instance
     )
 
-    settings_button = DirectButton(
-        text = "Settings",
+    settings_button = Button(
+        text = instance.translator.translate("ui", "settings"),
         text_scale = 0.1,
-        pos = (0, 0, 0.2),
+        pos = (0, 0, -0.34),
         command = _cmd_settings,
-        text_font = default_font
+        text_font = default_font,
+        instance = instance
+    )
+
+    exit_button = Button(
+        text = instance.translator.translate("ui", "exit"),
+        text_scale = 0.1,
+        pos = (0, 0, -0.68),
+        command = instance.quit,
+        text_font = default_font,
+        instance = instance
     )
 
     splash_screen_text = TextNode(name = "splash_screen_text")
@@ -185,13 +207,24 @@ def mainMenu(instance):
     instance.workspace.add_ui("splash_text", spl_scrn_txt_node)
     instance.workspace.add_ui("tuoLogo", tuoLogo)
     instance.workspace.add_ui("settingsBtn", settings_button)
+    instance.workspace.add_ui("exit_button", exit_button)
+
+    return 'menu-close'
 
 def endCredits(instance):
+    """
+    The end credits. Show the credits in the end, duhh.
+    """
     instance.clear()
     log("End credits have started")
-    #instance.state = GameStates.END_CREDITS
+
+    return 'credits-complete'
+    
 
 def settingsPage(instance, previous_state: int = 1):
+    """
+    The settings page.
+    """
     instance.clear()
 
     basicFont = instance.fontLoader.load("gentium_basic")
@@ -211,9 +244,15 @@ def settingsPage(instance, previous_state: int = 1):
 
     videoFrameButton = DirectButton(
         text = "Video Settings",
-        pos = (-1, 0, 0.5),
+        pos = (-1, 0, 0.2),
         scale = 0.2,
         command = hideVF
+    )
+
+    audioSettingsButton = DirectButton(
+        text = "Audio Settings",
+        pos = (-1, 0, -0.1),
+        scale = 0.2
     )
 
     videoFrame.setPos(
@@ -250,8 +289,14 @@ def inGameState(instance):
     #instance.state = GameStates.INGAME
     log("The player is in-game now.")
 
-    #instance.set_background_color((0, 255, 245, 1))
     instance.mapLoader.load()
+
+    skybox = instance.objectLoader.loadObject("skybox")
+    skybox.reparentTo(instance.render)
+    skybox.set_two_sided(True)
+    skybox.set_bin("background", 0)
+    skybox.set_depth_write(False)
+    skybox.set_compass()
 
     """
     Apply visual shaders
@@ -261,9 +306,13 @@ def inGameState(instance):
     for _shd in shaders:
         instance.workspace.objects["shaders"].append(_shd)
 
-    sunlight = PointLight("sunlight")
+    sunlight = DirectionalLight("sunlight")
+    sunlight.setColor((0.8, 0.8, 0.5, 1))
+
     sunlightNode = instance.render.attachNewNode(sunlight)
-    sunlightNode.setPos(LVecBase3(10, sin(instance.clock.frame_count), 0))
+    sunlightNode.setHpr(
+        LVecBase3(0, -60, 0)
+    )
     
     instance.render.setLight(sunlightNode)
 

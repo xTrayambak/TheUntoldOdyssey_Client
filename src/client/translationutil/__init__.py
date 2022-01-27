@@ -20,6 +20,9 @@ class TranslationUtility:
             )
 
     def update(self, language: str):
+        """
+        Re-load the translation files.
+        """
         self.language = language.lower()
 
         self.translations = json.load(
@@ -27,6 +30,9 @@ class TranslationUtility:
         )
 
     def translate(self, category: str, text: str):
+        """
+        Translate something from category and text. 
+        """
         if category not in self.translations:
             return category + ":" + text
 

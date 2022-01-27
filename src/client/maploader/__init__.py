@@ -20,8 +20,12 @@ class MapLoader:
 
             texture = obj["texture"]
             model = obj["model"]
+            hpr = obj["hpr"]
 
             renderModel = self.instance.objectLoader.loadObject(
-                model
+                model, texture
             )
-        
+
+            renderModel.setHpr(
+                hpr[0], hpr[1], hpr[2]
+            )

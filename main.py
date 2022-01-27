@@ -2,6 +2,7 @@
 
 from argparse import ArgumentParser
 import os
+from multiprocessing.pool import ThreadPool
 
 argparser = ArgumentParser(
     description = "Run The Untold Odyssey."
@@ -32,6 +33,7 @@ class GameHandler:
             from src.client import TUO
             log("Changed into client mode. Now, the client code is going to be run.")
             self.tuo = TUO(max_mem)
+            self.tuo.enableParticles()
         except Exception as exc:
             log(f"An error occured whilst initializing the game. [{exc}]")
             log_traceback()
@@ -48,13 +50,13 @@ class GameHandler:
         from src.log import log, warn
         if os.path.exists("DEBUG_MODE"):
             warn("The Untold Odyssey: DEBUG MODE")
-            self.tuo.workspace.init(self.tuo)
             self.tuo.start_internal_game()
+            self.tuo.workspace.init(self.tuo)
             self.tuo.run()
         else:
             try:
-                self.tuo.workspace.init(self.tuo)
                 self.tuo.start_internal_game()
+                self.tuo.workspace.init(self.tuo)
                 self.tuo.run()
             except Exception as e:
                 log(f"Caught exception whilst running game: {str(e)}", "GameHandler/Run")

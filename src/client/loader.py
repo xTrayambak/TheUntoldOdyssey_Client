@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+Asset locator. Locates the destination for assets inside resource_pointer.json
+"""
 import json
 
 from src.log import log, warn
@@ -7,19 +10,19 @@ POINTER = "resource_pointer.json"
 
 assets = json.load(open(POINTER, "r"))
 
-def init():
-    pass
-
 def getAsset(category, name):
-    if len(assets) < 1:
-        init()
+    """
+    Get a particular asset of name `name` from category `category`.
+    """
 
     return assets[category][name]
 
 def getAllFromCategory(category):
+    """
+    Get all assets from a particular category.
+    """
     _asts = []
     for obj in assets[category]:
-        #log(f'Loading "{obj}" into memory. Metadata: <{assets[category][obj]}>', "Worker/AssetLoader")
         _asts.append(assets[category][obj])
 
     return _asts

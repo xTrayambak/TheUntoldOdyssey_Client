@@ -46,7 +46,8 @@
         "items": {"path": "assets/models/monke.egg"},
         "entities": {
             "player": {"path":"assets/models/character_test.glb"}
-        }
+        },
+        "skybox": {"path": "assets/models/skybox1024.egg"}
     },
     "mapobjects": {
         "path": "assets/cache/objects.json"

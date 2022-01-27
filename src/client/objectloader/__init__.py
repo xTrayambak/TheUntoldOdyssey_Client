@@ -9,7 +9,7 @@ class ObjectLoader:
 
         }
 
-    def loadObject(self, name, loadFromCache: bool = True):
+    def loadObject(self, name, texture: str = None, loadFromCache: bool = True):
         if name in self.cache and loadFromCache: return self.cache[name]
 
         path = getAsset("models", name)["path"]
@@ -17,6 +17,13 @@ class ObjectLoader:
         log(f"Loading 3D model '{name}' ({path})")
 
         model = self.instance.loader.loadModel(path)
+
+        if texture != None:
+            model.setTexture(
+                self.instance.textureLoader.loadTexture(
+                    texture
+                )
+            )
 
         model.reparentTo(self.instance.render)
 

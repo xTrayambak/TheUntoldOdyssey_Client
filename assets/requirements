@@ -3,3 +3,5 @@ requests
 pyglet
 pypresence
 panda3d-simplepbr
+DirectGuiExtension
+pyttsx3

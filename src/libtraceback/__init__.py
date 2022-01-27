@@ -30,11 +30,24 @@ CRASH_TXTS = [
     "Your game has been freezed by the grass-toucher squad!",
     "This. Is. Sparta!!!!",
     "/o/ Buggy game dabs!",
-    "There is a bug among us! Sorry, not sorry."
+    "There is a bug among us! Sorry, not sorry.",
+    f"As a sorry for this inconvenience, we have handed you a free muffin ticket. Redeem at your nearest Syntax Store. Claim it before it expires! [{random.randint(-sys.maxsize, sys.maxsize)}]",
+    "It isn't a bug, it's an intentional feature, dummy!",
+    "Get trolled!!!!!11",
+    "Super idol de shiao rong dou mei ni de tian Ba yue jheng ooh de yang guang dou mei ni yao yan Re ai yi bai ling ooh du de ni Didi ching chun de jheng liu shui!",
+    "(╯°□°）╯︵ ┻━┻ I'm mad!!!!",
+    "Go listen to some music whilst I'm at it!",
+    "Hahaha, game crash go brrrrr..",
+    ""
 ]
 
 def get_extensions_string(max_limit: int = 9):
-    extensions = list(get_extensions())
+    """
+    Get a neatly formatted string of OpenGL extensions on this really fancy GPU.
+    """
+    extensions = get_extensions()
+
+    if type(extensions) == str: return extensions
 
     string = ""
     _extStr = ""
@@ -65,6 +78,9 @@ def get_extensions_string(max_limit: int = 9):
     return string
 
 def log_traceback(instance=None):
+    """
+    Log all the traceback found into the log so people can send it to us so we can look at it and fix it.
+    """
     full_exc = sys.exc_info()
 
     if instance == None:
