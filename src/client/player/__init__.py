@@ -15,6 +15,7 @@ class Player():
 
 		self.inputManager = instance.inputManager
 		self.instance = instance
+		self.name = name
 
 		self.entity = Entity(name, instance, model)
 

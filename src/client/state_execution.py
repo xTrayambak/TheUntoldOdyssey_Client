@@ -6,6 +6,8 @@ import json
 import sys
 import gc
 import random
+import threading
+from time import sleep
 
 from direct.gui.DirectGui import *
 from direct.gui import DirectGuiGlobals as DGG
@@ -21,6 +23,7 @@ from src.client.objects import Object
 from src.client.tasks import *
 
 from src.client.ui.button import Button
+from src.client.ui.text import Text
 
 from pyglet.gl import gl_info as gpu_info
 from math import sin
@@ -28,13 +31,13 @@ from math import sin
 SIN_VAL_DIV = 15
 SIN_VAL_AFTER_DIV = 10
 
-def quitting(instance):
+def quitting(instance, previous_state: int = 1):
     instance.quit()
     #instance.state = GameStates.LOADING
     gc.collect()
     sys.exit()
 
-def loadingScreen(instance):
+def loadingScreen(instance, previous_state: int = 1):
     instance.clear()
     #instance.state = GameStates.LOADING
     
@@ -50,7 +53,7 @@ def clip(value, lower, upper):
 class Menu:
     elapsed = 0
 
-def connectingPage(instance):
+def connectingPage(instance, previous_state: int = 1):
     """
     The "connecting to servers, please wait" page.
 
@@ -116,7 +119,7 @@ def connectingPage(instance):
 
     return "connected-to-game"
 
-def mainMenu(instance):
+def mainMenu(instance, previous_state: int = 1):
     """
     Main menu, you can go to the settings menu or play from here, or exit.
     """
@@ -145,7 +148,8 @@ def mainMenu(instance):
     ## Networking stuff ##
     addr, port = getSetting("networking", "proxy")[0]["ip"], getSetting("networking", "proxy")[0]["port"]
     def _cmd_ingame():  
-        instance.networkClient.connect()
+        #instance.networkClient.connect()
+        instance.change_state(4)
 
     def _cmd_settings():
         instance.change_state(2)
@@ -211,13 +215,34 @@ def mainMenu(instance):
 
     return 'menu-close'
 
-def endCredits(instance):
+def endCredits(instance, previous_state: int = 1):
     """
     The end credits. Show the credits in the end, duhh.
     """
     instance.clear()
     log("End credits have started")
 
+    end_credits_dialog = open(
+            getAsset("dialogs", "end_credits")["path"]
+        ).readlines()
+
+    rondalFont = instance.fontLoader.load("rondal")
+
+    dialogText = Text(instance=instance, text="", scale=0.1, font = rondalFont)
+
+    instance.workspace.add_ui("dialogText", dialogText)
+
+    def threaded():
+        for line in end_credits_dialog:
+            dialogText.setText(line.split("\n")[0].format(instance.player.name))
+            delay = int(len(line) / 16)
+            print(delay)
+            sleep(random.randint(delay, delay + 1))
+        
+        instance.ambienceManager.end_credits.stop()
+        instance.change_state(previous_state)
+
+    threading.Thread(target = threaded, args = ()).start()
     return 'credits-complete'
     
 
@@ -236,26 +261,57 @@ def settingsPage(instance, previous_state: int = 1):
         frameSize = (-1, 1, -1, 1)
     )
 
+    accessibilityFrame = DirectFrame(
+        frameColor = (0.5, 0.5, 0.5, 1),
+        frameSize = (-1, 1, -1, 1)
+    )
+
+    accessibilityFrame.hide()
+
     def hideVF():
         if videoFrame.is_hidden():
             videoFrame.show()
+            accessibilityFrame.hide()
         else:
             videoFrame.hide()
+            accessibilityFrame.show()
 
-    videoFrameButton = DirectButton(
+    def hideAccessibilityF():
+        if accessibilityFrame.is_hidden():
+            accessibilityFrame.show()
+            videoFrame.hide()
+        else:
+            accessibilityFrame.hide()
+            videoFrame.show()
+
+    videoFrameButton = Button(
         text = "Video Settings",
         pos = (-1, 0, 0.2),
         scale = 0.2,
-        command = hideVF
+        command = hideVF,
+        instance = instance
     )
 
-    audioSettingsButton = DirectButton(
+    audioSettingsButton = Button(
         text = "Audio Settings",
-        pos = (-1, 0, -0.1),
-        scale = 0.2
+        pos = (-1, 0, -0.2),
+        scale = 0.2,
+        instance = instance
+    )
+
+    accessibilitySettingsButton = Button(
+        text = "Accessibility",
+        pos = (-1, 0, -0.6),
+        scale = 0.2,
+        command = hideAccessibilityF,
+        instance = instance
     )
 
     videoFrame.setPos(
+        LVecBase3(1, 0, -0)
+    )
+
+    accessibilityFrame.setPos(
         LVecBase3(1, 0, -0)
     )
 
@@ -272,6 +328,16 @@ def settingsPage(instance, previous_state: int = 1):
 
         fps_header.setText(f"{int(fps_slider['value'])} FPS")
 
+    def narratorToggle():
+        settings['accessibility']['narrator'] = not settings['accessibility']['narrator']
+
+        if settings['accessibility']['narrator']:
+            narrator_toggleButton.setText("Narrator: On")
+        else:
+            narrator_toggleButton.setText("Narrator: Off")
+
+        instance.narrator.refresh()
+
     def close():
         instance.change_state(previous_state)
         dumpSetting(settings)
@@ -282,9 +348,41 @@ def settingsPage(instance, previous_state: int = 1):
         parent = videoFrame
     )
 
-    instance.workspace.add_ui("videoFrame", videoFrame)
+    narrator_toggleButton = Button(
+        instance = instance,
+        text = "Narrator: ???",
+        text_scale = 0.1,
+        pos = (-0.2, 0, 0.5),
+        text_font = basicFont,
+        command = narratorToggle
+    )
 
-def inGameState(instance):
+    if settings['accessibility']['narrator']:
+        narrator_toggleButton.setText("Narrator: On")
+    else:
+        narrator_toggleButton.setText("Narrator: Off")
+
+    backBtn = Button(
+        instance = instance,
+        text = "Back",
+        text_scale = 0.1,
+        pos = (0, 0, -0.5),
+        text_font = basicFont,
+        command = close
+    )
+
+    instance.workspace.add_ui("narrator_toggle", narrator_toggleButton)
+    instance.workspace.add_ui("backBtn", backBtn)
+    instance.workspace.add_ui("videoFrame", videoFrame)
+    instance.workspace.add_ui("fps_slider", fps_slider)
+    instance.workspace.add_ui("fps_header", fps_header)
+    instance.workspace.add_ui("videoFrameButton", videoFrameButton)
+    instance.workspace.add_ui("audioFrameButton", audioSettingsButton)
+    instance.workspace.add_ui("accessibilityFrameButton", accessibilitySettingsButton)
+    instance.workspace.add_ui("videoFrame", videoFrame)
+    instance.workspace.add_ui("accessibilityFrame", accessibilityFrame)
+
+def inGameState(instance, previous_state: int = 1):
     instance.clear()
     #instance.state = GameStates.INGAME
     log("The player is in-game now.")

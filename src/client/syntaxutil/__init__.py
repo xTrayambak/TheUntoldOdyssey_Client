@@ -19,7 +19,7 @@ class SyntaxUtil:
 
     def hook(self):
         self.instance.spawnNewTask("syntaxutil_memcheck", self.memoryCheck)
-        self.instance.spawnNewTask("syntaxutil_processCheck", self.processCheck)
+        #self.instance.spawnNewTask("syntaxutil_processCheck", self.processCheck)
 
     async def processCheck(self, task):
         for proc in psutil.process_iter():

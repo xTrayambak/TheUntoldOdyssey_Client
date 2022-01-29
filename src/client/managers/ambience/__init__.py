@@ -23,6 +23,9 @@ class AmbienceManager:
         log("Initializing Ambience Manager.")
         self.instance = instance
         self.running = True
+        self.end_credits = self.instance.loader.loadSfx("assets/music/white_phantom.mp3")
+        self.endCreditsPlaying = False
+        self.tracks.append(self.end_credits)
         instance.spawnNewTask("_update_ambience", self._update)
 
     async def _update(self, task):
@@ -34,7 +37,11 @@ class AmbienceManager:
             log("Ambience manager shutting down; self.running is False.", "Worker/Ambience")
             return Task.done
         if self.instance.state == GameStates.END_CREDITS:
-            pass
+            if self.end_credits.status() == self.end_credits.READY:
+                self.endCreditsPlaying = True
+
+                self.end_credits.play()
+                self.end_credits.setLoop(True)
         else:
             if (0 == randint(6, 10) % 2): # 2 in 8 chance
                 self.stop_all_tracks()

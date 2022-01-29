@@ -7,9 +7,9 @@ networking.
 Very good already, doesn't need too much refactoring later. Proud of this.
 """
 from direct.showbase.ShowBase import ShowBase
-from pandac.PandaModules import loadPrcFile
-from pandac.PandaModules import WindowProperties
 from direct.filter.CommonFilters import CommonFilters
+from panda3d.core import loadPrcFile
+from panda3d.core import WindowProperties
 from panda3d.core import ClockObject
 
 from src.log import log, warn
@@ -34,7 +34,7 @@ import simplepbr
 VERSION = open("VER").read()
 
 PROPERTIES = WindowProperties()
-PROPERTIES.setTitle("The Untold Odyssey {}".format(VERSION))
+PROPERTIES.setTitle("The Untold Odyssey {} | Main Menu".format(VERSION))
 
 class TUO(ShowBase):
     def __init__(self, memory_max: int = 800):
@@ -70,6 +70,10 @@ class TUO(ShowBase):
         self.mapLoader = MapLoader(self)
         self.player = Player(self, "player", "player")
 
+        #self.commonFilters = CommonFilters(self.win, self.cam)
+
+        #self.commonFilters.setAmbientOcclusion(16, 0.05, 2, 0.01, 0.0000002)
+
         #self.filters = CommonFilters(self.win, self.cam)
         #self.filtersSupported = self.filters.setCartoonInk()
 
@@ -91,6 +95,7 @@ class TUO(ShowBase):
         self.max_mem = memory_max
 
         self.inGameTime = 0.0
+        self.previousState = GameStates.MENU
 
         self.version = VERSION
         self.wireframeIsOn = False
@@ -132,6 +137,7 @@ class TUO(ShowBase):
         Why am I writing docs? Oh wait, yeah, this will probably be open source so 7 year old script kiddies don't accuse
         me of integrating trackers or a Bitcoin miner into the game.
         """
+        self.previousState = self.state
         self.state = GameStates(state)
         self.update()
 
@@ -181,7 +187,7 @@ class TUO(ShowBase):
 
         TUO.update() -> state_execution[state] <args=self (TUO instance)>
         """
-        GAMESTATE_TO_FUNC[self.state](self)
+        GAMESTATE_TO_FUNC[self.state](self, self.previousState)
 
     def start_internal_game(self):
         """

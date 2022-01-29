@@ -13,7 +13,18 @@ class NarratorUtil:
         self.enabled = getSetting("accessibility", "narrator")
 
         if self.enabled:
+            log("Narrator is enabled.")
+        else:
             log("Narrator is disabled.")
+
+    def refresh(self):
+        self.enabled = getSetting("accessibility", "narrator")
+
+        if self.enabled:
+            log("Narrator is enabled.")
+        else:
+            log("Narrator is disabled.")
+
 
     def say(self, text: str = "Hello, World!") -> bool:
         """

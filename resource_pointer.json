@@ -18,6 +18,9 @@
     "maps": {
         "overworld_map": {"path": "assets/cache/heightmap.png"}
     },
+    "dialogs": {
+        "end_credits": {"path": "assets/dialogs/credits_scene"}
+    },
     "textures": {
         "terrain_grass_1": {"path": "assets/textures/terrain/overworld_grass_1.jpg"},
         "character_default_skin": {"path": "assets/textures/character_tex.jpg"},
@@ -33,7 +36,7 @@
         "mangabey": "assets/fonts/mangabey/MangabeyRegular.otf",
         "edgegalaxy": "assets/fonts/edgeofthegalaxy/regular.otf",
         "really": "assets/fonts/really/really.ttf",
-        "rondal": "assets/fonts/rondal/rondal.ttf",
+        "rondal": "assets/fonts/rondal/rondal.otf",
         "gentium_basic": "assets/fonts/basic/basic.ttf",
         "kritidev020": "assets/fonts/kritidev/kritidev.TTF"
     },
