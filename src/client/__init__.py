@@ -6,11 +6,14 @@ networking.
 
 Very good already, doesn't need too much refactoring later. Proud of this.
 """
+
+import panda3d
 from direct.showbase.ShowBase import ShowBase
 from direct.filter.CommonFilters import CommonFilters
 from panda3d.core import loadPrcFile
 from panda3d.core import WindowProperties
 from panda3d.core import ClockObject
+from multiprocessing.pool import ThreadPool
 
 from src.log import log, warn
 from src.client.shared import *
@@ -58,8 +61,15 @@ class TUO(ShowBase):
         
         self.clock = ClockObject()
 
+        log(f"Panda3D lib location: [{panda3d.__file__}]")
+
         try:
-            self.rpcManager = RPCManager(self)
+            # ThreadPool fixes the long time it takes for the main thread to contact Discord because bad internet = a trillion hours.
+            cPool = ThreadPool(1)
+            def _asyncproc():
+                self.rpcManager = RPCManager(self)
+
+            cPool.apply_async(_asyncproc).get()
         except Exception as exc:
             log(f"Failed to initialize Discord rich presence. [{exc}]")
 
@@ -68,7 +78,7 @@ class TUO(ShowBase):
         self.objectLoader = ObjectLoader(self)
         self.syntaxUtil = SyntaxUtil(self)
         self.mapLoader = MapLoader(self)
-        self.player = Player(self, "player", "player")
+        self.player = Player(self, "player", "playertest_default")
 
         #self.commonFilters = CommonFilters(self.win, self.cam)
 
@@ -87,8 +97,6 @@ class TUO(ShowBase):
         if not self.pbrPipeline.use_330:
             warn("The GPU is NOT capable of running OpenGL 3.30; shadows will not be enabled by SimplePBR.")
             self.pbrPipeline.enable_shadows = False
-
-        self.pbrPipeline.enable_fog = True
 
         self.states_enum = GameStates
         self.languages_enum = Language

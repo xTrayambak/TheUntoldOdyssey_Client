@@ -2,6 +2,7 @@
 
 from argparse import ArgumentParser
 import os
+import sys
 from multiprocessing.pool import ThreadPool
 
 argparser = ArgumentParser(
@@ -23,6 +24,8 @@ class GameHandler:
         from src.libinstaller import installAllLibraries
         from src.libtraceback import log_traceback
         from src.log import log
+
+        log(f"PVM Environment: [{sys.executable}]")
         
         log("Trying to find any libraries that need to be installed.", "Worker/Bootstrap")
         installAllLibraries()

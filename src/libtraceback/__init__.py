@@ -10,7 +10,7 @@ except ModuleNotFoundError:
     def get_version():  return "~~NONE~~: PYGLET NOT INSTALLED."
     def get_renderer(): return "~~NONE~~: PYGLET NOT INSTALLED."
 
-from src.log import log, warn
+from src.log import log, fatal, warn
 
 CRASH_TXTS = [
     "Wait, you hadn't completed the ice bridge?",
@@ -34,14 +34,13 @@ CRASH_TXTS = [
     f"As a sorry for this inconvenience, we have handed you a free muffin ticket. Redeem at your nearest Syntax Store. Claim it before it expires! [{random.randint(-sys.maxsize, sys.maxsize)}]",
     "It isn't a bug, it's an intentional feature, dummy!",
     "Get trolled!!!!!11",
-    "Super idol de shiao rong dou mei ni de tian Ba yue jheng ooh de yang guang dou mei ni yao yan Re ai yi bai ling ooh du de ni Didi ching chun de jheng liu shui!",
+    "Super idol de shiao rong, dou mei ni de tian ba yue jheng ooh de yang guang dou mei ni yao yan re ai yi bai ling ooh du de ni didi ching chun de jheng liu shui!",
     "(╯°□°）╯︵ ┻━┻ I'm mad!!!!",
     "Go listen to some music whilst I'm at it!",
-    "Hahaha, game crash go brrrrr..",
-    ""
+    "Hahaha, game crash go brrrrr.."
 ]
 
-def get_extensions_string(max_limit: int = 9):
+def get_extensions_string(max_limit: int = 10) -> str:
     """
     Get a neatly formatted string of OpenGL extensions on this really fancy GPU.
     """
@@ -51,6 +50,8 @@ def get_extensions_string(max_limit: int = 9):
 
     string = ""
     _extStr = ""
+
+    extensions = list(extensions)
 
     for _ext in extensions:
         idx = extensions.index(_ext)
@@ -73,7 +74,7 @@ def get_extensions_string(max_limit: int = 9):
         file.write(f":: Loaded OpenGL extensions ::\n{_extStr}")
         file.close()
     except Exception as exc:
-        log(f"FATAL >> Could not dump OpenGL renderer data to /assets/logs/gl_ext.log due to error.\n[{exc}]")
+        warn(f"Could not dump OpenGL renderer data to /assets/logs/gl_ext.log due to error.\n[{exc}]")
 
     return string
 
@@ -84,7 +85,7 @@ def log_traceback(instance=None):
     full_exc = sys.exc_info()
 
     if instance == None:
-        VERSION = None
+        VERSION = "~~INSTANCE NOT INITIALIZED, VERSION NOT FOUND~~"
     else:
         VERSION = instance.version
     
@@ -111,4 +112,4 @@ def log_traceback(instance=None):
     [The Untold Odyssey, developed by Syntax Studios (2022)]
     """
 
-    warn(string)
+    fatal(string)

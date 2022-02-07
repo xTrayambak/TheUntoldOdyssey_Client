@@ -2,6 +2,7 @@ from panda3d.core import TextNode
 
 import random
 import sys
+import threading
 
 class Text:
     def __init__(self, instance, font, text: str = "Hello, World!", scale: float = 0.01, alignment: any = TextNode.ACenter):

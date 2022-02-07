@@ -6,8 +6,11 @@ The workspace is essentially a datatype TUO uses to handle object rendering and 
 
 from src.log import *
 
+from panda3d.core import NodePath
 from panda3d.bullet import BulletDebugNode, BulletWorld
 from panda3d.physics import ForceNode, LinearVectorForce
+
+from threading import Thread
 
 class Workspace:
     def __init__(self):
@@ -29,7 +32,7 @@ class Workspace:
         Add a 3D mesh to the workspace hierarchy.
         """
         self.objects["parts"].update({name: object})
-        return self.objects["ui"][name]
+        return self.objects["parts"][name]
 
     def add_ui(self, name, object):
         """
@@ -73,6 +76,28 @@ class Workspace:
         Get a component from the workspace.
         """
         return self.objects[category][name]
+
+    def clear(self, category: str = "parts"):
+        """
+        <THREADED>Clears any category inside the workspace hierarchy.
+
+        instance.workspace.clear -> <THREADED>instance.workspace._clear
+        """
+        thr = Thread(target = self._clear, args = (category,))
+        thr.start()
+
+    def _clear(self, category: str = "parts"):
+        """
+        Destroy every object in the workspace hierarchy, or in other words..
+
+        Let's yeet 'em all idiots, 'cause be no carin'!
+        """
+        for _object in self.objects[category]:
+            if type(self.objects[category]) == dict:
+                object = self.objects[category][_object]
+
+                if type(object) == NodePath:
+                    object.removeNode()
 
     def add_object(self, name, obj):
         """

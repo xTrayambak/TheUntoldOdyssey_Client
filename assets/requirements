@@ -1,4 +1,4 @@
-panda3d
+panda3d~=1.10.8
 requests
 pyglet
 pypresence

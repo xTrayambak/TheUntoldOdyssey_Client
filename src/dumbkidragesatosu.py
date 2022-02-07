@@ -1,4 +1,5 @@
 import random
+import time
 
 class Combination:
     def __init__(self, words: list):
@@ -13,32 +14,42 @@ class Combination:
         return self.words
 
 def laz():
-    sentence = "Dumb kid rages at Osu"
+    sentence = input("gimme sentence >>> ")
     words = sentence.split(" ")
+    spaces = len(words)-1
 
     combinations = []
 
+    print(words)
+
     used = []
 
-    for x in range(len(words)*len(words)):
+    for x in range(len(words)*spaces):
         combination = Combination(words)
         combination.shuffle()
 
         while combination() in used:
             combination.shuffle()
-            print(f"Trying {combination()}")
+            #print(f"Trying {combination()}")
 
         used.append(combination())
         combinations.append(combination())
-        
 
     return combinations
 
+def veryexpensivefunc():
+    array = []
+    for x in range(64):
+        for z in range(64):
+            array.append(
+                (x ** z) ^ (z ** x)
+            )
+
+    return array
+
 if __name__ == "__main__":
-    print("Testing")
     for combination in laz():
         string = ""
-        for letter in combination:
-            string += letter + " "
-        
+        for char in combination:
+            string += char + " "
         print(string)

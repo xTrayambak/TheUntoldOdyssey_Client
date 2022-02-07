@@ -2,6 +2,7 @@
 """
 Managed module to handle all client states.
 """
+from distutils.command.sdist import sdist
 import json
 import sys
 import gc
@@ -13,7 +14,7 @@ from direct.gui.DirectGui import *
 from direct.gui import DirectGuiGlobals as DGG
 from direct.task import Task
 
-from panda3d.core import CardMaker, TextNode, GeoMipTerrain, Texture, TextureStage, DirectionalLight, ClockObject, LVecBase3, LVecBase4f, TransparencyAttrib, AmbientLight
+from panda3d.core import CardMaker, TextNode, GeoMipTerrain, Texture, TextureStage, DirectionalLight, AmbientLight, ClockObject, LVecBase3, LVecBase4f, TransparencyAttrib, AmbientLight
 
 from src.client.loader import getAsset, getAllFromCategory
 from src.log import log, warn
@@ -75,6 +76,18 @@ def connectingPage(instance, previous_state: int = 1):
         pos = (0, 0, 0)
     )
 
+    def back_cmd():
+        instance.change_state(1)
+
+    back_button = Button(
+        text = "Back", pos = (0, 0, -0.4),
+        scale = 1,
+        instance = instance,
+        command = back_cmd
+    )
+
+    back_button.hide()
+
     label_connecting = TextNode(name = "node_text_connect")
     label_connecting.setText(f"Connecting to [{instance.networkClient.connectingTo}]; locating host and establishing connection.")
     label_connecting.setTextColor((0.1,0.1,0.1,1))
@@ -115,6 +128,7 @@ def connectingPage(instance, previous_state: int = 1):
     instance.workspace.add_ui("gpu_text", label_gpuNode)
     instance.workspace.add_ui("tuo_ver_text", label_tuoNode)
     instance.workspace.add_ui("artist_text", label_artistNode)
+    instance.workspace.add_ui("connecting_screen_backbtn", back_button)
     instance.workspace.add_ui("background_connecting_screen", background)
 
     return "connected-to-game"
@@ -148,8 +162,7 @@ def mainMenu(instance, previous_state: int = 1):
     ## Networking stuff ##
     addr, port = getSetting("networking", "proxy")[0]["ip"], getSetting("networking", "proxy")[0]["port"]
     def _cmd_ingame():  
-        #instance.networkClient.connect()
-        instance.change_state(4)
+        instance.networkClient.connect()
 
     def _cmd_settings():
         instance.change_state(2)
@@ -160,7 +173,8 @@ def mainMenu(instance, previous_state: int = 1):
 
     tuoLogo = OnscreenImage(
         image = tuoLogo_tex,
-        pos = LVecBase3(-0, 0, 0.5)
+        pos = LVecBase3(-0, 0, 0.5),
+        scale = (0, 1, 0)
     )
 
     tuoLogo.setTransparency(TransparencyAttrib.MAlpha)
@@ -235,9 +249,16 @@ def endCredits(instance, previous_state: int = 1):
     def threaded():
         for line in end_credits_dialog:
             dialogText.setText(line.split("\n")[0].format(instance.player.name))
-            delay = int(len(line) / 16)
+
+            length = len(line)
+
+
+            delay = (
+                length // 8
+            )
+
             print(delay)
-            sleep(random.randint(delay, delay + 1))
+            sleep(int(delay))
         
         instance.ambienceManager.end_credits.stop()
         instance.change_state(previous_state)
@@ -307,6 +328,14 @@ def settingsPage(instance, previous_state: int = 1):
         instance = instance
     )
 
+    accountSettingsButton = Button(
+        text = "Account Settings",
+        pos = (-1, 0, -0.8),
+        scale = 0.2,
+        command = hideAccessibilityF,
+        instance = instance
+    )
+
     videoFrame.setPos(
         LVecBase3(1, 0, -0)
     )
@@ -320,6 +349,12 @@ def settingsPage(instance, previous_state: int = 1):
         parent = videoFrame
     )
 
+    msaa_header = DirectLabel(
+        text = f"MSAA Level [{int(settings['video']['antialiasing_levels'])}]", scale = 0.2,
+        pos = (-0.2, 0, 0.2), text_font = basicFont,
+        parent = videoFrame
+    )
+
     def FPS_change():
         instance.clock.setMode(ClockObject.MForced)
         instance.clock.setFrameRate(fps_slider['value'])
@@ -327,6 +362,11 @@ def settingsPage(instance, previous_state: int = 1):
         settings['video']['max_framerate'] = int(fps_slider['value'])
 
         fps_header.setText(f"{int(fps_slider['value'])} FPS")
+
+    def msaa_change():
+        settings['video']['antialiasing_levels'] = int(msaa_slider['value'])
+        msaa_header.setText(f"MSAA Level [{int(msaa_slider['value'])}]")
+        instance.pbrPipeline.msaa_samples = int(msaa_slider['value'])
 
     def narratorToggle():
         settings['accessibility']['narrator'] = not settings['accessibility']['narrator']
@@ -343,9 +383,15 @@ def settingsPage(instance, previous_state: int = 1):
         dumpSetting(settings)
 
     fps_slider = DirectSlider(
-        range = (10, 120), value = settings['video']['max_framerate'], pageSize = 3, command = FPS_change,
+        range = (10, 240), value = settings['video']['max_framerate'], pageSize = 3, command = FPS_change,
         scale = 0.5, pos = (-0.2, 0, 0.5),
         parent = videoFrame
+    )
+
+    msaa_slider = DirectSlider(
+        range = (0, 8), value = settings['video']['antialiasing_levels'], pageSize = 3, command = msaa_change,
+        pos = (-0.2, 0, -0.1),
+        parent = videoFrame, scale = 0.5
     )
 
     narrator_toggleButton = Button(
@@ -354,7 +400,8 @@ def settingsPage(instance, previous_state: int = 1):
         text_scale = 0.1,
         pos = (-0.2, 0, 0.5),
         text_font = basicFont,
-        command = narratorToggle
+        command = narratorToggle,
+        parent = accessibilityFrame
     )
 
     if settings['accessibility']['narrator']:
@@ -366,7 +413,7 @@ def settingsPage(instance, previous_state: int = 1):
         instance = instance,
         text = "Back",
         text_scale = 0.1,
-        pos = (0, 0, -0.5),
+        pos = (-0.2, 0, -0.5),
         text_font = basicFont,
         command = close
     )
@@ -379,7 +426,10 @@ def settingsPage(instance, previous_state: int = 1):
     instance.workspace.add_ui("videoFrameButton", videoFrameButton)
     instance.workspace.add_ui("audioFrameButton", audioSettingsButton)
     instance.workspace.add_ui("accessibilityFrameButton", accessibilitySettingsButton)
+    instance.workspace.add_ui("accountSettingsButton", accountSettingsButton)
     instance.workspace.add_ui("videoFrame", videoFrame)
+    instance.workspace.add_ui("msaa_slider", msaa_slider)
+    instance.workspace.add_ui("msaa_header", msaa_header)
     instance.workspace.add_ui("accessibilityFrame", accessibilityFrame)
 
 def inGameState(instance, previous_state: int = 1):
@@ -395,6 +445,20 @@ def inGameState(instance, previous_state: int = 1):
     skybox.set_bin("background", 0)
     skybox.set_depth_write(False)
     skybox.set_compass()
+    skybox.setScale(1000)
+    skybox.set_light_off()
+
+    def skyboxTask(task):
+        try:
+            if skybox.is_empty(): 
+                instance.workspace.objects["parts"].pop("skybox")
+                return task.done
+
+            skybox.setPos(instance.camera, 0, 0, 0)
+            return task.cont
+        except: pass
+
+    instance.spawnNewTask("skyboxTask", skyboxTask)
 
     """
     Apply visual shaders
@@ -416,3 +480,5 @@ def inGameState(instance, previous_state: int = 1):
 
     instance.workspace.services["lighting"] = (sunlight, sunlightNode)
     instance.player.init()
+
+    instance.workspace.add_mesh("skybox", skybox)

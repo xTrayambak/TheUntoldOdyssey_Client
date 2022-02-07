@@ -36,6 +36,7 @@ class AmbienceManager:
         if self.running == False:
             log("Ambience manager shutting down; self.running is False.", "Worker/Ambience")
             return Task.done
+            
         if self.instance.state == GameStates.END_CREDITS:
             if self.end_credits.status() == self.end_credits.READY:
                 self.endCreditsPlaying = True

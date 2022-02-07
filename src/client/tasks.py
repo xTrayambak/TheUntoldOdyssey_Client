@@ -23,3 +23,4 @@ def splash_screen_pop(task, instance, spl_scrn_txt_node, clipFunc):
         return Task.done
 
     return Task.cont
+

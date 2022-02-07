@@ -48,4 +48,15 @@ class Language:
     BAHASAINDONESIA = "bahasaindonesia"
     MALAY = "malay"
 
+DisconnectStatusCodes = {
+    "disconnect-server_shutdown": "The server has shut down and is currently restarting.",
+    "disconnect-admin_kick": "You were kicked by a server admin!",
+    "disconnect-anticheat": "Proximity Anticheat has detected that your client behaviour is suspicious! If this is a false report, please contact Syntax Studios.",
+    "disconnect-high_ping": "Your ping is very high! We have had to disconnect you.",
+    "disconnect-auth_fail": "Invalid Syntax Studios account credentials (Try restarting the game)",
+    "disconnect-login_from_other_location": "Your account was logged in from another location.",
+    "disconnect-kicknoreason": "You were disconnected!",
+    "disconnect-outdatedversion": "Your version of the client is outdated! (Install the latest update)"
+}
+
 DATA_PROVIDER = "https://tuoDataDelivery.xtrayambak.repl.co/"

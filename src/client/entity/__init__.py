@@ -32,3 +32,6 @@ class Entity:
 
     def play_anim(self, name):
         self.actor.play(name)
+
+    def onDeath(self):
+        log("Entity has died.")

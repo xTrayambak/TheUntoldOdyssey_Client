@@ -58,12 +58,12 @@ h_vn - Music Composer
 
 ===== OPEN SOURCE BACKENDS USED =====
 
-~` Game Client `~
+~ Game Client ~
 Panda3D, a robust and cutting-edge 3D game engine full with features - (C) Carnegie Mellon University and Walt Disney
 Pyglet, a high-level library for exposing OpenGL functions to Python - (C) Pyglet developers and Alex Holkner
 Python 3.10, a powerful programming language - (C) Python Software Foundation (PSF)
 
-~` Authentication Backend and the Syntax Accounts ecosystem `~
+~ Authentication Backend and the Syntax Accounts ecosystem ~
 SyntaxDB, a fast and scalable server-less database - (C) Syntax Studios
 Flask, a micro web framework for web applications - (C) Armin Ronacher and Flask developers
 
