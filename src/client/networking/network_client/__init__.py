@@ -70,10 +70,11 @@ class NetworkClient:
         log(f"Connecting to [{ip_address}:{port}]", "Worker/Connection")
 
         self.connectingTo = f"{ip_address}:{port}"
+
+        self.instance.change_state(5)
     
         async def taskCon(task):
-            self.instance.change_state(5)
-
+            await task.pause(7)
             self.connection = self.cManager.openTCPClientConnection(ip_address, port, timeout)
 
             if self.connection:
@@ -84,6 +85,9 @@ class NetworkClient:
                 log("Sending client version to the server.", "Worker/Networking")
                 self.send(
                     [f"{self.instance.version}"] # send the server the version of the client we're using.
+                )
+                self.send(
+                    ["xTrayambak"]
                 )
                 self.instance.spawnNewTask("networkclient-poll", self.poll)
                 return task.done

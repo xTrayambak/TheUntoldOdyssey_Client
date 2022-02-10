@@ -156,6 +156,23 @@ def mainMenu(instance, previous_state: int = 1):
         getAsset("splash_texts", "path")
     ).readlines()
 
+    skybox = instance.objectLoader.loadObject("skybox")
+    skybox.reparentTo(instance.render)
+    skybox.set_two_sided(True)
+    skybox.set_bin("background", 0)
+    skybox.set_depth_write(False)
+    skybox.set_compass()
+    skybox.setScale(1000)
+    skybox.set_light_off(1)
+    skybox.set_material_off(1)
+    skybox.set_color_off(0)
+
+    def skyboxTask(task):
+        skybox.setPos(instance.camera, 0, 0, 0)
+        return task.cont
+
+    instance.spawnNewTask("skyboxTask", skyboxTask)
+
 
     log("The player is currently on the main menu.")
 
@@ -439,27 +456,6 @@ def inGameState(instance, previous_state: int = 1):
 
     instance.mapLoader.load()
 
-    skybox = instance.objectLoader.loadObject("skybox")
-    skybox.reparentTo(instance.render)
-    skybox.set_two_sided(True)
-    skybox.set_bin("background", 0)
-    skybox.set_depth_write(False)
-    skybox.set_compass()
-    skybox.setScale(1000)
-    skybox.set_light_off()
-
-    def skyboxTask(task):
-        try:
-            if skybox.is_empty(): 
-                instance.workspace.objects["parts"].pop("skybox")
-                return task.done
-
-            skybox.setPos(instance.camera, 0, 0, 0)
-            return task.cont
-        except: pass
-
-    instance.spawnNewTask("skyboxTask", skyboxTask)
-
     """
     Apply visual shaders
     using Panda3D's built-in shader pipeline.
@@ -481,4 +477,4 @@ def inGameState(instance, previous_state: int = 1):
     instance.workspace.services["lighting"] = (sunlight, sunlightNode)
     instance.player.init()
 
-    instance.workspace.add_mesh("skybox", skybox)
+    #instance.workspace.add_mesh("skybox", skybox)

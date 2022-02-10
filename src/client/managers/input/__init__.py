@@ -44,6 +44,7 @@ class InputManager:
             "quit": instance.quit,
             "fps_toggle": fps_toggle,
             "wireframe_toggle": wireframe,
+            "freecam": instance.oobe,
 
             "forward": "wip",
             "backward": "wip",
