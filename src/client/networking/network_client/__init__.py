@@ -2,6 +2,7 @@
 from src.log import log, warn
 from src.client.shared import DisconnectStatusCodes
 from src.client.settingsreader import getSetting
+from src.client.util.conversion import *
 
 from panda3d.core import QueuedConnectionManager, QueuedConnectionListener, QueuedConnectionReader, ConnectionWriter, NetDatagram
 from direct.task import Task
@@ -36,15 +37,15 @@ class NetworkClient:
     def on_packet_receive(self, packet):
         data = PyDatagramIterator(packet)
         
-        strings = data.getString().split("|")
+        strings = encodedToDecoded(data.getString())
 
-        if strings[0] == "disconnect":
+        if strings['type'] == "disconnect":
             self.disconnect()
             self.instance.workspace.getComponent("ui", "connecting_screen_backbtn").show()
             if strings[1] in DisconnectStatusCodes:
-                self.instance.workspace.getComponent("ui", "connecting_screen_status").node().setText(DisconnectStatusCodes[strings[1]])
+                self.instance.workspace.getComponent("ui", "connecting_screen_status").node().setText(DisconnectStatusCodes[strings['extra']])
             else:
-                self.instance.workspace.getComponent("ui", "connecting_screen_status").node().setText(strings[1])
+                self.instance.workspace.getComponent("ui", "connecting_screen_status").node().setText(strings['extra'])
 
     def disconnect(self):
         self.instance.workspace.clear()
@@ -60,6 +61,13 @@ class NetworkClient:
             datagram = NetDatagram()
             if self.cReader.getData(datagram):
                 self.on_packet_receive(datagram)
+
+        self.send(
+            [encode(
+                "position",
+                (0, 0, 0)
+            )]
+        )
 
         return Task.cont
 
@@ -83,18 +91,34 @@ class NetworkClient:
                 self.instance.change_state(3)
 
                 log("Sending client version to the server.", "Worker/Networking")
+                # send the version/brand of the client we're using.
                 self.send(
-                    [f"{self.instance.version}"] # send the server the version of the client we're using.
+                    [
+                        encode(
+                            "client_brand",
+                            self.instance.version
+                        )
+                    ]
                 )
+
+                # send the authentication data to the server.
                 self.send(
-                    ["xTrayambak"]
+                    [
+                        encode(
+                            "authentication",
+                            "xTrayambak"
+                        )
+                    ]
                 )
                 self.instance.spawnNewTask("networkclient-poll", self.poll)
                 return task.done
             else:
                 self.instance.change_state(5)
                 self.instance.workspace.getComponent("ui", "connecting_screen_backbtn").show()
-                self.instance.workspace.getComponent("ui", "connecting_screen_status").node().setText("Unable to connect to the servers.\nPlease contact Syntax Studios if the problem persists.")
+                try:
+                    self.instance.workspace.getComponent("ui", "connecting_screen_status").node().setText(DisconnectStatusCodes['disconnect-unabletoconnect'])
+                except:
+                    self.instance.workspace.getComponent("ui", "connecting_screen_status").node().setText('disconnect-unabletoconnect')
                 warn(f"We failed to connect to the server! (bad ending) [server=({ip_address}:{port})]", "Worker/Networking")
                 return task.done
 

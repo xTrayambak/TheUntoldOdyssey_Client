@@ -56,7 +56,9 @@ DisconnectStatusCodes = {
     "disconnect-auth_fail": "Invalid Syntax Studios account credentials (Try restarting the game)",
     "disconnect-login_from_other_location": "Your account was logged in from another location.",
     "disconnect-kicknoreason": "You were disconnected!",
-    "disconnect-outdatedversion": "Your version of the client is outdated! (Install the latest update)"
+    "disconnect-outdatedversion": "Your version of the client is outdated! (Install the latest update)",
+    "disconnect-unabletoconnect": "Unable to connect to the servers.\nContact Syntax Studios if the problem persists."
 }
 
 DATA_PROVIDER = "https://tuoDataDelivery.xtrayambak.repl.co/"
+SYNTAX_PAYMENTS_PROVIDER = "https://syntaxpayments.xtrayambak.repl.co/"

@@ -7,7 +7,7 @@ from base64 import b64encode
 from src.log import log, warn
 
 class Cryptography:
-    def init():
+    def __init__():
         log("Initializing AES encryption.", "Worker/CryptoAES")
         _k = str(randint(-maxsize, maxsize))
         key = b64encode(_k.encode("UTF-8"))
@@ -33,3 +33,4 @@ class Cryptography:
         log(f"Successfully encrypted data as [{_enc_data}]; success!", "Worker/CryptoAES")
 
         return _enc_data
+
