@@ -1,29 +1,34 @@
-BSD 3-Clause License
+Syntax 1.0
 
-Copyright (c) 2022, Syntax Studios
-All rights reserved.
+(C) Syntax Studios, 2022 and beyond.
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
+This license is a special license used by the indie game development studio "Syntax Studios" which hereby grants you the access and freedom
+to viewing the code, distributing it, but not in any way, using the assets or claiming any part of the codebase OR assets as your own.
 
-1. Redistributions of source code must retain the above copyright notice, this
-   list of conditions and the following disclaimer.
+DISTRIBUTION
 
-2. Redistributions in binary form must reproduce the above copyright notice,
-   this list of conditions and the following disclaimer in the documentation
-   and/or other materials provided with the distribution.
+Code distribution is completely, whilst asset distribution may be frowned upon, as long as you do not claim it as your own property,
+Syntax Studios is completely OK with your usage of the assets. The assets may not be used for commercial purposes as it is
+not your property. Code fragments can be used as boilerplate, which we are okay with.
 
-3. Neither the name of the copyright holder nor the names of its
-   contributors may be used to endorse or promote products derived from
-   this software without specific prior written permission.
+MODIFICATION
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+You can modify the game and make your own repositories to show your mods and let others use them, as long as you are not
+making commercial profit. You can receive donations as high as 10$ (USD) and no higher. Syntax will not charge you any royalty fees.
+Making mods that tamper the game in unwanted ways, such as a Syntax account credentials logger or game exploits, shall not be tolerated and will be removed via a DMCA.
+
+COMMERCIAL USE
+
+Commercial use is strictly denied, the profits you can make can only be up to 10$ (USD), and that through donations.
+We do not promote selling hacked clients/clients that give one an advantage over others.
+
+LIABLITY
+
+"WE", or Syntax Studios, do NOT claim any liability of damages caused by our project/forks of our project. All liability goes to
+the fork maintainer.
+
+RIGHTS
+
+Syntax Studios owns full rights to this codebase and claiming any part of it as yours (except, open source libraries used like Panda3D) shall not be tolerated.
+We have used our own assets, any that aren't ours at the moment are placeholders as the game is in a pre-alpha stage.
+The music assets, art assets and textures (soon all) assets are/will be under our copyright.
