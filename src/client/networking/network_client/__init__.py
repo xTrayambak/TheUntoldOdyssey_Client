@@ -82,7 +82,7 @@ class NetworkClient:
         self.instance.change_state(5)
     
         async def taskCon(task):
-            await task.pause(7)
+            await task.pause(1)
             self.connection = self.cManager.openTCPClientConnection(ip_address, port, timeout)
 
             if self.connection:

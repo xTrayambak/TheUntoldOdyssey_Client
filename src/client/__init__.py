@@ -10,6 +10,7 @@ Very good already, doesn't need too much refactoring later. Proud of this.
 import panda3d
 from direct.showbase.ShowBase import ShowBase
 from direct.filter.CommonFilters import CommonFilters
+from direct.task import Task
 from panda3d.core import loadPrcFile
 from panda3d.core import WindowProperties
 from panda3d.core import ClockObject
@@ -29,10 +30,11 @@ from src.client.syntaxutil import SyntaxUtil
 from src.client.player import Player
 from src.client.translationutil import TranslationUtility
 from src.client.maploader import MapLoader
-from src.client.libnarrator import NarratorUtil
+from src.client.libnarrator import *
+from src.client.settingsreader import *
 
 import gc
-import simplepbr
+import threading
 
 VERSION = open("VER").read()
 
@@ -46,6 +48,8 @@ class TUO(ShowBase):
         loadPrcFile("assets/config.prc")
         ShowBase.__init__(self)
         log("Panda3D initialized.")
+
+        self.win.requestProperties(PROPERTIES)
 
         ### START DEFINING VARIABLES ###
         self.state = GameStates.MENU
@@ -64,12 +68,13 @@ class TUO(ShowBase):
         log(f"Panda3D lib location: [{panda3d.__file__}]")
 
         try:
-            # ThreadPool fixes the long time it takes for the main thread to contact Discord because bad internet = a trillion hours.
-            cPool = ThreadPool(1)
             def _asyncproc():
                 self.rpcManager = RPCManager(self)
 
-            cPool.apply_async(_asyncproc).get()
+            self.rpc_thread = threading.Thread(
+                target = _asyncproc, args=()
+            )
+            self.rpc_thread.start()
         except Exception as exc:
             log(f"Failed to initialize Discord rich presence. [{exc}]")
 
@@ -81,13 +86,9 @@ class TUO(ShowBase):
         self.player = Player(self, "player", "playertest_default")
 
         #self.commonFilters = CommonFilters(self.win, self.cam)
-
         #self.commonFilters.setAmbientOcclusion(16, 0.05, 2, 0.01, 0.0000002)
 
-        #self.filters = CommonFilters(self.win, self.cam)
-        #self.filtersSupported = self.filters.setCartoonInk()
-
-        self.pbrPipeline = simplepbr.init(
+        """self.pbrPipeline = simplepbr.init(
             msaa_samples = getSetting("video", "antialiasing_levels"),
             enable_shadows = True,
             enable_fog = True,
@@ -96,7 +97,7 @@ class TUO(ShowBase):
 
         if not self.pbrPipeline.use_330:
             warn("The GPU is NOT capable of running OpenGL 3.30; shadows will not be enabled by SimplePBR.")
-            self.pbrPipeline.enable_shadows = False
+            self.pbrPipeline.enable_shadows = False"""
 
         self.states_enum = GameStates
         self.languages_enum = Language
@@ -121,8 +122,6 @@ class TUO(ShowBase):
         )
 
         self.syntaxUtil.hook()
-
-        self.win.requestProperties(PROPERTIES)
 
         self.spawnNewTask("tuo-poll", self.poll)
 
@@ -209,7 +208,7 @@ class TUO(ShowBase):
             self.rpcManager.run()
 
         log("Verifying PBR shaders.")
-        self.pbrPipeline.verify_shaders()
+        #self.pbrPipeline.verify_shaders()
             
         self.update()
         self.ambienceManager.update(self)

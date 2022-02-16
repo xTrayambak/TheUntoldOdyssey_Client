@@ -65,10 +65,12 @@ class InputManager:
 
     def hookkey(self, key = QUIT_KEY, func = None):
         self.events[key].append(func)
+
     def listenfor(self, key):
         def sudofunc():
             for func in self.events[key]:
-                func()
+                try: func()
+                except Exception as exc: warn(f"Unable to execute function for key '{key}' due to error. [{str(exc)}]")
 
         self.instance.accept(key, sudofunc)
 

@@ -4,7 +4,11 @@ Contains the data that is going to be shared amongst multiple client scripts so 
 """
 from enum import IntEnum, Enum
 
-from src.client.state_execution import *
+from src.client.states.connectingscreen import connectingPage
+from src.client.states.ingame import inGameState
+from src.client.states.mainmenu import mainMenu
+from src.client.states.creditsroll import endCredits
+from src.client.states.settings import settingsPage
 
 class GameStates(IntEnum, Enum):
     LOADING = 0
@@ -33,7 +37,6 @@ GAMESTATES_TO_STRING = {
 }
 
 GAMESTATE_TO_FUNC = {
-    GameStates.LOADING: loadingScreen,
     GameStates.MENU: mainMenu,
     GameStates.END_CREDITS: endCredits,
     GameStates.INGAME: inGameState,

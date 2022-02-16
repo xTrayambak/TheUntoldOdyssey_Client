@@ -44,7 +44,12 @@ class AmbienceManager:
                 self.end_credits.play()
                 self.end_credits.setLoop(True)
         else:
-            if (0 == randint(6, 10) % 2): # 2 in 8 chance
+            min_c, max_c = 2, 10
+            if self.instance.state == GameStates.INGAME:
+                min_c = 4
+                max_c = 24
+                
+            if (0 == randint(min_c, max_c) % 2): # 2 in 8 chance
                 self.stop_all_tracks()
                 song = choice(self.songs)
                 if song["conditions"]["playsIn"] == GAMESTATES_TO_BLANDSTRING[self.instance.state]:
