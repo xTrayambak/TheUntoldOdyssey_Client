@@ -11,16 +11,6 @@ DEFAULT_KEYBINDS = {
     "backtick": "hide_gui"
 }
 
-FORWARD_KEY = getSetting("keybinds", "forward")
-BACKWARD_KEY = getSetting("keybinds", "backward")
-LEFT_KEY = getSetting("keybinds", "left")
-RIGHT_KEY = getSetting("keybinds", "right")
-
-QUIT_KEY = getSetting("keybinds", "quit")
-WIREFRAME_KEY = getSetting("keybinds", "wireframe_toggle")
-
-FPS_TOGGLE = getSetting("keybinds", "fps_toggle")
-
 class InputManager:
     def __init__(self, instance):
         self.events = {
@@ -41,10 +31,10 @@ class InputManager:
             instance.setFrameRateMeter(instance.fpsCounterIsOn)
 
         self.STR_TO_FUNC = {
-            "quit": instance.quit,
             "fps_toggle": fps_toggle,
             "wireframe_toggle": wireframe,
             "freecam": instance.oobe,
+            "pause_menu": instance.pause_menu,
 
             "forward": "wip",
             "backward": "wip",
@@ -63,7 +53,7 @@ class InputManager:
 
             self.listenfor(key)
 
-    def hookkey(self, key = QUIT_KEY, func = None):
+    def hookkey(self, key, func = None):
         self.events[key].append(func)
 
     def listenfor(self, key):

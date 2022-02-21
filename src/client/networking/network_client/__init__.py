@@ -3,11 +3,15 @@ from src.log import log, warn
 from src.client.shared import DisconnectStatusCodes
 from src.client.settingsreader import getSetting
 from src.client.util.conversion import *
+from src.client.game import Game
+from src.client.game.entity import Entity
 
 from panda3d.core import QueuedConnectionManager, QueuedConnectionListener, QueuedConnectionReader, ConnectionWriter, NetDatagram
 from direct.task import Task
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
+
+import ast
 
 class NetworkClient:
     def __init__(self, instance):
@@ -39,13 +43,43 @@ class NetworkClient:
         
         strings = encodedToDecoded(data.getString())
 
+        log(strings)
+
         if strings['type'] == "disconnect":
+            log("We have been disconnected from the server! (reason={})".format(strings["extra"]))
             self.disconnect()
             self.instance.workspace.getComponent("ui", "connecting_screen_backbtn").show()
-            if strings[1] in DisconnectStatusCodes:
+            if strings['extra'] in DisconnectStatusCodes:
                 self.instance.workspace.getComponent("ui", "connecting_screen_status").node().setText(DisconnectStatusCodes[strings['extra']])
             else:
                 self.instance.workspace.getComponent("ui", "connecting_screen_status").node().setText(strings['extra'])
+        elif strings['type'] == "new_entity":
+            attributes = strings['extra'].split("#")
+            name = attributes[0]
+            position = ast.literal_eval(attributes[1])
+
+            self.instance.game.add_new_entity(
+                Entity(
+                    name,
+                    position
+                )
+            )
+            
+            log("A new entity has spawned!")
+        elif strings['type'] == 'entity_list':
+            log("Entity data has been received from the server!", sender = "Worker/ClientToServer")
+            for entity in strings['extra'].split("++"):
+                data = entity.split("#")
+                name = data[0]
+                pos = ast.literal_eval(data[1]) 
+
+                log(f"New entity spawning! [{name}#{pos}]")
+
+                self.instance.game.entityManager.add_entity(
+                    Entity(
+                        name, pos
+                    )
+                )
 
     def disconnect(self):
         self.instance.workspace.clear()
@@ -90,6 +124,8 @@ class NetworkClient:
                 self.cReader.addConnection(self.connection)
                 self.instance.change_state(3)
 
+                self.instance.game = Game()
+
                 log("Sending client version to the server.", "Worker/Networking")
                 # send the version/brand of the client we're using.
                 self.send(
@@ -109,6 +145,14 @@ class NetworkClient:
                             "xTrayambak"
                         )
                     ]
+                )
+
+                log("Asking server for entity data...")
+                self.send(
+                    [encode(
+                        "entities_get",
+                        []
+                    )]
                 )
                 self.instance.spawnNewTask("networkclient-poll", self.poll)
                 return task.done

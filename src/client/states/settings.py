@@ -44,23 +44,36 @@ def settingsPage(instance, previous_state: int = 1):
         frameSize = (-1, 1, -1, 1)
     )
 
+    audioSettingsFrame = DirectFrame(
+        frameColor = (0.5, 0.5, 0.5, 1),
+        frameSize = (-1, 1, -1, 1)
+    )
+
     accessibilityFrame.hide()
 
     def hideVF():
         if videoFrame.is_hidden():
             videoFrame.show()
             accessibilityFrame.hide()
+            audioSettingsFrame.hide()
         else:
             videoFrame.hide()
-            accessibilityFrame.show()
 
     def hideAccessibilityF():
         if accessibilityFrame.is_hidden():
             accessibilityFrame.show()
             videoFrame.hide()
+            audioSettingsFrame.hide()
         else:
             accessibilityFrame.hide()
-            videoFrame.show()
+
+    def hideAudioF():
+        if audioSettingsFrame.is_hidden():
+            audioSettingsFrame.show()
+            videoFrame.hide()
+            accessibilityFrame.hide()
+        else:
+            audioSettingsFrame.hide()
 
     videoFrameButton = Button(
         text = "Video Settings",
@@ -74,8 +87,11 @@ def settingsPage(instance, previous_state: int = 1):
         text = "Audio Settings",
         pos = (-1, 0, 0.4),
         scale = 0.2,
-        instance = instance
+        instance = instance,
+        command = hideAudioF
     )
+
+    audioSettingsFrame.hide()
 
     accessibilitySettingsButton = Button(
         text = "Accessibility",
@@ -101,9 +117,18 @@ def settingsPage(instance, previous_state: int = 1):
         LVecBase3(1, 0, -0)
     )
 
+    audioSettingsFrame.setPos(
+        LVecBase3(1, 0, -0)
+    )
+
     fps_header = DirectLabel(
         text = "Framerate", scale = 0.2, pos = (-0.2, 0, 0.8), text_font = basicFont,
         parent = videoFrame
+    )
+
+    audio_volume_header = DirectLabel(
+        text = f"Master ({int(getSetting('volumes', 'master'))}%)", scale = 0.2, pos = (-0.2, 0, 0.8), text_font=basicFont,
+        parent = audioSettingsFrame
     )
 
     def FPS_change():
@@ -113,6 +138,12 @@ def settingsPage(instance, previous_state: int = 1):
         settings['video']['max_framerate'] = int(fps_slider['value'])
 
         fps_header.setText(f"{int(fps_slider['value'])} FPS")
+
+    def volumeMasterChange():
+        audio_volume_header.setText(f"Master ({int(audio_volume_slider['value'])}%)")
+        instance.sfxManagerList[0].setVolume(
+            audio_volume_slider['value']
+        )
 
     def narratorToggle():
         settings['accessibility']['narrator'] = not settings['accessibility']['narrator']
@@ -132,6 +163,12 @@ def settingsPage(instance, previous_state: int = 1):
         range = (10, 240), value = settings['video']['max_framerate'], pageSize = 3, command = FPS_change,
         scale = 0.5, pos = (-0.2, 0, 0.5),
         parent = videoFrame
+    )
+
+    audio_volume_slider = DirectSlider(
+        range = (0, 100), value = getSetting('volumes', 'master'), pageSize = 3, command = volumeMasterChange, scale = 0.5,
+        pos = (-0.2, 0, 0.5),
+        parent = audioSettingsFrame
     )
 
     narrator_toggleButton = Button(

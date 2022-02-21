@@ -55,7 +55,7 @@ def mainMenu(instance, previous_state: int = 1):
     skybox.set_bin("background", 0)
     skybox.set_depth_write(False)
     skybox.set_compass()
-    skybox.setScale(1000)
+    skybox.setScale(5000)
     skybox.set_light_off(1)
     skybox.set_material_off(0)
     skybox.set_color_off(1)
@@ -71,11 +71,6 @@ def mainMenu(instance, previous_state: int = 1):
                 instance.clock.getFrameTime() * -1
             )
         )
-        """
-        sin(instance.clock.getFrameTime() / 1.5) * 2.5,
-                sin(instance.clock.getFrameTime() / 1.5) * 3,
-                sin(instance.clock.getFrameTime() / 1.5) * 1.5
-        """
         return task.cont
 
     def skyboxTask(task):
@@ -103,7 +98,7 @@ def mainMenu(instance, previous_state: int = 1):
     tuoLogo = OnscreenImage(
         image = tuoLogo_tex,
         pos = LVecBase3(-0, 0, 0.5),
-        scale = (0, 1, 0)
+        scale = (1, 1, 1)
     )
 
     tuoLogo.setTransparency(TransparencyAttrib.MAlpha)

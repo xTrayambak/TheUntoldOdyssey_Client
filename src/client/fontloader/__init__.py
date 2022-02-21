@@ -6,6 +6,11 @@ class FontLoader:
         self.instance = instance
         self.cache = {}
 
+    def get(self, name: str):
+        if name in self.cache: return self.cache[name]
+
+        return None
+
     def load(self, name, loadFromCache = True):
         """
         Load a font into memory for usage.

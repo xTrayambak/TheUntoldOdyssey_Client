@@ -19,6 +19,15 @@ argparser.add_argument("memory",
                         nargs = "?"
 )
 
+argparser.add_argument(
+    "memory",
+    metavar = "token",
+    type = str,
+    help = f"The Syntax Studios account token.",
+    const = "",
+    nargs = "?"
+)
+
 class GameHandler:
     def __init__(self, max_mem: int = DEFAULT_MEM):
         from src.libinstaller import installAllLibraries
@@ -29,18 +38,26 @@ class GameHandler:
         
         log("Trying to find any libraries that need to be installed.", "Worker/Bootstrap")
         installAllLibraries()
-        
-        try:
+
+        if os.path.exists("DEBUG_MODE"):
             log("Library installation process complete.", "Worker/Bootstrap")
             log("Pre-bootup client initialization complete, now changing into client mode.")
             from src.client import TUO
             log("Changed into client mode. Now, the client code is going to be run.")
             self.tuo = TUO(max_mem)
             self.tuo.enableParticles()
-        except Exception as exc:
-            log(f"An error occured whilst initializing the game. [{exc}]")
-            log_traceback()
-            exit(1)
+        else:    
+            try:
+                log("Library installation process complete.", "Worker/Bootstrap")
+                log("Pre-bootup client initialization complete, now changing into client mode.")
+                from src.client import TUO
+                log("Changed into client mode. Now, the client code is going to be run.")
+                self.tuo = TUO(max_mem)
+                self.tuo.enableParticles()
+            except Exception as exc:
+                log(f"An error occured whilst initializing the game. [{exc}]")
+                log_traceback()
+                exit(1)
 
     def run(self):
         """

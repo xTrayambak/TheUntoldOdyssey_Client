@@ -28,10 +28,10 @@ class Button():
         self.direct.setText(text)
 
     def hide(self):
-        self.direct.node().setActive(0)
+        self.direct.hide()
 
     def show(self):
-        self.direct.node().setActive(1)
+        self.direct.show()
 
     def on_hover(self, args) -> None:
         self.instance.narrator.say(self.text)

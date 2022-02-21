@@ -33,6 +33,9 @@ from src.client.maploader import MapLoader
 from src.client.libnarrator import *
 from src.client.settingsreader import *
 
+from src.client.ui.text import *
+from src.client.ui.button import *
+
 import gc
 import threading
 
@@ -42,7 +45,7 @@ PROPERTIES = WindowProperties()
 PROPERTIES.setTitle("The Untold Odyssey {} | Main Menu".format(VERSION))
 
 class TUO(ShowBase):
-    def __init__(self, memory_max: int = 800):
+    def __init__(self, memory_max: int = 800, token: str = ""):
         log(f"The Untold Odyssey {VERSION} loaded up!")
         log("Initializing Panda3D rendering engine.")
         loadPrcFile("assets/config.prc")
@@ -85,6 +88,12 @@ class TUO(ShowBase):
         self.mapLoader = MapLoader(self)
         self.player = Player(self, "player", "playertest_default")
 
+        self.token = token
+
+        self.sfxManagerList[0].setVolume(
+            getSetting("volumes", "master")
+        )
+
         #self.commonFilters = CommonFilters(self.win, self.cam)
         #self.commonFilters.setAmbientOcclusion(16, 0.05, 2, 0.01, 0.0000002)
 
@@ -106,6 +115,8 @@ class TUO(ShowBase):
         self.inGameTime = 0.0
         self.previousState = GameStates.MENU
 
+        self.game = None
+
         self.version = VERSION
         self.wireframeIsOn = False
         self.fpsCounterIsOn = False
@@ -113,6 +124,8 @@ class TUO(ShowBase):
 
         self.inputManager.init()
         self.inputManager.hook()
+
+        self.paused = False
 
         self.clock.setMode(ClockObject.MForced)
 
@@ -122,8 +135,32 @@ class TUO(ShowBase):
         )
 
         self.syntaxUtil.hook()
-
         self.spawnNewTask("tuo-poll", self.poll)
+
+    def pause_menu(self):
+        if self.state != GameStates.INGAME: return
+
+        if self.paused == False:
+            self.paused = True
+        else:
+            self.paused = False
+        
+        self._pause_menu(self.paused)
+
+    def _pause_menu(self, isPaused: bool):
+        if isPaused:
+            self.narrator.say("open pause menu")
+            self.workspace.getComponent("ui", "paused_text").show()
+            self.workspace.getComponent("ui", "return_to_menu_button").show()
+            self.workspace.getComponent("ui", "settings_button").show()
+        else:
+            self.narrator.say("close pause menu")
+            self.workspace.getComponent("ui", "settings_button").hide()
+            self.workspace.getComponent("ui", "paused_text").hide()
+            self.workspace.getComponent("ui", "return_to_menu_button").hide()
+
+    def quit_to_menu(self):
+        self.change_state(1)
 
     def poll(self, task):
         """
@@ -192,7 +229,7 @@ class TUO(ShowBase):
         """
         Updates the game state manager.
 
-        TUO.update() -> state_execution[state] <args=self (TUO instance)>
+        TUO.update() -> state_execution[state] <args=self (TUO instance), previousState (GameStates)>
         """
         GAMESTATE_TO_FUNC[self.state](self, self.previousState)
 
