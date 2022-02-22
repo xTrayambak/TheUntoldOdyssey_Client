@@ -22,7 +22,6 @@ from src.client.tasks import *
 from src.client.ui.button import Button
 from src.client.ui.text import Text
 
-from pyglet.gl import gl_info as gpu_info
 from math import sin, pi
 
 def endCredits(instance, previous_state: int = 1):

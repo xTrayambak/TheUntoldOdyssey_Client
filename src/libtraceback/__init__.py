@@ -2,13 +2,11 @@ import sys
 import os
 import random
 
-try:
-    from pyglet.gl.gl_info import *
-except ModuleNotFoundError:
-    def get_extensions():  return "~~NONE~~: PYGLET NOT INSTALLED."
-    def get_vendor():  return "~~NONE~~: PYGLET NOT INSTALLED."
-    def get_version():  return "~~NONE~~: PYGLET NOT INSTALLED."
-    def get_renderer(): return "~~NONE~~: PYGLET NOT INSTALLED."
+
+def get_extensions():  return "~~NONE~~: PYGLET NOT INSTALLED."
+def get_vendor():  return "~~NONE~~: PYGLET NOT INSTALLED."
+def get_version():  return "~~NONE~~: PYGLET NOT INSTALLED."
+def get_renderer(): return "~~NONE~~: PYGLET NOT INSTALLED."
 
 from src.log import log, fatal, warn
 

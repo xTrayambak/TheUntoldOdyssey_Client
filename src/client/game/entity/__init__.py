@@ -1,7 +1,7 @@
 class Entity:
-    def __init__(self, name: str, position: list | tuple = [0, 0, 0]):
+    def __init__(self, name: str, position: list = [0, 0, 0]):
         self.name = name
         self.position = position
 
-    def setPos(self, position: list | tuple):
+    def setPos(self, position: list):
         self.position = position

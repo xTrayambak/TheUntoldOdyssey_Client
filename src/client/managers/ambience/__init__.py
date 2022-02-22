@@ -30,7 +30,7 @@ class AmbienceManager:
 
     async def _update(self, task):
         await Task.pause(
-            randint(20, 49)
+            randint(5, 10)
         )
         
         if self.running == False:
@@ -44,7 +44,7 @@ class AmbienceManager:
                 self.end_credits.play()
                 self.end_credits.setLoop(True)
         else:
-            min_c, max_c = 2, 10
+            min_c, max_c = 2, 6
             if self.instance.state == GameStates.INGAME:
                 min_c = 4
                 max_c = 24
@@ -57,10 +57,11 @@ class AmbienceManager:
                     _song.play()
                     self.tracks.append(_song)
                     delay = 0
+
                     if self.instance.state == GameStates.MENU or self.instance.state == GameStates.CONNECTING:
-                        delay = randint(70, 150)
+                        delay = randint(int(_song.length()) - 10, int(_song.length()))
                     else:
-                        delay = randint(70, 800)
+                        delay = randint(70, int(_song.length()+60))
                     log("Sleeping for {} minutes now.".format(delay / 60), "Worker/Ambience")
                     await Task.pause(delay)
                 seed(randint(-0x7FFFFF, 0x7FFFFF))

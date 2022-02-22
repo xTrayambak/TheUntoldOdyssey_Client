@@ -43,7 +43,11 @@ class GameHandler:
             log("Library installation process complete.", "Worker/Bootstrap")
             log("Pre-bootup client initialization complete, now changing into client mode.")
             from src.client import TUO
+            from src.client.linuxpatcher import patch
             log("Changed into client mode. Now, the client code is going to be run.")
+            if sys.platform == 'linux':
+                log("Running Linux patches...")
+                patch()
             self.tuo = TUO(max_mem)
             self.tuo.enableParticles()
         else:    

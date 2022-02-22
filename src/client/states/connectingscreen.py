@@ -22,7 +22,13 @@ from src.client.tasks import *
 from src.client.ui.button import Button
 from src.client.ui.text import Text
 
-from pyglet.gl import gl_info as gpu_info
+if sys.platform != 'linux':
+    from pyglet.gl import gl_info as gpu_info
+else:
+    class gpu_info:
+        def get_version():
+            return "Unable to detect GPU."
+            
 from math import sin, pi
 
 def connectingPage(instance, previous_state: int = 1):

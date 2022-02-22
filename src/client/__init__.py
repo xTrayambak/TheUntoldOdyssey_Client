@@ -10,6 +10,7 @@ Very good already, doesn't need too much refactoring later. Proud of this.
 import panda3d
 from direct.showbase.ShowBase import ShowBase
 from direct.filter.CommonFilters import CommonFilters
+from direct.gui.DirectFrame import DirectFrame
 from direct.task import Task
 from panda3d.core import loadPrcFile
 from panda3d.core import WindowProperties
@@ -71,13 +72,7 @@ class TUO(ShowBase):
         log(f"Panda3D lib location: [{panda3d.__file__}]")
 
         try:
-            def _asyncproc():
-                self.rpcManager = RPCManager(self)
-
-            self.rpc_thread = threading.Thread(
-                target = _asyncproc, args=()
-            )
-            self.rpc_thread.start()
+            self.rpcManager = RPCManager(self)
         except Exception as exc:
             log(f"Failed to initialize Discord rich presence. [{exc}]")
 
@@ -159,8 +154,72 @@ class TUO(ShowBase):
             self.workspace.getComponent("ui", "paused_text").hide()
             self.workspace.getComponent("ui", "return_to_menu_button").hide()
 
+    def warn(self, title: str="Lorem Ipsum", description: str="Door Sit", button_confirm_txt: str = "OK", button_exit_txt: str = "NO", confirmFunc=None, exitFunc = None) -> bool:
+        """
+        Shows a warning onto the screen.
+
+        ======================
+
+                TITLE
+
+            DESCRIPTION
+
+        OPTION1        OPTION2
+
+        ======================
+        """
+        font = self.fontLoader.load("mangabey")
+
+        frame = DirectFrame(parent = self.aspect2d, frameSize=(-1, 1, -1, 1), frameColor=(0.5, 0.5, 0.5, 0.5))
+        warning_title = Text(self, font, title, 0.1, (0, 0, 0.5))
+        warning_description = Text(self, font, description, 0.1, (0, 0, 0))
+
+        def close_func():
+            log("Warning was closed. Result was MENU_DECLINE")
+            warning_title.destroy()
+            warning_description.destroy()
+            confirm_button.destroy()
+            exit_button.destroy()
+            frame.destroy()
+            
+            if exitFunc is not None:
+                exitFunc()
+
+            return False
+
+        def _confirmfunc():
+            log("Warning was closed. Result was MENU_ACCEPT")
+            warning_title.destroy()
+            warning_description.destroy()
+            confirm_button.destroy()
+            exit_button.destroy()
+            frame.destroy()
+
+            if confirmFunc is not None:
+                confirmFunc()
+            
+            return True
+
+        confirm_button = Button(
+            self, button_confirm_txt, 0.1, 0.1, (-0.5, 0, -0.5),
+            command = _confirmfunc, text_font = font
+        )
+
+        exit_button = Button(
+            self, button_exit_txt, 0.1, 0.1, (0.5, 0, -0.5),
+            command = close_func, text_font = font
+        )
+
+        self.workspace.add_ui("warning_title", warning_title)
+        self.workspace.add_ui("warning_description", warning_description)
+        self.workspace.add_ui("warning_confirm", confirm_button)
+        self.workspace.add_ui("warning_exit", exit_button)
+
     def quit_to_menu(self):
         self.change_state(1)
+
+    def stop_music(self):
+        self.ambienceManager.stop_all_tracks()
 
     def poll(self, task):
         """
@@ -190,7 +249,16 @@ class TUO(ShowBase):
 
         self.win.requestProperties(PROPERTIES)
 
-        self.ambienceManager.stop_all_tracks()
+        if self.state == GameStates.SETTINGS and self.previousState == GameStates.INGAME:
+            return
+        elif self.state == GameStates.INGAME and self.previousState == GameStates.SETTINGS:
+            return
+        elif self.previousState == GameStates.INGAME and self.state == GameStates.SETTINGS:
+            return
+        elif self.previousState == GameStates.SETTINGS and self.state == GameStates.INGAME:
+            return
+
+        self.stop_music()
 
     def spawnNewTask(self, name, function, args = None):
         """
@@ -243,12 +311,21 @@ class TUO(ShowBase):
         """
         if self.rpcManager != None:
             self.rpcManager.run()
-
-        log("Verifying PBR shaders.")
-        #self.pbrPipeline.verify_shaders()
             
         self.update()
         self.ambienceManager.update(self)
+
+        if sys.platform == 'linux':
+            res = self.warn(
+                "Linux support is experimental! Bugs/crashes may occur!",
+                "Linux support is work-in-progress, you may need to install certain libraries yourself.",
+                "Okay, I get it.",
+                "No, opt me out!",
+                exitFunc = self.quit
+            )
+
+            if res is False:
+                self.quit()
 
     def quit(self):
         """

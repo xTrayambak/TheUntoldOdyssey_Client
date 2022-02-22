@@ -7,7 +7,10 @@ from src.client.settingsreader import getSetting
 
 class NarratorUtil:
     def __init__(self):
-        self.engine = pyttsx3.init()
+        try:
+            self.engine = pyttsx3.init()
+        except Exception as exc:
+            warn(f"UNABLE TO INITIALIZE TEXT2SPEECH ENGINE! [{exc}]")
         self.pool = ThreadPool(4)
 
         self.enabled = getSetting("accessibility", "narrator")
@@ -18,6 +21,7 @@ class NarratorUtil:
             log("Narrator is disabled.")
 
     def refresh(self):
+        if self.engine is None: return
         self.enabled = getSetting("accessibility", "narrator")
 
         if self.enabled:
