@@ -1,4 +1,7 @@
 from panda3d.core import Vec3, TransparencyAttrib
+from panda3d.bullet import BulletPlaneShape
+from panda3d.bullet import BulletRigidBodyNode
+
 from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
 from direct.showbase.DirectObject import *
@@ -9,20 +12,32 @@ from src.client.entity import Entity
 from src.client.loader import getAsset
 from src.client.settingsreader import getSetting
 
+MOVEMENT_SPEED = 5 #m/s
+
 class Player():
 	def __init__(self, instance, model="player", name = "default"):
 		log(f"Entity [{name}] initialized.")
 
-		self.inputManager = instance.inputManager
 		self.instance = instance
 		self.name = name
 
-		self.entity = Entity(name, instance, model)
+		self.entity = Entity(name, instance, model, [0, 0, 0], True)
+		instance.workspace.world.attachRigidBody(self.entity.node)
+
+		self.keymaps = {
+			"forward": False,
+			"backward": False,
+			"left": False,
+			"right": False
+		}
 
 		#self.entity.set_texture("character_default_skin")
 
 	def init(self):
 		self.vignette()
+		self.instance.spawnNewTask(
+			"player_update", self.update
+		)
 
 	def vignette(self):
 		if not getSetting("video", "vignette"): return
@@ -67,6 +82,65 @@ class Player():
 		if self.instance.state != self.instance.states_enum.INGAME:
 			return Task.done
 
-		#TODO: [WIP]Add player movement logic here, [DONE]possibly through InputManager polling.		
+		if self.instance.state != self.instance.states_enum.INGAME: return
+		movement_factor = MOVEMENT_SPEED * self.instance.clock.dt
+		pos = self.entity.getPos()
+
+		if self.keymaps["forward"]:
+			self.entity.setPos(
+				[
+					pos[0] + movement_factor,
+					pos[1],
+					pos[2]
+				]
+			)
+		elif self.keymaps["backward"]:
+			self.entity.setPos(
+				[
+					pos[0] - movement_factor,
+					pos[1],
+					pos[2]
+				]
+			)
+		elif self.keymaps["left"]:
+			self.entity.setPos(
+				[
+					pos[0],
+					pos[1],
+					pos[2] + movement_factor
+				]
+			)
+		elif self.keymaps["right"]:
+			self.entity.setPos(
+				[
+					pos[0],
+					pos[1],
+					pos[2] - movement_factor
+				]
+			)
 
 		return Task.cont
+
+	def forward(self):
+		self.keymaps["forward"] = True
+
+	def forward_stop(self):
+		self.keymaps["forward"] = False
+
+	def left(self):
+		self.keymaps["left"] = True
+
+	def left_stop(self):
+		self.keymaps["left"] = False
+
+	def right(self):
+		self.keymaps["right"] = True
+
+	def right_stop(self):
+		self.keymaps["right"] = False
+
+	def backward(self):
+		self.keymaps["backward"] = True
+
+	def backward_stop(self):
+		self.keymaps["backward"] = False

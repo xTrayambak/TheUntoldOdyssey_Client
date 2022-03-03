@@ -4,3 +4,6 @@ pyglet
 pypresence
 DirectGuiExtension
 pyttsx3
+psutil
+pyscreenshot
+pillow

@@ -1,9 +1,2 @@
 [
-    {
-        "name": "myBrick",
-        "position": [0, 0, 0],
-        "texture": "sun_default",
-        "model": "map",
-        "hpr": [0, 0, 0]
-    }
 ]

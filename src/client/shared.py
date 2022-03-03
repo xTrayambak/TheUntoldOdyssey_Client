@@ -18,6 +18,10 @@ class GameStates(IntEnum, Enum):
     END_CREDITS = 4,
     CONNECTING = 5
 
+class TextFormatting:
+    JUMBLE = "[J]"
+    UNDERLINE = "[U]"
+
 GAMESTATES_TO_BLANDSTRING = {
     GameStates.LOADING: "loading",
     GameStates.MENU: "menu",
@@ -57,10 +61,12 @@ DisconnectStatusCodes = {
     "disconnect-anticheat": "Proximity Anticheat has detected that your client behaviour is suspicious! If this is a false report, please contact Syntax Studios.",
     "disconnect-high_ping": "Your ping is very high! We have had to disconnect you.",
     "disconnect-auth_fail": "Invalid Syntax Studios account credentials (Try restarting the game)",
-    "disconnect-login_from_other_location": "Your account was logged in from another location.",
+    "disconnect-login_from_other_location": "Your account was logged in from another location.\nRelaunch the game and the launcher.",
     "disconnect-kicknoreason": "You were disconnected!",
     "disconnect-outdatedversion": "Your version of the client is outdated! (Install the latest update)",
-    "disconnect-unabletoconnect": "Unable to connect to the servers.\nContact Syntax Studios if the problem persists."
+    "disconnect-unabletoconnect": "Unable to connect to the servers.\nContact Syntax Studios if the problem persists.",
+    "disconnect-timeout": "Timed out.\nPlease check your internet connection.",
+    "disconnect-throttled": "Connection throttled!\nPlease wait before joining."
 }
 
 DATA_PROVIDER = "https://tuoDataDelivery.xtrayambak.repl.co/"

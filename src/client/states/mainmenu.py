@@ -68,12 +68,18 @@ def mainMenu(instance, previous_state: int = 1):
                 sin(instance.clock.getFrameTime() / 2.5) * 5.9, 
                 sin(instance.clock.getFrameTime() / 1.5) * 5,
                 instance.clock.getFrameTime() * -1
-            )
-        )
+            ))
         return task.cont
 
     def skyboxTask(task):
         skybox.setPos(instance.camera, 0, 0, 0)
+        skybox.setHpr(
+            LVecBase3(
+                instance.clock.getFrameTime() / 2,
+                instance.clock.getFrameTime() / 2,
+                instance.clock.getFrameTime() / 2
+            )
+        )
         return task.cont
 
     instance.spawnNewTask("skyboxTask", skyboxTask)
@@ -129,23 +135,16 @@ def mainMenu(instance, previous_state: int = 1):
         instance = instance
     )
 
-    splash_screen_text = TextNode(name = "splash_screen_text")
-    splash_screen_text.setAlign(TextNode.ACenter)
-    splash_screen_text.setText(random.choice(SPLASHES))
-    splash_screen_text.setFont(edgegalaxy_font)
-
-    spl_scrn_txt_node = instance.render2d.attachNewNode(splash_screen_text)
-    spl_scrn_txt_node.setScale(0.08)
-    spl_scrn_txt_node.setPos((0.5, 0, 0.5))
-    spl_scrn_txt_node.setHpr(LVecBase3(-8.8, 0, -8.8))
+    splash_screen_text = Text(instance, basic_font, random.choice(SPLASHES), 0.09, (0.5, 0, 0.5))
+    splash_screen_text.setHpr(LVecBase3(-8.8, 0, -8.8))
 
     instance.spawnNewTask(
-        "mainmenu-splash_screen_pop", splash_screen_pop, (None, instance, spl_scrn_txt_node, clip)
+        "mainmenu-splash_screen_pop", splash_screen_pop, (None, instance, splash_screen_text, clip)
     )
 
     ## PACK INTO WORKSPACE HIERARCHY ##
     instance.workspace.add_ui("play_btn", play_button)
-    instance.workspace.add_ui("splash_text", spl_scrn_txt_node)
+    instance.workspace.add_ui("splash_text", splash_screen_text)
     instance.workspace.add_ui("tuoLogo", tuoLogo)
     instance.workspace.add_ui("settingsBtn", settings_button)
     instance.workspace.add_ui("exit_button", exit_button)

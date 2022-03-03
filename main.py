@@ -20,8 +20,8 @@ argparser.add_argument("memory",
 )
 
 argparser.add_argument(
-    "memory",
-    metavar = "token",
+    "token",
+    metavar = "t",
     type = str,
     help = f"The Syntax Studios account token.",
     const = "",
@@ -48,6 +48,7 @@ class GameHandler:
             if sys.platform == 'linux':
                 log("Running Linux patches...")
                 patch()
+                
             self.tuo = TUO(max_mem)
             self.tuo.enableParticles()
         else:    

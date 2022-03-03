@@ -48,18 +48,17 @@ class Workspace:
         """
         self.instance = instance
 
-        ## BULLET PHYSICS WORLD ##
-        self.world = BulletWorld()
-
         ## A force node. ##
-        self.gravityForceNode = ForceNode("world_client_gravity")
-        self.gravityForceNodePath = instance.render.attachNewNode(self.gravityForceNode)
+        self.world = BulletWorld()
+        self.world.setGravity(
+            (0, 0, -9.81)
+        )
+        instance.spawnNewTask('world-physics-bullet-update', self.world_update)
 
-        gravityForce = LinearVectorForce(0, 0, -9.81)
-
-        self.gravityForceNode.addForce(gravityForce)
-
-        instance.physicsMgr.addLinearForce(gravityForce)
+    async def world_update(self, task):
+        dt = self.instance.clock.dt
+        self.world.doPhysics(dt, 10, 1.0/180.0)
+        return task.cont
 
     def add_shader(self, object, shader: str):
         """

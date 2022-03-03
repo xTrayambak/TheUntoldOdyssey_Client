@@ -144,6 +144,8 @@ def settingsPage(instance, previous_state: int = 1):
             audio_volume_slider['value']
         )
 
+        settings['volumes']['master'] = int(audio_volume_slider['value'])
+
     def narratorToggle():
         settings['accessibility']['narrator'] = not settings['accessibility']['narrator']
 
@@ -204,4 +206,5 @@ def settingsPage(instance, previous_state: int = 1):
     instance.workspace.add_ui("accessibilityFrameButton", accessibilitySettingsButton)
     instance.workspace.add_ui("accountSettingsButton", accountSettingsButton)
     instance.workspace.add_ui("videoFrame", videoFrame)
+    instance.workspace.add_ui("audioFrame", audioSettingsFrame)
     instance.workspace.add_ui("accessibilityFrame", accessibilityFrame)

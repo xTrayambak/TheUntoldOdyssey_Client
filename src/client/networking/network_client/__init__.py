@@ -12,6 +12,7 @@ from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
 
 import ast
+import time
 
 class NetworkClient:
     def __init__(self, instance):
@@ -24,6 +25,9 @@ class NetworkClient:
 
         self.instance = instance
         self.connection = None
+        self.client_id = 0
+
+        self.last_packet_ms = 0
 
     def send(self, data: list) -> PyDatagram:
         for value in data:
@@ -34,16 +38,16 @@ class NetworkClient:
                 datagram.addUint8(value)
             else:
                 datagram.addString(str(value))
-        
+
+        datagram.addString(str(self.client_id))
         self.cWriter.send(datagram, self.connection)
         return datagram
 
     def on_packet_receive(self, packet):
+        self.last_packet_ms = 0
         data = PyDatagramIterator(packet)
         
         strings = encodedToDecoded(data.getString())
-
-        log(strings)
 
         if strings['type'] == "disconnect":
             log("We have been disconnected from the server! (reason={})".format(strings["extra"]))
@@ -66,6 +70,9 @@ class NetworkClient:
             )
             
             log("A new entity has spawned!")
+        elif strings['type'] == "client_secret_id":
+            log("The server has assigned us an ID!")
+            self.client_id = int(strings['extra'])
         elif strings['type'] == 'entity_list':
             log("Entity data has been received from the server!", sender = "Worker/ClientToServer")
             for entity in strings['extra'].split("++"):
@@ -99,9 +106,21 @@ class NetworkClient:
         self.send(
             [encode(
                 "position",
-                (0, 0, 0)
+                str(self.instance.player.entity.getPos())+"|"+str(self.client_id)
             )]
         )
+
+        self.last_packet_ms += 0.1
+
+        if int(self.last_packet_ms) > 500:
+            warn("We have not received a single packet in 500 ms! Is the server unresponsive? Disconnecting!", "Worker/NetworkSanity")
+
+            self.disconnect()
+            if 'disconnect-timeout' in DisconnectStatusCodes:
+                self.instance.workspace.getComponent("ui", "connecting_screen_status").node().setText(DisconnectStatusCodes['disconnect-timeout'])
+            else:
+                self.instance.workspace.getComponent("ui", "connecting_screen_status").node().setText("disconnect-timeout")
+            return task.done
 
         return Task.cont
 

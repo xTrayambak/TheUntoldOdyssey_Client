@@ -49,7 +49,7 @@ class AmbienceManager:
                 min_c = 4
                 max_c = 24
                 
-            if (0 == randint(min_c, max_c) % 2): # 2 in 8 chance
+            if (0 == randint(min_c, max_c) % 2):
                 self.stop_all_tracks()
                 song = choice(self.songs)
                 if song["conditions"]["playsIn"] == GAMESTATES_TO_BLANDSTRING[self.instance.state]:
@@ -59,10 +59,12 @@ class AmbienceManager:
                     delay = 0
 
                     if self.instance.state == GameStates.MENU or self.instance.state == GameStates.CONNECTING:
-                        delay = randint(int(_song.length()) - 10, int(_song.length()))
+                        delay = randint(int(_song.length()) - 10, int(_song.length()) + 120)
                     else:
                         delay = randint(70, int(_song.length()+60))
                     log("Sleeping for {} minutes now.".format(delay / 60), "Worker/Ambience")
+
+                    del _song
                     await Task.pause(delay)
                 seed(randint(-0x7FFFFF, 0x7FFFFF))
         

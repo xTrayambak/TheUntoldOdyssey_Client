@@ -33,6 +33,8 @@ from src.client.translationutil import TranslationUtility
 from src.client.maploader import MapLoader
 from src.client.libnarrator import *
 from src.client.settingsreader import *
+from src.client.recordingutil import RecordingUtil
+from src.client.syntaxutil.authlib import Authenticator
 
 from src.client.ui.text import *
 from src.client.ui.button import *
@@ -56,15 +58,17 @@ class TUO(ShowBase):
         self.win.requestProperties(PROPERTIES)
 
         ### START DEFINING VARIABLES ###
+        self.authenticator = Authenticator(self)
         self.state = GameStates.MENU
         self.workspace = Workspace()
+        self.workspace.init(self)
         self.ambienceManager = AmbienceManager()
-        self.inputManager = InputManager(self)
         self.networkClient = NetworkClient(self)
         self.narrator = NarratorUtil()
         self.translator = TranslationUtility(
             getSetting("language")
         )
+        self.recordingUtil = RecordingUtil(self)
         self.rpcManager = None
         
         self.clock = ClockObject()
@@ -82,8 +86,9 @@ class TUO(ShowBase):
         self.syntaxUtil = SyntaxUtil(self)
         self.mapLoader = MapLoader(self)
         self.player = Player(self, "player", "playertest_default")
-
         self.token = token
+
+        #self.disableMouse()
 
         self.sfxManagerList[0].setVolume(
             getSetting("volumes", "master")
@@ -105,7 +110,7 @@ class TUO(ShowBase):
 
         self.states_enum = GameStates
         self.languages_enum = Language
-        self.max_mem = memory_max
+        self.max_mem = int(memory_max)
 
         self.inGameTime = 0.0
         self.previousState = GameStates.MENU
@@ -117,6 +122,7 @@ class TUO(ShowBase):
         self.fpsCounterIsOn = False
         self.settings = getAllSettings()
 
+        self.inputManager = InputManager(self)
         self.inputManager.init()
         self.inputManager.hook()
 
@@ -131,6 +137,8 @@ class TUO(ShowBase):
 
         self.syntaxUtil.hook()
         self.spawnNewTask("tuo-poll", self.poll)
+
+        log(f"Maximum memory is set to {self.max_mem} MB")
 
     def pause_menu(self):
         if self.state != GameStates.INGAME: return
@@ -168,9 +176,9 @@ class TUO(ShowBase):
 
         ======================
         """
-        font = self.fontLoader.load("mangabey")
+        font = self.fontLoader.load("gentium_basic")
 
-        frame = DirectFrame(parent = self.aspect2d, frameSize=(-1, 1, -1, 1), frameColor=(0.5, 0.5, 0.5, 0.5))
+        frame = DirectFrame(parent = self.aspect2d, frameSize=(-2, 2, -2, 2), frameColor=(0.5, 0.5, 0.5, 0.2))
         warning_title = Text(self, font, title, 0.1, (0, 0, 0.5))
         warning_description = Text(self, font, description, 0.1, (0, 0, 0))
 
@@ -229,6 +237,7 @@ class TUO(ShowBase):
         """
         self.clock.tick()
 
+
         return Task.cont
 
     def change_state(self, state: int):
@@ -253,9 +262,9 @@ class TUO(ShowBase):
             return
         elif self.state == GameStates.INGAME and self.previousState == GameStates.SETTINGS:
             return
-        elif self.previousState == GameStates.INGAME and self.state == GameStates.SETTINGS:
+        elif self.previousState == GameStates.MENU and self.state == GameStates.SETTINGS:
             return
-        elif self.previousState == GameStates.SETTINGS and self.state == GameStates.INGAME:
+        elif self.previousState == GameStates.SETTINGS and self.state == GameStates.MENU:
             return
 
         self.stop_music()
@@ -314,18 +323,16 @@ class TUO(ShowBase):
             
         self.update()
         self.ambienceManager.update(self)
-
-        if sys.platform == 'linux':
-            res = self.warn(
-                "Linux support is experimental! Bugs/crashes may occur!",
-                "Linux support is work-in-progress, you may need to install certain libraries yourself.",
-                "Okay, I get it.",
-                "No, opt me out!",
-                exitFunc = self.quit
+        self.authenticator.start_auth()
+        
+        if self.max_mem < 500:
+            warn("The game has lesser than 500 MB of memory allocated!")
+            self.warn(
+                "You have allocated less than 500MB to the game!",
+                "The game may crash and you may face lag!",
+                "I understand.",
+                "Okay."
             )
-
-            if res is False:
-                self.quit()
 
     def quit(self):
         """

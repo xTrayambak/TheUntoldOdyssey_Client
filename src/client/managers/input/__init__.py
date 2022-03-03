@@ -35,11 +35,18 @@ class InputManager:
             "wireframe_toggle": wireframe,
             "freecam": instance.oobe,
             "pause_menu": instance.pause_menu,
+            "screenshot": instance.recordingUtil.screenshot,
 
-            "forward": "wip",
-            "backward": "wip",
-            "left": "wip",
-            "right": "wip"
+            ## MOVEMENT ##
+            "forward": instance.player.forward,
+            "backward": instance.player.backward,
+            "left": instance.player.left,
+            "right": instance.player.right,
+
+            "forward_stop": instance.player.forward_stop,
+            "backward_stop": instance.player.backward_stop,
+            "left_stop": instance.player.left_stop,
+            "right_stop": instance.player.right_stop 
         }
 
         self.instance = instance
