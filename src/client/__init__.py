@@ -106,7 +106,7 @@ class TUO(ShowBase):
 
         if not self.pbrPipeline.use_330:
             warn("The GPU is NOT capable of running OpenGL 3.30; shadows will not be enabled by SimplePBR.")
-            self.pbrPipeline.enable_shadows = False"""
+            self.pbrPipeline.enable_shadows = Falsel"""
 
         self.states_enum = GameStates
         self.languages_enum = Language
