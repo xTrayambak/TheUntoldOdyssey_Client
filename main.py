@@ -2,6 +2,7 @@
 
 from argparse import ArgumentParser
 import os
+import pathlib
 import sys
 from multiprocessing.pool import ThreadPool
 
@@ -28,6 +29,8 @@ argparser.add_argument(
     nargs = "?"
 )
 
+VERSION = "0.1.1" # NOTE TO DEVELOPERS: MAKE SURE TO CHANGE THIS AS THE VERSION INCREASES, THIS IS NECESSARY SO THE CLIENT CAN LOCATE IT'S PROPER WORKING DIRECTORY.
+
 class GameHandler:
     def __init__(self, max_mem: int = DEFAULT_MEM):
         from src.libinstaller import installAllLibraries
@@ -35,6 +38,21 @@ class GameHandler:
         from src.log import log
 
         log(f"PVM Environment: [{sys.executable}]")
+        
+        log("Patching directory...")
+        entire_path = str(pathlib.Path(__file__))
+        client_path = ""
+        
+        log(f"Full path to client startup file is [{entire_path}]")
+        
+        for dirName in entire_path.split("/"):
+            client_path += dirName + "/"
+            if dirName == VERSION:
+                break
+        
+        log("Setting client data path to ["+client_path+"]", "ClientPathDEBUG")
+        os.chdir(client_path)
+        log("Client working directory patch completed! Fuck you POSIX! 🖕", "ClientDirectoryWorkaround")
         
         log("Trying to find any libraries that need to be installed.", "Worker/Bootstrap")
         installAllLibraries()

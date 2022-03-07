@@ -41,6 +41,8 @@ from src.client.ui.button import *
 
 import gc
 import threading
+import os
+import pathlib
 
 VERSION = open("VER").read()
 

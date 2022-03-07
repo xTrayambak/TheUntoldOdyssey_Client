@@ -23,6 +23,7 @@ def installAllLibraries():
 
     for lib in libs:
         lib = lib.split("\n")[0]
+        log(f"Checking if library '{lib}' is installed or not.", "Worker/Requirements")
         if not exists(lib):
             warn(f"Library '{lib}' is not installed for the virtual environment.")
             log(f"Installing library [{lib}]; querying PyPi.")
