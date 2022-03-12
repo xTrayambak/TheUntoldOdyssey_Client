@@ -90,6 +90,10 @@ class TUO(ShowBase):
         self.player = Player(self, "player", "playertest_default")
         self.token = token
 
+        log(f"Syntax Studios account token is [{token}]", "Worker/Config")
+
+        self.authenticationServerStatus = self.authenticator.get_auth_server_status()
+
         #self.disableMouse()
 
         self.sfxManagerList[0].setVolume(
@@ -108,7 +112,7 @@ class TUO(ShowBase):
 
         if not self.pbrPipeline.use_330:
             warn("The GPU is NOT capable of running OpenGL 3.30; shadows will not be enabled by SimplePBR.")
-            self.pbrPipeline.enable_shadows = Falsel"""
+            self.pbrPipeline.enable_shadows = False"""
 
         self.states_enum = GameStates
         self.languages_enum = Language

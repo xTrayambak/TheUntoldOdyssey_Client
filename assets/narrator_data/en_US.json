@@ -1,0 +1,27 @@
+{
+    "button.play.hover": "hover over play button",
+    "button.quit.hover": "hover over quit button",
+    "button.settings.hover": "hover over settings button",
+    
+    "button.play.click": "click play button",
+    "button.quit.click": "click quit button",
+    "button.settings.click": "click settings button",
+    
+    "events.weather.thunder": "thunder has begun",
+    "events.weather.clear": "the weather has cleared",
+
+    "events.boss.mediocre.summon": "the boss 1 has been summoned",
+    "events.boss.medium.summon": "the boss 2 has been summoned",
+    "events.boss.hard.summon": "the boss 3 has been summoned",
+
+    "events.game.beat": "congratulations, you have beat the game",
+    "events.game.close": "the game has been closed",
+    "events.game.disconnected": "disconnected from the server",
+    "events.game.connectionscreen": "connecting to the game server",
+    
+    "events.player.slain": "you were slain by {}",
+    "events.player.potion_effect_start": "{} is applied on you and you have it's effects for {}",
+    "events.player.potion_effect_end": "{}'s effects have worn off",
+
+    "technical.game.crash": "we are sorry, but the game has run into an error"
+}

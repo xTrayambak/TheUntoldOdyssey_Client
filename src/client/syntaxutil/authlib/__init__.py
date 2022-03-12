@@ -6,6 +6,9 @@ class Authenticator:
         self.instance = instance
         self.session = None
 
+    def get_auth_server_status(self):
+        return Session().get_auth_server_status()
+
     def start_auth(self):
         log("Authenticator is starting auth process...", "Worker/Authenticator")
 

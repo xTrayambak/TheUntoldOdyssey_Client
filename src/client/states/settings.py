@@ -24,6 +24,12 @@ from src.client.ui.text import Text
 
 from math import sin, pi
 
+STATUS_TO_STR = {
+    "OK.": "Online",
+    "MAINTENANCE.": "Down for Maintenance",
+    "NO.": "Offline; likely crashed."
+}
+
 def settingsPage(instance, previous_state: int = 1):
     """
     The settings page.
@@ -48,27 +54,45 @@ def settingsPage(instance, previous_state: int = 1):
         frameSize = (-1, 1, -1, 1)
     )
 
+    accountSettingsFrame = DirectFrame(
+        frameColor = (0.5, 0.5, 0.5, 0.5),
+        frameSize = (-1, 1, -1, 1)
+    )
+
     accessibilityFrame.hide()
+    accountSettingsFrame.hide()
 
     def hideVF():
         if videoFrame.is_hidden():
             videoFrame.show()
             accessibilityFrame.hide()
             audioSettingsFrame.hide()
+            accountSettingsFrame.hide()
         else:
             videoFrame.hide()
 
     def hideAccessibilityF():
         if accessibilityFrame.is_hidden():
             accessibilityFrame.show()
+            accountSettingsFrame.hide()
             videoFrame.hide()
             audioSettingsFrame.hide()
         else:
             accessibilityFrame.hide()
 
+    def hideAccountF():
+        if accountSettingsFrame.is_hidden():
+            accountSettingsFrame.show()
+            accessibilityFrame.hide()
+            audioSettingsFrame.hide()
+            videoFrame.hide()
+        else:
+            accountSettingsFrame.hide()
+
     def hideAudioF():
         if audioSettingsFrame.is_hidden():
             audioSettingsFrame.show()
+            accountSettingsFrame.hide()
             videoFrame.hide()
             accessibilityFrame.hide()
         else:
@@ -104,7 +128,7 @@ def settingsPage(instance, previous_state: int = 1):
         text = "Account Settings",
         pos = (-1, 0, -0.4),
         scale = 0.2,
-        command = hideAccessibilityF,
+        command = hideAccountF,
         instance = instance
     )
 
@@ -120,6 +144,10 @@ def settingsPage(instance, previous_state: int = 1):
         LVecBase3(1, 0, -0)
     )
 
+    accountSettingsFrame.setPos(
+        LVecBase3(1, 0, -0)
+    )
+
     fps_header = DirectLabel(
         text = "Framerate", scale = 0.2, pos = (-0.2, 0, 0.8), text_font = basicFont,
         parent = videoFrame
@@ -128,6 +156,19 @@ def settingsPage(instance, previous_state: int = 1):
     audio_volume_header = DirectLabel(
         text = f"Master ({int(getSetting('volumes', 'master'))}%)", scale = 0.2, pos = (-0.2, 0, 0.8), text_font=basicFont,
         parent = audioSettingsFrame
+    )
+
+    if 'status' in instance.authenticationServerStatus:
+        if instance.authenticationServerStatus['status'] in STATUS_TO_STR:
+            status = STATUS_TO_STR[instance.authenticationServerStatus['status']]
+        else:
+            status = instance.authenticationServerStatus['status']
+    else:
+        status = "No response; probably crashed."
+
+    server_auth_status_header = DirectLabel(
+        text=f"AUTH SERVER STATUS:\n{status}",
+        scale = 0.1, pos=(-0.2, 0, 0.8), parent = accountSettingsFrame
     )
 
     def FPS_change():
@@ -147,6 +188,10 @@ def settingsPage(instance, previous_state: int = 1):
         settings['volumes']['master'] = int(audio_volume_slider['value'])
 
     def narratorToggle():
+        if instance.narrator.enabled == None:
+            warn("Not messing with narrator as it is disabled due to ESPEAK being missing.", "Worker/NarratorToggle")
+            return
+
         settings['accessibility']['narrator'] = not settings['accessibility']['narrator']
 
         if settings['accessibility']['narrator']:
@@ -187,6 +232,9 @@ def settingsPage(instance, previous_state: int = 1):
     else:
         narrator_toggleButton.setText("Narrator: Off")
 
+    if instance.narrator.enabled == None:
+        narrator_toggleButton.setText("Narrator: Not Available.")
+        
     backBtn = Button(
         instance = instance,
         text = "Back",
@@ -208,3 +256,5 @@ def settingsPage(instance, previous_state: int = 1):
     instance.workspace.add_ui("videoFrame", videoFrame)
     instance.workspace.add_ui("audioFrame", audioSettingsFrame)
     instance.workspace.add_ui("accessibilityFrame", accessibilityFrame)
+    instance.workspace.add_ui("server_auth_status_header", server_auth_status_header)
+    instance.workspace.add_ui("account_settings_frame", accountSettingsFrame)

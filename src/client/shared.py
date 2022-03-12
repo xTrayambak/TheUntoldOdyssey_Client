@@ -71,3 +71,4 @@ DisconnectStatusCodes = {
 
 DATA_PROVIDER = "https://tuoDataDelivery.xtrayambak.repl.co/"
 SYNTAX_PAYMENTS_PROVIDER = "https://syntaxpayments.xtrayambak.repl.co/"
+SYNTAX_AUTHENTICATION_PROVIDER = "https://waveauthserver.pythonanywhere.com/"

@@ -1,7 +1,7 @@
 import requests
 import hashlib
 
-from src.client.shared import DATA_PROVIDER
+from src.client.shared import DATA_PROVIDER, SYNTAX_AUTHENTICATION_PROVIDER
 from src.log import *
 
 hasher = hashlib.md5()
@@ -21,13 +21,22 @@ class Session:
             log("Server has let us open a session!", "Worker/SyntaxAuthLib")
         else:
             warn("Server has declined the authentication request.", "Worker/SyntaxAuthLib")
-            instance.warn(
-                f"Syntax Studios Authentication Failed",
-                "We tried connecting to our servers and the server declined.",
-                "Okay", "Quit"
-            )
         
         hasher.update(instance.version.encode("utf-8"))
         client_hash = f"{hasher.hexdigest()}_VANILLA"
         
         log(f"Client hash is {client_hash}, asking server to verify.", "Worker/SyntaxAuthLib")
+
+    def get_auth_server_status(self):
+        try:
+            data = requests.get(
+                SYNTAX_AUTHENTICATION_PROVIDER
+            ).json()
+        except Exception as exc:
+            warn(f"An error occured whilst connecting to the authentication provider.\n{exc}")
+            data = {
+                "status": "NO.",
+                "query-params": {}
+            }
+
+        return data

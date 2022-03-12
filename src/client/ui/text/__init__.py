@@ -22,13 +22,14 @@ properties_italic = TextProperties()
 tpMgr = TextPropertiesManager.getGlobalPtr()
 
 class Text:
-    def __init__(self, instance, font, text: str = "Hello, World!", scale: float = 0.01, position = (0, 0, 0), alignment: any = TextNode.ACenter):
+    def __init__(self, instance, font, text: str = "Hello, World!", scale: float = 0.01, position = (0, 0, 0), alignment: any = TextNode.ACenter, parent=None):
         self.node = TextNode(str(random.randint(-sys.maxsize, sys.maxsize)))
         self.node.setText(text)
         self.node.setAlign(alignment)
         self.node.setFont(font)
 
         self.text = text
+        self.parent = None
 
         self.nodePath = instance.aspect2d.attachNewNode(self.node)
         self.nodePath.setPos(position)

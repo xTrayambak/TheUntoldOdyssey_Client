@@ -29,31 +29,32 @@ argparser.add_argument(
     nargs = "?"
 )
 
-VERSION = "0.1.1" # NOTE TO DEVELOPERS: MAKE SURE TO CHANGE THIS AS THE VERSION INCREASES, THIS IS NECESSARY SO THE CLIENT CAN LOCATE IT'S PROPER WORKING DIRECTORY.
+VERSION = "0.1.1" #NOTE TO DEVELOPERS: MAKE SURE TO CHANGE THIS AS THE VERSION INCREASES, THIS IS NECESSARY SO THE CLIENT CAN LOCATE IT'S PROPER WORKING DIRECTORY.
 
 class GameHandler:
-    def __init__(self, max_mem: int = DEFAULT_MEM):
+    def __init__(self, max_mem: int = DEFAULT_MEM, token: str = 'no-token-provided'):
         from src.libinstaller import installAllLibraries
         from src.libtraceback import log_traceback
         from src.log import log
 
         log(f"PVM Environment: [{sys.executable}]")
         
-        log("Patching directory...")
-        entire_path = str(pathlib.Path(__file__))
-        client_path = ""
-        
-        log(f"Full path to client startup file is [{entire_path}]")
-        
-        for dirName in entire_path.split("/"):
-            client_path += dirName + "/"
-            if dirName == VERSION:
-                break
-        
-        log("Setting client data path to ["+client_path+"]", "ClientPathDEBUG")
-        os.chdir(client_path)
-        log("Client working directory patch completed! Fuck you POSIX! 🖕", "ClientDirectoryWorkaround")
-        
+        if not os.path.exists("DEBUG_MODE"):
+            log("Patching directory...")
+            entire_path = str(pathlib.Path(__file__))
+            client_path = ""
+            
+            log(f"Full path to client startup file is [{entire_path}]")
+            
+            for dirName in entire_path.split("/"):
+                client_path += dirName + "/"
+                if dirName == VERSION:
+                    break
+            
+            log("Setting client data path to ["+client_path+"]", "ClientPathDEBUG")
+            os.chdir(client_path)
+            log("Client working directory patch completed! Fuck you POSIX! 🖕", "ClientDirectoryWorkaround")
+            
         log("Trying to find any libraries that need to be installed.", "Worker/Bootstrap")
         installAllLibraries()
 
@@ -67,7 +68,7 @@ class GameHandler:
                 log("Running Linux patches...")
                 patch()
                 
-            self.tuo = TUO(max_mem)
+            self.tuo = TUO(max_mem, token)
             self.tuo.enableParticles()
         else:    
             try:
@@ -75,7 +76,7 @@ class GameHandler:
                 log("Pre-bootup client initialization complete, now changing into client mode.")
                 from src.client import TUO
                 log("Changed into client mode. Now, the client code is going to be run.")
-                self.tuo = TUO(max_mem)
+                self.tuo = TUO(max_mem, token)
                 self.tuo.enableParticles()
             except Exception as exc:
                 log(f"An error occured whilst initializing the game. [{exc}]")
@@ -111,7 +112,9 @@ class GameHandler:
 if __name__ == "__main__":
     args = argparser.parse_args()
     mem_max = args.memory
+    token = args.token
     if mem_max == None: mem_max = DEFAULT_MEM
+    if token == None: token = "no-tok-provided"
 
-    game = GameHandler(mem_max)
+    game = GameHandler(mem_max, token)
     game.run()

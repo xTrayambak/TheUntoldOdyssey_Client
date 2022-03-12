@@ -7,6 +7,7 @@ from src.client.settingsreader import getSetting
 
 class NarratorUtil:
     def __init__(self):
+        self.engine = None
         try:
             self.engine = pyttsx3.init()
         except Exception as exc:
