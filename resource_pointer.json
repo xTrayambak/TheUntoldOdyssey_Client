@@ -54,5 +54,6 @@
     },
     "mapobjects": {
         "path": "assets/cache/objects.json"
-    }
+    },
+    "narrator_dialogs": {"en_US": "assets/narrator_data/en_US.json"}
 }

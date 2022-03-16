@@ -22,9 +22,12 @@ class RPCManager:
             warn("RPC Client binding failed.")
 
     def _run(self, task):
+        details = "Playing The Untold Odyssey, a MMORPG-camping experience developed by Syntax Studios!"
+        if self.instance.debug_mode:
+            details = "Playing The Untold Odyssey, a MMORPG-camping experience developed by Syntax Studios! [DEVELOPER MODE]"
         self.presenceClient.update(
             state = GAMESTATES_TO_STRING[self.instance.state],
-            details = "Playing The Untold Odyssey, a MMORPG-camping experience developed by Syntax Studios!",
+            details = details,
             buttons = [
                 {"label": "Get the Game for Free!", "url": "https://github.com/xTrayambak/TheUntoldOdyssey_Client/"},
                 {"label": "End User License Agreement", "url": getAsset("links", "eula")}

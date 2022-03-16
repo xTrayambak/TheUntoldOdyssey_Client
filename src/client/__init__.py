@@ -16,6 +16,7 @@ from panda3d.core import loadPrcFile
 from panda3d.core import WindowProperties
 from panda3d.core import ClockObject
 from multiprocessing.pool import ThreadPool
+from datetime import datetime
 
 from src.log import log, warn
 from src.client.shared import *
@@ -35,6 +36,7 @@ from src.client.libnarrator import *
 from src.client.settingsreader import *
 from src.client.recordingutil import RecordingUtil
 from src.client.syntaxutil.authlib import Authenticator
+from src.client.narrator_dialog_finder import NarratorDialogFinder
 
 from src.client.ui.text import *
 from src.client.ui.button import *
@@ -67,9 +69,8 @@ class TUO(ShowBase):
         self.ambienceManager = AmbienceManager()
         self.networkClient = NetworkClient(self)
         self.narrator = NarratorUtil()
-        self.translator = TranslationUtility(
-            getSetting("language")
-        )
+        self.translator = TranslationUtility(getSetting("language"))
+        self.narratorDialogUtility = NarratorDialogFinder(getSetting("language"))
         self.recordingUtil = RecordingUtil(self)
         self.rpcManager = None
         
@@ -89,7 +90,14 @@ class TUO(ShowBase):
         self.mapLoader = MapLoader(self)
         self.player = Player(self, "player", "playertest_default")
         self.token = token
+        self.debug_mode = os.path.exists("DEBUG_MODE")
 
+        self.time_now = datetime.now()
+
+        self.date_info = time_now.strftime("%d-%m-%y")
+        self.time_info = time_now.strftime('%H:%M:%S')
+
+        log(f"Date info: {self.date_info}\nTime info: {self.time_info}", "Worker/TimeDetector")
         log(f"Syntax Studios account token is [{token}]", "Worker/Config")
 
         self.authenticationServerStatus = self.authenticator.get_auth_server_status()
@@ -176,7 +184,7 @@ class TUO(ShowBase):
 
                 TITLE
 
-            DESCRIPTION
+             DESCRIPTION
 
         OPTION1        OPTION2
 
@@ -337,7 +345,7 @@ class TUO(ShowBase):
                 "You have allocated less than 500MB to the game!",
                 "The game may crash and you may face lag!",
                 "I understand.",
-                "Okay."
+                "I will restart the game."
             )
 
     def quit(self):
@@ -350,3 +358,4 @@ class TUO(ShowBase):
         self.ambienceManager.running = False
         self.closeWindow(win=self.win)
         self.finalizeExit()
+        gc.collect()

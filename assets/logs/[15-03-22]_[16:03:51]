@@ -1,0 +1,38 @@
+[Worker/Thread-1/INFO]: PVM Environment: [/usr/bin/python3]
+[Worker/Bootstrap/INFO]: Trying to find any libraries that need to be installed.
+[Worker/Requirements/INFO]: Checking if library 'panda3d~=1.10.8' is installed or not.
+[Worker/LibInstaller/WARN]: Library 'panda3d~=1.10.8' is not installed for the virtual environment.
+[Worker/LibInstaller/INFO]: Installing library [panda3d~=1.10.8]; querying PyPi.
+[Worker/LibInstaller/WARN]: An error occured whilst trying to install a library: [Command '['/usr/bin/python3', '-m', 'pip', 'install', 'panda3d~=1.10.8']' returned non-zero exit status 1.]
+[Worker/Requirements/INFO]: Checking if library 'requests' is installed or not.
+[Worker/Requirements/INFO]: Checking if library 'pyglet' is installed or not.
+[Worker/LibInstaller/WARN]: Library 'pyglet' is not installed for the virtual environment.
+[Worker/LibInstaller/INFO]: Installing library [pyglet]; querying PyPi.
+[Worker/LibInstaller/WARN]: An error occured whilst trying to install a library: [Command '['/usr/bin/python3', '-m', 'pip', 'install', 'pyglet']' returned non-zero exit status 1.]
+[Worker/Requirements/INFO]: Checking if library 'pypresence' is installed or not.
+[Worker/LibInstaller/WARN]: Library 'pypresence' is not installed for the virtual environment.
+[Worker/LibInstaller/INFO]: Installing library [pypresence]; querying PyPi.
+[Worker/LibInstaller/WARN]: An error occured whilst trying to install a library: [Command '['/usr/bin/python3', '-m', 'pip', 'install', 'pypresence']' returned non-zero exit status 1.]
+[Worker/Requirements/INFO]: Checking if library 'DirectGuiExtension' is installed or not.
+[Worker/LibInstaller/WARN]: Library 'DirectGuiExtension' is not installed for the virtual environment.
+[Worker/LibInstaller/INFO]: Installing library [DirectGuiExtension]; querying PyPi.
+[Worker/LibInstaller/WARN]: An error occured whilst trying to install a library: [Command '['/usr/bin/python3', '-m', 'pip', 'install', 'DirectGuiExtension']' returned non-zero exit status 1.]
+[Worker/Requirements/INFO]: Checking if library 'pyttsx3' is installed or not.
+[Worker/LibInstaller/WARN]: Library 'pyttsx3' is not installed for the virtual environment.
+[Worker/LibInstaller/INFO]: Installing library [pyttsx3]; querying PyPi.
+[Worker/LibInstaller/WARN]: An error occured whilst trying to install a library: [Command '['/usr/bin/python3', '-m', 'pip', 'install', 'pyttsx3']' returned non-zero exit status 1.]
+[Worker/Requirements/INFO]: Checking if library 'psutil' is installed or not.
+[Worker/LibInstaller/WARN]: Library 'psutil' is not installed for the virtual environment.
+[Worker/LibInstaller/INFO]: Installing library [psutil]; querying PyPi.
+[Worker/LibInstaller/WARN]: An error occured whilst trying to install a library: [Command '['/usr/bin/python3', '-m', 'pip', 'install', 'psutil']' returned non-zero exit status 1.]
+[Worker/Requirements/INFO]: Checking if library 'pyscreenshot' is installed or not.
+[Worker/LibInstaller/WARN]: Library 'pyscreenshot' is not installed for the virtual environment.
+[Worker/LibInstaller/INFO]: Installing library [pyscreenshot]; querying PyPi.
+[Worker/LibInstaller/WARN]: An error occured whilst trying to install a library: [Command '['/usr/bin/python3', '-m', 'pip', 'install', 'pyscreenshot']' returned non-zero exit status 1.]
+[Worker/Requirements/INFO]: Checking if library 'pillow' is installed or not.
+[Worker/Requirements/INFO]: Checking if library 'psutil' is installed or not.
+[Worker/LibInstaller/WARN]: Library 'psutil' is not installed for the virtual environment.
+[Worker/LibInstaller/INFO]: Installing library [psutil]; querying PyPi.
+[Worker/LibInstaller/WARN]: An error occured whilst trying to install a library: [Command '['/usr/bin/python3', '-m', 'pip', 'install', 'psutil']' returned non-zero exit status 1.]
+[Worker/Bootstrap/INFO]: Library installation process complete.
+[Worker/Thread-1/INFO]: Pre-bootup client initialization complete, now changing into client mode.

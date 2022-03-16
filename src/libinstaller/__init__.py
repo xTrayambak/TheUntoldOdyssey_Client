@@ -25,9 +25,12 @@ def installAllLibraries():
         lib = lib.split("\n")[0]
         log(f"Checking if library '{lib}' is installed or not.", "Worker/Requirements")
         if not exists(lib):
-            warn(f"Library '{lib}' is not installed for the virtual environment.")
-            log(f"Installing library [{lib}]; querying PyPi.")
+            warn(f"Library '{lib}' is not installed for the virtual environment.", "Worker/LibInstaller")
+            log(f"Installing library [{lib}]; querying PyPi.", "Worker/LibInstaller")
         
-            call(
-                [executable, "-m", "pip", "install", lib]
-            )
+            try:
+                call(
+                    [executable, "-m", "pip", "install", lib]
+                )
+            except Exception as exc:
+                warn(f"An error occured whilst trying to install a library: [{exc}]", "Worker/LibInstaller")

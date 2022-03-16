@@ -25,12 +25,32 @@ from src.client.ui.text import Text
 
 from math import sin, pi
 
+FESTIVALS = {
+    "18-3": "Happy Holi!",
+    "1-4": "We are sad to announce, that Syntax Studios has went bankrupt.\nPlease refer to the Discord.\nTUO is no longer supported.",
+    "6-6": "Happy Birthday Trayambak!",
+    "25-12": "Merry Christmas!",
+}
+
 def mainMenu(instance, previous_state: int = 1):
     """
     Main menu, you can go to the settings menu or play from here, or exit.
     """
     ## Clear all UI. ##
     instance.clear()
+
+    time_split = ""
+    dash_count = 0
+
+    for _t in instance.date_info:
+        if _t == "-":
+            if dash_count > 2:
+                break
+            dash_count += 1
+        
+        time_split += _t
+
+    log(f"Simple day/month is {time_split}; checking if a festival is occuring.")
 
     edgegalaxy_font = instance.fontLoader.load("edgegalaxy")
     basic_font = instance.fontLoader.load("gentium_basic")
@@ -75,9 +95,9 @@ def mainMenu(instance, previous_state: int = 1):
         skybox.setPos(instance.camera, 0, 0, 0)
         skybox.setHpr(
             LVecBase3(
-                instance.clock.getFrameTime() / 2,
-                instance.clock.getFrameTime() / 2,
-                instance.clock.getFrameTime() / 2
+                instance.clock.getFrameTime() / 8,
+                instance.clock.getFrameTime() / 8,
+                instance.clock.getFrameTime() / 8
             )
         )
         return task.cont

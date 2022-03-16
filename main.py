@@ -12,7 +12,7 @@ argparser = ArgumentParser(
 
 DEFAULT_MEM = 1500
 
-argparser.add_argument("memory", 
+argparser.add_argument("memory",
                         metavar = "m",
                         type = int,
                         help = f"The maximum amount of memory the game can use. (Defaults to {DEFAULT_MEM} MB)",
@@ -53,7 +53,7 @@ class GameHandler:
             
             log("Setting client data path to ["+client_path+"]", "ClientPathDEBUG")
             os.chdir(client_path)
-            log("Client working directory patch completed! Fuck you POSIX! 🖕", "ClientDirectoryWorkaround")
+            log("Client working directory patch completed!", "ClientDirectoryWorkaround")
             
         log("Trying to find any libraries that need to be installed.", "Worker/Bootstrap")
         installAllLibraries()

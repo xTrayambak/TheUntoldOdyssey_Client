@@ -19,9 +19,11 @@
     "events.game.disconnected": "disconnected from the server",
     "events.game.connectionscreen": "connecting to the game server",
     
-    "events.player.slain": "you were slain by {}",
+    "events.player.slain": "yoe were slain by {}",
+    "events.player.slay": "you have slain {}",
     "events.player.potion_effect_start": "{} is applied on you and you have it's effects for {}",
     "events.player.potion_effect_end": "{}'s effects have worn off",
 
-    "technical.game.crash": "we are sorry, but the game has run into an error"
+    "technical.game.crash": "we are sorry, but the game has run into an error",
+    "technical.game.no_valid_renderer": "your graphics card is not capable of running the game properly, please upgrade your drivers if you believe this is inaccurate"
 }
