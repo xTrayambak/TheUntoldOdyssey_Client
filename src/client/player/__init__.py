@@ -20,9 +20,10 @@ class Player():
 
 		self.instance = instance
 		self.name = name
+		self.model = model
 
-		self.entity = Entity(name, instance, model, [0, 0, 0], True)
-		instance.workspace.world.attachRigidBody(self.entity.node)
+		self.entity = None
+		'''instance.workspace.world.attachRigidBody(self.entity.node)'''
 
 		self.keymaps = {
 			"forward": False,
@@ -38,6 +39,9 @@ class Player():
 		self.instance.spawnNewTask(
 			"player_update", self.update
 		)
+
+	def giveEntity(self):
+		self.entity = Entity(self.name, self.instance, self.model, [0, 0, 0], True)
 
 	def vignette(self):
 		if not getSetting("video", "vignette"): return
@@ -79,45 +83,46 @@ class Player():
 		self.vignetteOverlay.set_shader_input("resolution", (self.instance.win.getXSize(), self.instance.win.getYSize()))
 
 	async def update(self, task):
-		if self.instance.state != self.instance.states_enum.INGAME:
-			return Task.done
+		if self.entity is not None:
+			if self.instance.state != self.instance.states_enum.INGAME:
+				return Task.done
 
-		if self.instance.state != self.instance.states_enum.INGAME: return
-		movement_factor = MOVEMENT_SPEED * self.instance.clock.dt
-		pos = self.entity.getPos()
+			if self.instance.state != self.instance.states_enum.INGAME: return
+			movement_factor = MOVEMENT_SPEED * self.instance.clock.dt
+			pos = self.entity.getPos()
 
-		if self.keymaps["forward"]:
-			self.entity.setPos(
-				[
-					pos[0] + movement_factor,
-					pos[1],
-					pos[2]
-				]
-			)
-		elif self.keymaps["backward"]:
-			self.entity.setPos(
-				[
-					pos[0] - movement_factor,
-					pos[1],
-					pos[2]
-				]
-			)
-		elif self.keymaps["left"]:
-			self.entity.setPos(
-				[
-					pos[0],
-					pos[1],
-					pos[2] + movement_factor
-				]
-			)
-		elif self.keymaps["right"]:
-			self.entity.setPos(
-				[
-					pos[0],
-					pos[1],
-					pos[2] - movement_factor
-				]
-			)
+			if self.keymaps["forward"]:
+				self.entity.setPos(
+					[
+						pos[0] + movement_factor,
+						pos[1],
+						pos[2]
+					]
+				)
+			elif self.keymaps["backward"]:
+				self.entity.setPos(
+					[
+						pos[0] - movement_factor,
+						pos[1],
+						pos[2]
+					]
+				)
+			elif self.keymaps["left"]:
+				self.entity.setPos(
+					[
+						pos[0],
+						pos[1],
+						pos[2] + movement_factor
+					]
+				)
+			elif self.keymaps["right"]:
+				self.entity.setPos(
+					[
+						pos[0],
+						pos[1],
+						pos[2] - movement_factor
+					]
+				)
 
 		return Task.cont
 

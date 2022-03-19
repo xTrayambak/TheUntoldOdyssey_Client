@@ -6,8 +6,10 @@ from src.log import *
 from src.client.settingsreader import getSetting
 
 class NarratorUtil:
-    def __init__(self):
+    def __init__(self, instance):
         self.engine = None
+        self.instance = instance
+        
         try:
             self.engine = pyttsx3.init()
         except Exception as exc:
@@ -37,7 +39,7 @@ class NarratorUtil:
         """
         if self.enabled != True: return self.enabled
 
-        self.pool.apply_async(self._say, (text,))
+        self.pool.apply_async(self._say, (self.instance.narratorDialogFinder.get_dialog(text)))
 
         return True
 

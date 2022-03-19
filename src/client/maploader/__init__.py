@@ -31,9 +31,23 @@ class MapLoader:
                     self.instance.workspace.objects["shaders"][1]["shader"]
                 )
 
+                map.set_shader_input(
+                    "frameTime",
+                    self.instance.clock.getFrameTime()
+                )
+
                 map.setPos(
                     (x*Chunk.SIZE_X, y*Chunk.SIZE_Y, 0)
                 )
+
+                async def task_(task):
+                    map.set_shader_input(
+                        "frameTime",
+                        self.instance.clock.getFrameTime()
+                    )
+                    return task.cont
+
+                self.instance.spawnNewTask("funnyTask", task_)
 
     def load(self):
         self.chunkLoaderTask()

@@ -1,3 +1,4 @@
+from datetime import datetime
 from distutils.command.sdist import sdist
 import json
 import sys
@@ -26,10 +27,11 @@ from src.client.ui.text import Text
 from math import sin, pi
 
 FESTIVALS = {
-    "18-3": "Happy Holi!",
-    "1-4": "We are sad to announce, that Syntax Studios has went bankrupt.\nPlease refer to the Discord.\nTUO is no longer supported.",
-    "6-6": "Happy Birthday Trayambak!",
+    "18-03": "Happy Holi!",
+    "01-04": "We are sad to announce, that Syntax Studios has went bankrupt.\nPlease refer to the Discord.\nTUO is no longer supported.",
+    "06-06": "Happy Birthday Trayambak!",
     "25-12": "Merry Christmas!",
+    "18-01": "We all must strive for a free internet, with no monopolies!"
 }
 
 def mainMenu(instance, previous_state: int = 1):
@@ -38,19 +40,6 @@ def mainMenu(instance, previous_state: int = 1):
     """
     ## Clear all UI. ##
     instance.clear()
-
-    time_split = ""
-    dash_count = 0
-
-    for _t in instance.date_info:
-        if _t == "-":
-            if dash_count > 2:
-                break
-            dash_count += 1
-        
-        time_split += _t
-
-    log(f"Simple day/month is {time_split}; checking if a festival is occuring.")
 
     edgegalaxy_font = instance.fontLoader.load("edgegalaxy")
     basic_font = instance.fontLoader.load("gentium_basic")
@@ -111,7 +100,7 @@ def mainMenu(instance, previous_state: int = 1):
     ## Networking stuff ##
     addr, port = getSetting("networking", "proxy")[0]["ip"], getSetting("networking", "proxy")[0]["port"]
     def _cmd_ingame():  
-        instance.networkClient.connect()
+        instance.networkClient.connect(addr, port)
 
     def _cmd_settings():
         instance.change_state(2)
@@ -154,8 +143,16 @@ def mainMenu(instance, previous_state: int = 1):
         text_font = default_font,
         instance = instance
     )
+    splash_txt = random.choice(SPLASHES)
+    time_split = datetime.now().strftime("%d-%m")
 
-    splash_screen_text = Text(instance, basic_font, random.choice(SPLASHES), 0.09, (0.5, 0, 0.5))
+    log(f"Simple day/month is {time_split}; checking if a festival is occuring.")
+
+    if time_split in FESTIVALS:
+        log(f"Festival found! Splash screen set to [{FESTIVALS[time_split]}]")
+        splash_txt = FESTIVALS[time_split]
+
+    splash_screen_text = Text(instance, basic_font, splash_txt, 0.09, (0.5, 0, 0.5))
     splash_screen_text.setHpr(LVecBase3(-8.8, 0, -8.8))
 
     instance.spawnNewTask(

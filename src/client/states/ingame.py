@@ -38,7 +38,6 @@ def inGameState(instance, previous_state: int = 1):
     shaders = loadAllShaders()
     for _shd in shaders:
         instance.workspace.objects["shaders"].append(_shd)
-    #instance.state = GameStates.INGAME
     log("The player is in-game now.")
 
     instance.mapLoader.load()

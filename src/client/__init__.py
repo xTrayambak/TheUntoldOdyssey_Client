@@ -68,9 +68,9 @@ class TUO(ShowBase):
         self.workspace.init(self)
         self.ambienceManager = AmbienceManager()
         self.networkClient = NetworkClient(self)
-        self.narrator = NarratorUtil()
+        self.narratorDialogFinder = NarratorDialogFinder(getSetting("language"))
+        self.narrator = NarratorUtil(self)
         self.translator = TranslationUtility(getSetting("language"))
-        self.narratorDialogUtility = NarratorDialogFinder(getSetting("language"))
         self.recordingUtil = RecordingUtil(self)
         self.rpcManager = None
         
@@ -345,7 +345,8 @@ class TUO(ShowBase):
                 "You have allocated less than 500MB to the game!",
                 "The game may crash and you may face lag!",
                 "I understand.",
-                "I will restart the game."
+                "I will restart the game.",
+                exitFunc = self.quit
             )
 
     def quit(self):
@@ -356,6 +357,6 @@ class TUO(ShowBase):
                     self.finalizeExit
         """
         self.ambienceManager.running = False
+        gc.collect()
         self.closeWindow(win=self.win)
         self.finalizeExit()
-        gc.collect()

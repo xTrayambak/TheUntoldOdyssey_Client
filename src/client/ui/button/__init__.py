@@ -2,11 +2,14 @@ from direct.gui.DirectButton import DirectButton
 from direct.gui import DirectGuiGlobals as DGG
 
 class Button():
-    def __init__(self, instance, text: str, scale: float = 0.1, text_scale: float = 0.1, pos = (0, 0, 0), command = None, text_font = None, parent = None) -> None:
+    def __init__(self, instance, text: str, scale: float = 0.1, text_scale: float = 0.1, pos = (0, 0, 0), command = None, text_font = None, parent = None, hover_text: str = "button.play.hover", click_text: str = "button.play.click") -> None:
         self.text = text
         def command_extra():
-            instance.narrator.say(f"button click {self.text}")
+            instance.narrator.say(click_text)
             if command != None: command()
+
+        self.click_text = click_text
+        self.hover_text = hover_text
 
         self.direct = DirectButton(
             text = text,
@@ -34,4 +37,4 @@ class Button():
         self.direct.show()
 
     def on_hover(self, args) -> None:
-        self.instance.narrator.say(self.text)
+        self.instance.narrator.say(self.hover_text)

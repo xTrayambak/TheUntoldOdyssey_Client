@@ -8,3 +8,5 @@ psutil
 pyscreenshot
 pillow
 psutil
+pyenet
+protobuf

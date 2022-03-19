@@ -9,6 +9,9 @@ from src.client.syntaxutil.tuoexceptions import OutOfMemoryError, OpenGLError, A
 from src.client.shared import DATA_PROVIDER
 
 def percent(up, down):
+    """
+    I forgor (💀) exact terms of division fraction, so I use up and down.
+    """
     return (up / down) * 100
 
 class SyntaxUtil:
@@ -30,7 +33,7 @@ class SyntaxUtil:
         max_mem = self.instance.max_mem
 
         used = memory_usage - max_mem
-        _p = percent(up=used, down=max_mem)
+        _p = percent(up=used, down=max_mem) * -1
 
         if _p > 95 and _p < 99:
             gc.collect()

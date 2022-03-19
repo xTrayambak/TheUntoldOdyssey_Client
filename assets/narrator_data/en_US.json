@@ -2,10 +2,18 @@
     "button.play.hover": "hover over play button",
     "button.quit.hover": "hover over quit button",
     "button.settings.hover": "hover over settings button",
+    "button.accessibility.hover": "hover over accessibility button",
+    "button.video.hover": "hover over video settings button",
+    "button.audio.hover": "hover over audio settings button",
+    "button.account.hover": "hover over account settings button",
     
     "button.play.click": "click play button",
     "button.quit.click": "click quit button",
     "button.settings.click": "click settings button",
+    "button.accessibility.click": "click accessibility button",
+    "button.video.click": "click video settings button",
+    "button.audio.click": "click audio settings button",
+    "button.account.click": "click account settings button",
     
     "events.weather.thunder": "thunder has begun",
     "events.weather.clear": "the weather has cleared",

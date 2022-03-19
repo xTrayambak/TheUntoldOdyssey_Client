@@ -12,10 +12,10 @@ class Authenticator:
     def start_auth(self):
         log("Authenticator is starting auth process...", "Worker/Authenticator")
 
-        self.session = Session()
+        """self.session = Session()
         try:
             self.session.authenticate(self.instance, self.instance.token)
         except Exception as e:
-            warn(f"Authentication failed: [{e}]")
+            warn(f"Authentication failed: [{e}]")"""
 
         log("Authenticator has completed it's auth process...", "Worker/Authenticator")
