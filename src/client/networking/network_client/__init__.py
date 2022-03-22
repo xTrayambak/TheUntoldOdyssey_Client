@@ -5,14 +5,14 @@ from src.client.settingsreader import getSetting
 from src.client.util.conversion import *
 from src.client.game import Game
 from src.client.game.entity import Entity
-from src.client.networking.encoding import encode_object, decode_object
-from src.client.networking.packets import *
 
-import enet
+import pydatanet
 
 import ast
 import time
 import threading
+
+from multiprocessing.pool import ThreadPool
 
 class NetworkClient:
     def __init__(self, instance):
@@ -28,47 +28,38 @@ class NetworkClient:
         log(f"Connecting to [{addr}:{port}]", "Worker/Network")
         
         self.connectingTo = f"{addr}:{port}"
-        self.server = enet.Host(None, 1, 0, 0, 0)
-        self.connection = self.server.connect(enet.Address(bytes(addr.encode('utf-8')), port), 1)
+        self.instance.change_state(5)
+        self.server = pydatanet.Client()
+        try:
+            self.server.connect(addr, port, autoPoll=False)
+            self.instance.spawnNewTask('heartbeat-internal-pydatanet', self.server._heartbeat)
+            self.instance.change_state(3)
+        except Exception as exc:
+            self.instance.workspace.getComponent("ui", "connecting_screen_status").node().setText(f"Internal exception: {exc}")
         
-        log("Connection established! Now spawning tasks...", "Worker/Network")
-        threading.Thread(target=self.poll, args=())
+        self.server.hook_tcp_recv(self.on_packet_receive)
+
 
     def send(self, data):
         """
         Send data to the server.
         """
-        pass
+        self.server.send(data)
 
     def on_packet_receive(self, packet):
         """
         Receive data from the server.
         """
-        pass
+        print(packet)
 
     def keep_alive_task(self):
         """
         Make sure the server doesn't think we disconnected.
         """
-        self.send(
-            KeepAlivePacket()
-        )
+        self.send("keep-alive")
 
     def _poll(self):
-        event = self.server.service(1000)
-
-        if event.type == enet.EVENT_TYPE_CONNECT:
-            log("The server is now allowing us to send/receive packets properly.", "Worker/Network")
-        elif event.type == enet.EVENT_TYPE_DISCONNECT:
-            log("The server has disconnected us!", "Worker/Network")
-            return -1
-        elif event.type == enet.EVENT_TYPE_RECEIVE:
-            log("Packet received!", "Worker/Network")
-            self.on_packet_receive(event.packet.data)
-        
-        return 1
+        self.keep_alive_task()
 
     def poll(self):
-        while True:
-            r = self._poll()
-            if r == -1: break
+        self.instance.spawnNewTask('poll-network', self._poll)

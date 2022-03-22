@@ -63,7 +63,7 @@ def connectingPage(instance, previous_state: int = 1):
         command = back_cmd
     )
 
-    back_button.hide()
+    #back_button.hide()
 
     label_connecting = TextNode(name = "node_text_connect")
     label_connecting.setText(f"Connecting to [{instance.networkClient.connectingTo}]; locating host and establishing connection.")
