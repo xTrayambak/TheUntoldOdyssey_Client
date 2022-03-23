@@ -32,7 +32,11 @@ class NetworkClient:
         self.server = pydatanet.Client()
         try:
             self.server.connect(addr, port, autoPoll=False)
-            self.instance.spawnNewTask('heartbeat-internal-pydatanet', self.server._heartbeat)
+            def heartbeat(task): 
+                self.server._heartbeat() 
+                return task.cont
+                
+            self.instance.spawnNewTask('heartbeat-internal-pydatanet', heartbeat)
             self.instance.change_state(3)
         except Exception as exc:
             self.instance.workspace.getComponent("ui", "connecting_screen_status").node().setText(f"Internal exception: {exc}")
