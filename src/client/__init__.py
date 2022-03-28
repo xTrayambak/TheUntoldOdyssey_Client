@@ -37,6 +37,7 @@ from src.client.settingsreader import *
 from src.client.recordingutil import RecordingUtil
 from src.client.syntaxutil.authlib import Authenticator
 from src.client.narrator_dialog_finder import NarratorDialogFinder
+from src.client.hardware import HardwareUtil
 
 from src.client.ui.text import *
 from src.client.ui.button import *
@@ -72,7 +73,11 @@ class TUO(ShowBase):
         self.narrator = NarratorUtil(self)
         self.translator = TranslationUtility(getSetting("language"))
         self.recordingUtil = RecordingUtil(self)
+        self.hardwareUtil = HardwareUtil()
+        self.hardwareUtil.get()
         self.rpcManager = None
+
+        log(f"GL VERSION: {self.hardwareUtil.gl_version} \n VENDOR: {self.hardwareUtil.gpu_vendor}")
         
         self.clock = ClockObject()
 
@@ -141,6 +146,7 @@ class TUO(ShowBase):
         self.inputManager.hook()
 
         self.paused = False
+        self.renderPipeline = None
 
         self.clock.setMode(ClockObject.MForced)
 
@@ -348,6 +354,24 @@ class TUO(ShowBase):
                 "I will restart the game.",
                 exitFunc = self.quit
             )
+        
+        if self.hardwareUtil.gl_version[0] == 4 and self.hardwareUtil.gl_version[1] < 2:
+            warn(f"This GPU does not support OpenGL 4.3! {self.hardwareUtil.gl_version}", "Worker/Hardware")
+            
+            settings = getAllSettings()
+            settings['video']['pbr'] = False
+
+            dumpSetting(settings)
+            self.warn("Your GPU does not support OpenGL 4.3!", "The game will run as usual,\nhowever, features like PBR will\nnot work. If you have a new GPU, try updating\nyour drivers.", "OK.", "OK.")
+        else:
+            log("This GPU does support OpenGL 4.3!", "Worker/Hardware")
+            if getSetting("video", "pbr") == True:
+                log("Initializing tobspr's render pipeline! May the ricing begin!", "Worker/PBR")
+                sys.path.insert(0, "src/client/render_pipeline")
+                from src.client.render_pipeline.rpcore.render_pipeline import RenderPipeline
+                self.renderPipeline = RenderPipeline()
+                #self.renderPipeline.daytime_mgr.time = "11:55"
+                self.renderPipeline.prepare_scene(self.render)
 
     def quit(self):
         """

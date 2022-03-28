@@ -21,33 +21,11 @@ class MapLoader:
         self.instance = instance
 
     def chunkLoaderTask(self):
-        for x in range(8):
-            for y in range(8):
-                map = self.instance.objectLoader.loadObject(
-                    "chunk_test"
-                )
+            map = self.instance.objectLoader.loadObject(
+                "map_area_starting_plains"
+            )
+            map.setTexture(self.instance.textureLoader.loadTexture('terrain_grass_1'))
 
-                map.setShader(
-                    self.instance.workspace.objects["shaders"][1]["shader"]
-                )
-
-                map.set_shader_input(
-                    "frameTime",
-                    self.instance.clock.getFrameTime()
-                )
-
-                map.setPos(
-                    (x*Chunk.SIZE_X, y*Chunk.SIZE_Y, 0)
-                )
-
-                async def task_(task):
-                    map.set_shader_input(
-                        "frameTime",
-                        self.instance.clock.getFrameTime()
-                    )
-                    return task.cont
-
-                self.instance.spawnNewTask("funnyTask", task_)
 
     def load(self):
         self.chunkLoaderTask()

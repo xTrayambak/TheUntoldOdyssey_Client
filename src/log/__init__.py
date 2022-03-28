@@ -5,10 +5,10 @@ from datetime import datetime
 time_now = datetime.now()
 
 date_info = time_now.strftime("%d-%m-%y")
-time_info = time_now.strftime('%H:%M:%S')
+time_info = time_now.strftime('%H %M %S')
 
 fileHandler = logging.FileHandler(
-    f'assets/logs/[{date_info}]_[{time_info}]'
+    f'assets/logs/{date_info} {time_info}'
 )
 logger = logging.getLogger()
 logger.addHandler(fileHandler)

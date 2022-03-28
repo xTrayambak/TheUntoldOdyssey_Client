@@ -57,7 +57,7 @@ def mainMenu(instance, previous_state: int = 1):
         getAsset("splash_texts", "path")
     ).readlines()
 
-    skybox = instance.objectLoader.loadObject("skybox")
+    '''skybox = instance.objectLoader.loadObject("skybox")
     skybox.reparentTo(instance.render)
     skybox.set_two_sided(True)
     skybox.set_bin("background", 0)
@@ -92,7 +92,7 @@ def mainMenu(instance, previous_state: int = 1):
         return task.cont
 
     instance.spawnNewTask("skyboxTask", skyboxTask)
-    instance.spawnNewTask("cameraSpinTask", cameraSpinTask)
+    instance.spawnNewTask("cameraSpinTask", cameraSpinTask)'''
 
 
     log("The player is currently on the main menu.")
