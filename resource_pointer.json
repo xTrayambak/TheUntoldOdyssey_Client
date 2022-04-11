@@ -51,8 +51,8 @@
         "player": {"path": "assets/models/monke.egg"},
         "skybox": {"path": "assets/models/skybox1024.egg"},
         "chunk_test": {"path": "assets/models/map_chunk_placeholder.obj"},
-        "map_area_starting_plains": "assets/models/map_area_starting_plains.obj",
-        "map_area_starting_plains_decoration": "assets/models/map_area_start5ing_decoration.obj"
+        "map_area_starting_plains": {"path": "assets/models/map_area_starting_plains.obj"},
+        "map_area_starting_plains_decoration": {"path": "assets/models/map_area_start5ing_decoration.obj"}
     },
     "mapobjects": {
         "path": "assets/cache/objects.json"

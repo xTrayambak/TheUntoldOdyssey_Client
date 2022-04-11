@@ -1,7 +1,7 @@
 import os
 
-INSTALL_ESPEAK = "pacman -Sy espeak"
-INSTALL_GLUT = "pacman -Sy freeglut"
+INSTALL_ESPEAK = "pacman -S espeak"
+INSTALL_GLUT = "pacman -S freeglut"
 
 def patch():
     os.system(INSTALL_ESPEAK)

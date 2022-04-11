@@ -5,14 +5,12 @@ from src.client.settingsreader import getSetting
 from src.client.util.conversion import *
 from src.client.game import Game
 from src.client.game.entity import Entity
+from src.client.util.conversion import encode, decode
 
-import pydatanet
-
-import ast
-import time
-import threading
-
-from multiprocessing.pool import ThreadPool
+from panda3d.core import QueuedConnectionManager
+from panda3d.core import QueuedConnectionReader
+from panda3d.core import ConnectionWriter
+from direct.distributed.PyDatagram import PyDatagram
 
 class NetworkClient:
     def __init__(self, instance):
@@ -24,45 +22,65 @@ class NetworkClient:
 
         self.last_packet_ms = 0
 
+        self.cManager = QueuedConnectionManager()
+        self.cReader = QueuedConnectionReader(self.cManager, 0)
+        self.cWriter = ConnectionWriter(self.cManager, 0)
+
     def connect(self, addr: str, port: int):
         log(f"Connecting to [{addr}:{port}]", "Worker/Network")
         
         self.connectingTo = f"{addr}:{port}"
         self.instance.change_state(5)
-        self.server = pydatanet.Client()
+        self.instance.workspace.getComponent("ui", "connecting_screen_status").node().setText(f"Connecting to {self.connectingTo}")
         try:
-            #self.server.connect(addr, port, autoPoll=False)
-            '''def heartbeat(task): 
-                self.server._heartbeat() 
-                return task.cont
-                '''
-            #self.instance.spawnNewTask('heartbeat-internal-pydatanet', heartbeat)
-            self.instance.change_state(3)
+            log(f"Attempting to connect to ({addr}:{port})", "Worker/Network")
+            async def __inner_conntask(task):
+                await task.pause(.5)
+                self.connection = self.cManager.openTCPClientConnection(addr, port, 256)
+                if self.connection is None:
+                    self.instance.workspace.getComponent("ui", "connecting_screen_status").node().setText(f"Failed to establish connection; the servers are likely down.")
+                    return
+                self.cReader.addConnection(self.connection)
+                self.instance.change_state(3)
+                return task.done
+            self.instance.spawnNewTask('__inner_conntask', __inner_conntask)
+
+            log(f"Connected to ({addr}:{port})", "Worker/Network")
         except Exception as exc:
-            raise exc
-            warn(f"An error occured whilst connecting to the server. [{exc.__traceback__}]", "Worker/NetworkClient/Exception")
-            #self.instance.workspace.getComponent("ui", "connecting_screen_status").node().setText(f"Internal exception: {exc}")
-        
-        self.server.hook_tcp_recv(self.on_packet_receive)
-
-
+            warn(f"An error occured whilst connecting to the server.\n{exc}", "Worker/NetworkClient/Exception")
+            self.instance.workspace.getComponent("ui", "connecting_screen_status").node().setText(f"Internal exception: {exc}")
+            
     def send(self, data):
         """
         Send data to the server.
         """
-        self.server.send(data)
+        datagram = PyDatagram(encode(data))
+        self.cWriter.send(datagram, self.connection)
 
     def on_packet_receive(self, packet):
         """
         Receive data from the server.
         """
-        print(packet)
+        log(packet)
 
     def keep_alive_task(self):
         """
         Make sure the server doesn't think we disconnected.
         """
-        self.send("keep-alive")
+        self.send(
+            {
+                "type": "keep-alive"
+            }
+        )
+
+    def disconnect(self):
+        self.send(
+            {
+                "type": "disconnect",
+                "reason": "unknown"
+            }
+        )
+        self.cManager.closeConnection(self.connection)
 
     def _poll(self):
         self.keep_alive_task()

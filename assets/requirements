@@ -1,4 +1,4 @@
-panda3d~=1.10.8
+panda3d==1.10.11
 requests
 pyglet
 pypresence
@@ -9,3 +9,4 @@ pyscreenshot
 pillow
 psutil
 pydatanet
+distro

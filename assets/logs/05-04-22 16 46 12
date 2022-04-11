@@ -1,0 +1,59 @@
+[Worker/Thread-1/INFO]: PVM Environment: [/usr/sbin/python]
+[Worker/Bootstrap/INFO]: Trying to find any libraries that need to be installed.
+[Worker/Requirements/INFO]: Checking if library 'panda3d==1.10.11' is installed or not.
+[Worker/Requirements/INFO]: Checking if library 'requests' is installed or not.
+[Worker/Requirements/INFO]: Checking if library 'pyglet' is installed or not.
+[Worker/Requirements/INFO]: Checking if library 'pypresence' is installed or not.
+[Worker/Requirements/INFO]: Checking if library 'DirectGuiExtension' is installed or not.
+[Worker/Requirements/INFO]: Checking if library 'pyttsx3' is installed or not.
+[Worker/Requirements/INFO]: Checking if library 'psutil' is installed or not.
+[Worker/Requirements/INFO]: Checking if library 'pyscreenshot' is installed or not.
+[Worker/Requirements/INFO]: Checking if library 'pillow' is installed or not.
+[Worker/Requirements/INFO]: Checking if library 'psutil' is installed or not.
+[Worker/Requirements/INFO]: Checking if library 'pydatanet' is installed or not.
+[Worker/Requirements/INFO]: Checking if library 'distro' is installed or not.
+[Worker/Bootstrap/INFO]: Library installation process complete.
+[Worker/Thread-1/INFO]: Pre-bootup client initialization complete, now changing into client mode.
+[Worker/Thread-1/INFO]: Changed into client mode. Now, the client code is going to be run.
+[Worker/Thread-1/INFO]: The Untold Odyssey 0.1.2 loaded up!
+[Worker/Thread-1/INFO]: Initializing Panda3D rendering engine.
+[Worker/Thread-1/INFO]: Panda3D initialized.
+[NARRATORDATA/INFO]: assets/narrator_data/en_US.json
+[Worker/Thread-1/WARN]: UNABLE TO INITIALIZE TEXT2SPEECH ENGINE! [libespeak.so.1: cannot open shared object file: No such file or directory]
+[Worker/Thread-1/INFO]: Narrator is disabled.
+[Worker/Thread-1/INFO]: Loading translations for language [en_US]
+[Worker/Thread-1/INFO]: GL VERSION: [4, 5] 
+ VENDOR: AMD
+[Worker/Thread-1/INFO]: Panda3D lib location: [/home/trayambak/.local/lib/python3.10/site-packages/panda3d/__init__.py]
+[Worker/Thread-1/INFO]: Entity [playertest_default] initialized.
+[Worker/TimeDetector/INFO]: Date info: 05-04-22
+Time info: 16:46:12
+[Worker/Config/INFO]: Syntax Studios account token is [no-tok-provided]
+[Worker/Thread-1/INFO]: An error occured whilst initializing the game. [name 'memor_max' is not defined]
+[Worker/Thread-1/INFO]: ========
+SENDING TELEMETRY DATA TO SYNTAX STUDIOS SERVERS!
+========
+[Worker/Telemetry/WARN]: An error occured whilst sending telemetry data!
+local variable 'data' referenced before assignment
+[31m[Worker/Thread-1/FATAL]: 
+    The game has crashed, exiting.
+
+    # You should try listening to the Minecraft OST!
+
+    Configurations:
+    GPU: ~~NONE~~: PYGLET NOT INSTALLED.
+    Vendor: ~~NONE~~: PYGLET NOT INSTALLED.
+    OpenGL version: ~~NONE~~: PYGLET NOT INSTALLED.
+    OpenGL extensions loaded: ~~NONE~~: PYGLET NOT INSTALLED.
+
+    The Untold Odyssey Version: ~~INSTANCE NOT INITIALIZED, VERSION NOT FOUND~~
+    Python version: 3.10.2 (main, Jan 15 2022, 19:56:27) [GCC 11.1.0]
+
+    Platform: linux
+
+    Full traceback (sys.exc_info):
+    NameError: name 'memor_max' is not defined
+
+    [IF YOUR GAME IS MODDED, CONTACT THE MOD DEVELOPERS FIRST BEFORE CONTACTING US.]
+    [The Untold Odyssey, developed by Syntax Studios (2022)]
+    [0m

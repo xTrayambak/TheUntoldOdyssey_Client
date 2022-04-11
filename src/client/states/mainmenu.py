@@ -28,7 +28,8 @@ from math import sin, pi
 
 FESTIVALS = {
     "18-03": "Happy Holi!",
-    "01-04": "We are sad to announce, that Syntax Studios has went bankrupt.\nPlease refer to the Discord.\nTUO is no longer supported.",
+    "01-04": "Happy Hindu New Year!",
+    "02-04": "Eid Mubarak!",
     "06-06": "Happy Birthday Trayambak!",
     "25-12": "Merry Christmas!",
     "18-01": "We all must strive for a free internet, with no monopolies!"
@@ -57,7 +58,7 @@ def mainMenu(instance, previous_state: int = 1):
         getAsset("splash_texts", "path")
     ).readlines()
 
-    '''skybox = instance.objectLoader.loadObject("skybox")
+    skybox = Object(instance, "skybox")
     skybox.reparentTo(instance.render)
     skybox.set_two_sided(True)
     skybox.set_bin("background", 0)
@@ -81,7 +82,7 @@ def mainMenu(instance, previous_state: int = 1):
         return task.cont
 
     def skyboxTask(task):
-        skybox.setPos(instance.camera, 0, 0, 0)
+        skybox.setPos((0, 0, 0))
         skybox.setHpr(
             LVecBase3(
                 instance.clock.getFrameTime() / 8,
@@ -92,7 +93,7 @@ def mainMenu(instance, previous_state: int = 1):
         return task.cont
 
     instance.spawnNewTask("skyboxTask", skyboxTask)
-    instance.spawnNewTask("cameraSpinTask", cameraSpinTask)'''
+    instance.spawnNewTask("cameraSpinTask", cameraSpinTask)
 
 
     log("The player is currently on the main menu.")
@@ -109,10 +110,20 @@ def mainMenu(instance, previous_state: int = 1):
 
     tuoLogo_tex = instance.loader.loadTexture(getAsset("images", "logo_default"))
 
+    """tuoLogo = CardMaker(
+        'tuoLogo'
+    )
+
+    tuoLogo_card = instance.render.attachNewNode(tuoLogo.generate())
+    tuoLogo_card.setPos(LVecBase3(-0, 0, 0.5))
+    tuoLogo_card.setScale((1, 1, 1))
+
+    tuoLogo_card.setTexture(tuoLogo_tex)"""
+
     tuoLogo = OnscreenImage(
         image = tuoLogo_tex,
         pos = LVecBase3(-0, 0, 0.5),
-        scale = (1, 1, 1)
+        scale = (0.5, 1, 0.5)
     )
 
     tuoLogo.setTransparency(TransparencyAttrib.MAlpha)

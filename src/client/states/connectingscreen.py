@@ -21,13 +21,6 @@ from src.client.tasks import *
 
 from src.client.ui.button import Button
 from src.client.ui.text import Text
-
-if sys.platform != 'linux':
-    from pyglet.gl import gl_info as gpu_info
-else:
-    class gpu_info:
-        def get_version():
-            return "Unable to detect GPU."
             
 from math import sin, pi
 
@@ -90,7 +83,7 @@ def connectingPage(instance, previous_state: int = 1):
     label_artistNode.setScale(0.07)
 
     label_gpu = TextNode(name = "node_text_gpu")
-    label_gpu.setText("OpenGL " +gpu_info.get_version())
+    label_gpu.setText("OpenGL " +instance.hardwareUtil.gl_version_string_detailed)
     label_gpu.setTextColor((0,0,0,1))
     label_gpu.setAlign(TextNode.ALeft)
     label_gpu.setFont(mangabey_font)

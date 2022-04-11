@@ -30,6 +30,11 @@ STATUS_TO_STR = {
     "NO.": "Offline; likely crashed."
 }
 
+BOOL_TO_STR = {
+    True: "On",
+    False: "Off"
+}
+
 def settingsPage(instance, previous_state: int = 1):
     """
     The settings page.
@@ -208,6 +213,18 @@ def settingsPage(instance, previous_state: int = 1):
     fps_slider = DirectSlider(
         range = (10, 240), value = settings['video']['max_framerate'], pageSize = 3, command = FPS_change,
         scale = 0.5, pos = (-0.2, 0, 0.5),
+        parent = videoFrame
+    )
+
+    def pbrToggle():
+        settings['video']['pbr'] = not settings['video']['pbr']
+        pbr_toggle.setText(f"PBR [requires restart]: {BOOL_TO_STR[getSetting('video', 'pbr')]}")
+
+    pbr_toggle = Button(instance, f"PBR [requires restart]: {BOOL_TO_STR[getSetting('video', 'pbr')]}",
+        text_scale = 0.1,
+        pos = (-0.2, 0, -0.2),
+        text_font = basicFont,
+        command = pbrToggle,
         parent = videoFrame
     )
 

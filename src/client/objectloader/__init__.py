@@ -12,7 +12,7 @@ class ObjectLoader:
     def loadObject(self, name, texture: str = None, loadFromCache: bool = True):
         #if name in self.cache and loadFromCache: return self.cache[name]
 
-        path = getAsset("models", name)
+        path = getAsset("models", name)['path']
 
         #log(f"Loading 3D model '{name}' ({path})")
 

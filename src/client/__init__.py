@@ -15,7 +15,6 @@ from direct.task import Task
 from panda3d.core import loadPrcFile
 from panda3d.core import WindowProperties
 from panda3d.core import ClockObject
-from multiprocessing.pool import ThreadPool
 from datetime import datetime
 
 from src.log import log, warn
@@ -38,14 +37,16 @@ from src.client.recordingutil import RecordingUtil
 from src.client.syntaxutil.authlib import Authenticator
 from src.client.narrator_dialog_finder import NarratorDialogFinder
 from src.client.hardware import HardwareUtil
+from src.client.browserutil import BrowserUtil
+from src.client.audioloader import AudioLoader
+
+from src.client import shared
 
 from src.client.ui.text import *
 from src.client.ui.button import *
 
 import gc
-import threading
 import os
-import pathlib
 
 VERSION = open("VER").read()
 
@@ -53,6 +54,9 @@ PROPERTIES = WindowProperties()
 PROPERTIES.setTitle("The Untold Odyssey {} | Main Menu".format(VERSION))
 
 class TUO(ShowBase):
+    """
+    Initialize the game client.
+    """
     def __init__(self, memory_max: int = 800, token: str = ""):
         log(f"The Untold Odyssey {VERSION} loaded up!")
         log("Initializing Panda3D rendering engine.")
@@ -74,6 +78,7 @@ class TUO(ShowBase):
         self.translator = TranslationUtility(getSetting("language"))
         self.recordingUtil = RecordingUtil(self)
         self.hardwareUtil = HardwareUtil()
+        self.audioLoader = AudioLoader(self)
         self.hardwareUtil.get()
         self.rpcManager = None
 
@@ -148,6 +153,8 @@ class TUO(ShowBase):
         self.paused = False
         self.renderPipeline = None
 
+        self.browser = BrowserUtil()
+
         self.clock.setMode(ClockObject.MForced)
 
         log(f"Max framerate is capped to [{self.settings['video']['max_framerate']}] FPS.")
@@ -181,6 +188,9 @@ class TUO(ShowBase):
             self.workspace.getComponent("ui", "settings_button").hide()
             self.workspace.getComponent("ui", "paused_text").hide()
             self.workspace.getComponent("ui", "return_to_menu_button").hide()
+
+    def getSharedData(self):
+        return shared
 
     def warn(self, title: str="Lorem Ipsum", description: str="Door Sit", button_confirm_txt: str = "OK", button_exit_txt: str = "NO", confirmFunc=None, exitFunc = None) -> bool:
         """
@@ -330,6 +340,22 @@ class TUO(ShowBase):
         """
         GAMESTATE_TO_FUNC[self.state](self, self.previousState)
 
+    def getState(self):
+        """
+        Give the state of the game.
+
+        TUO.getState() -> `src.client.shared.GameStates`
+        """
+        return self.state
+
+    def getAllStates(self):
+        """
+        Get a list of all game states, in case you cannot import the shared file in case of a circular import.
+
+        TUO.getAllStates() -> `src.client.shared.GameStates`
+        """
+        return self.states_enum
+
     def start_internal_game(self):
         """
         Start the internal game.
@@ -355,16 +381,8 @@ class TUO(ShowBase):
                 exitFunc = self.quit
             )
         
-        if self.hardwareUtil.gl_version[0] == 4 and self.hardwareUtil.gl_version[1] < 2:
-            warn(f"This GPU does not support OpenGL 4.3! {self.hardwareUtil.gl_version}", "Worker/Hardware")
-            
-            settings = getAllSettings()
-            settings['video']['pbr'] = False
-
-            dumpSetting(settings)
-            self.warn("Your GPU does not support OpenGL 4.3!", "The game will run as usual,\nhowever, features like PBR will\nnot work. If you have a new GPU, try updating\nyour drivers.", "OK.", "OK.")
-        else:
-            log("This GPU does support OpenGL 4.3!", "Worker/Hardware")
+        if self.hardwareUtil.gl_version[0] == 4 and self.hardwareUtil.gl_version[1] > 2:
+            log(f"This GPU does support OpenGL 4.3! [MAJOR={self.hardwareUtil.gl_version[0]};MINOR={self.hardwareUtil.gl_version[1]}]", "Worker/Hardware")
             if getSetting("video", "pbr") == True:
                 log("Initializing tobspr's render pipeline! May the ricing begin!", "Worker/PBR")
                 sys.path.insert(0, "src/client/render_pipeline")
@@ -372,6 +390,14 @@ class TUO(ShowBase):
                 self.renderPipeline = RenderPipeline()
                 #self.renderPipeline.daytime_mgr.time = "11:55"
                 self.renderPipeline.prepare_scene(self.render)
+        else:
+            def articleOpen(): self.browser.open("https://syntaxsupport.xtrayambak.repl.co/support_articles/pbr_incompatible_warning.html")
+            warn(f"This GPU does not support OpenGL 4.3! [MAJOR={self.hardwareUtil.gl_version[0]};MINOR={self.hardwareUtil.gl_version[1]}]")
+            settings = getAllSettings()
+            settings['video']['pbr'] = False
+
+            dumpSetting(settings)
+            self.warn("Your GPU does not support OpenGL 4.3!", "The game will run as usual,\nhowever, features like PBR will\nnot work. If you have a new GPU, try updating\nyour drivers.", "OK.", "HELP!", exitFunc = articleOpen)
 
     def quit(self):
         """

@@ -29,7 +29,7 @@ argparser.add_argument(
     nargs = "?"
 )
 
-VERSION = "0.1.1" #NOTE TO DEVELOPERS: MAKE SURE TO CHANGE THIS AS THE VERSION INCREASES, THIS IS NECESSARY SO THE CLIENT CAN LOCATE IT'S PROPER WORKING DIRECTORY.
+VERSION = "0.1.2" #NOTE TO DEVELOPERS: MAKE SURE TO CHANGE THIS AS THE VERSION INCREASES, THIS IS NECESSARY SO THE CLIENT CAN LOCATE IT'S PROPER WORKING DIRECTORY.
 
 class GameHandler:
     def __init__(self, max_mem: int = DEFAULT_MEM, token: str = 'no-token-provided'):
@@ -39,7 +39,7 @@ class GameHandler:
 
         log(f"PVM Environment: [{sys.executable}]")
         
-        if not os.path.exists("DEBUG_MODE"):
+        if os.path.exists("LAUNCHER_ENVIRONMENT"):
             log("Patching directory...")
             entire_path = str(pathlib.Path(__file__))
             client_path = ""

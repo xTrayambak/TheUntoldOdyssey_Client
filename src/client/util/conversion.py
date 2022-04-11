@@ -1,8 +1,7 @@
-def encodedToDecoded(string:str) -> dict:
-    splits = string.split("|")
-    message_type = splits[0]
+import pickle
 
-    return {'type': message_type, 'extra': splits[1]}
+def decode(string):
+    return pickle.loads(string)
 
-def encode(message_type: str, data: any) -> str:
-    return "{}|{}".format(message_type, data)
+def encode(data) -> bytes:
+    return pickle.dumps(data)

@@ -40,3 +40,12 @@ class Session:
             }
 
         return data
+
+    def send_crash_report(self, crashData: dict):
+        try:
+            data = requests.post(
+                DATA_PROVIDER + "/api/v3/telemetry/crash",
+                json = data
+            )
+        except Exception as exc:
+            warn(f"An error occured whilst sending telemetry data!\n{exc}", "Worker/Telemetry")

@@ -1,0 +1,4 @@
+[Worker/Thread-1/INFO]: PVM Environment: [/usr/bin/python3]
+[Worker/Thread-1/INFO]: Patching directory...
+[Worker/Thread-1/INFO]: Full path to client startup file is [/home/trayambak/TheUntoldOdyssey_Client/main.py]
+[ClientPathDEBUG/INFO]: Setting client data path to [/home/trayambak/TheUntoldOdyssey_Client/main.py/]
