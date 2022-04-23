@@ -288,7 +288,7 @@ class PluginConfigurator(QMainWindow, Ui_MainWindow):
         self._do_update_setting(setting_id, value)
 
         for obj in bound_objs:
-            obj.setValue(value)
+            obj.setValue(int(value))
 
     def _on_setting_spinbox_changed(self, setting_id, setting_type, bound_objs, value):
         self._do_update_setting(setting_id, value)
@@ -362,12 +362,12 @@ class PluginConfigurator(QMainWindow, Ui_MainWindow):
             slider.setOrientation(Qt.Horizontal)
 
             if setting.type == "float":
-                box.setSingleStep(abs(setting.maxval - setting.minval) / 100.0)
-                slider.setMinimum(setting.minval * 100000.0)
-                slider.setMaximum(setting.maxval * 100000.0)
-                slider.setValue(setting.value * 100000.0)
+                box.setSingleStep(int(abs(setting.maxval - setting.minval) / 100.0))
+                slider.setMinimum(int(setting.minval * 100000))
+                slider.setMaximum(int(setting.maxval * 100000.0))
+                slider.setValue(int(setting.value * 100000.0))
             elif setting.type == "int":
-                box.setSingleStep(max(1, (setting.maxval - setting.minval) / 32))
+                box.setSingleStep(int(max(1, (setting.maxval - setting.minval) / 32)))
                 slider.setMinimum(setting.minval)
                 slider.setMaximum(setting.maxval)
                 slider.setValue(setting.value)

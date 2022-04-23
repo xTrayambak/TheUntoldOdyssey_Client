@@ -44,18 +44,37 @@ class NetworkClient:
                 self.instance.change_state(3)
                 return task.done
             self.instance.spawnNewTask('__inner_conntask', __inner_conntask)
-
+            self.poll()
             log(f"Connected to ({addr}:{port})", "Worker/Network")
         except Exception as exc:
-            warn(f"An error occured whilst connecting to the server.\n{exc}", "Worker/NetworkClient/Exception")
+            warn(f"An error occured whilst connecting to the server: {exc}", "Worker/NetworkClient/Exception")
             self.instance.workspace.getComponent("ui", "connecting_screen_status").node().setText(f"Internal exception: {exc}")
             
-    def send(self, data):
+    def _send(self, data):
         """
         Send data to the server.
         """
         datagram = PyDatagram(encode(data))
         self.cWriter.send(datagram, self.connection)
+
+    def send(self, data):
+        def __inner():
+            self._send(data)
+        
+        res = self.pcall(__inner)
+        if res != None:
+            self.instance.change_state(5)
+            self.instance.workspace.getComponent("ui", "connecting_screen_status").node().setText(f"Internal Exception whilst Sending Packet:\n{res}")
+
+    def pcall(self, func):
+        """
+        Run something in a protected call, just if you think it can raise an error.
+        """
+        try:
+            return func()
+        except Exception as exc:
+            warn(f"Protected call caught an error: {exc}", "Worker/ProtectedRunner")
+            return exc
 
     def on_packet_receive(self, packet):
         """
@@ -73,17 +92,20 @@ class NetworkClient:
             }
         )
 
-    def disconnect(self):
+    def disconnect(self, reason:str = 'unknown'):
         self.send(
             {
                 "type": "disconnect",
-                "reason": "unknown"
+                "reason": reason
             }
         )
         self.cManager.closeConnection(self.connection)
 
-    def _poll(self):
+    def _poll(self, task):
+        self.last_packet_ms += 0.5 + self.instance.clock.getDt()
         self.keep_alive_task()
+
+        return task.cont
 
     def poll(self):
         self.instance.spawnNewTask('poll-network', self._poll)

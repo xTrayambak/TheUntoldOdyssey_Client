@@ -6,26 +6,26 @@
 enabled:
     - ao
     - bloom
+    - clouds
     - color_correction
+    - env_probes
     - forward_shading
+    - fxaa
     - motion_blur
     - pssm
     - scattering
     - skin_shading
     - sky_ao
-    - smaa
     - ssr
-    - clouds
-    # - dof
-    - env_probes
-    # - fxaa
     - volumetrics
+    # - dof
+    # - smaa
     # - vxgi
 
 
 overrides:
     ao:
-        blur_quality: MEDIUM
+        blur_quality: LOW
         blur_normal_factor: 2.97
         blur_depth_factor: 0.88158
         occlusion_strength: 2.19
@@ -51,13 +51,13 @@ overrides:
         ue4ao_max_distance: 1.47
 
     bloom:
-        num_mipmaps: 6
+        num_mipmaps: 2
         bloom_strength: 0.8003
         remove_fireflies: False
         lens_dirt_factor: 0.0
 
     clouds:
-        raymarch_steps: 160
+        raymarch_steps: 16
 
     color_correction:
         tonemap_operator: optimized
@@ -101,13 +101,13 @@ overrides:
     forward_shading:
 
     fxaa:
-        quality: ultra
+        quality: medium
         subpixel_quality: 0.5
         edge_threshold: 0.166
         min_threshold: 0.833
 
     motion_blur:
-        num_camera_samples: 6
+        num_camera_samples: 2
         camera_blur_factor: 0.4
         enable_object_blur: False
         blur_factor: 0.5
@@ -166,7 +166,7 @@ overrides:
 
     smaa:
         use_reprojection: True
-        smaa_quality: ultra
+        smaa_quality: low
         jitter_pattern: halton8
         history_length: 8
         jitter_amount: 0.16143
@@ -184,7 +184,7 @@ overrides:
 
     volumetrics:
         enable_volumetric_shadows: True
-        volumetric_shadow_intensity: 8.31
+        volumetric_shadow_intensity: 8.0
         volumetric_shadow_brightness: 1.66
         volumetric_shadow_pow: 1.15999
         volumetric_max_distance: 79.41429

@@ -1,0 +1,10 @@
+panda3d==1.10.11
+requests
+pyglet
+pypresence
+DirectGuiExtension
+pyttsx3
+psutil
+pyscreenshot
+pydatanet
+distro

@@ -169,7 +169,7 @@ def settingsPage(instance, previous_state: int = 1):
         else:
             status = instance.authenticationServerStatus['status']
     else:
-        status = "No response; probably crashed."
+        status = "Unable to connect."
 
     server_auth_status_header = DirectLabel(
         text=f"AUTH SERVER STATUS:\n{status}",

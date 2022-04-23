@@ -192,6 +192,9 @@ class TUO(ShowBase):
     def getSharedData(self):
         return shared
 
+    def setFov(self, value: int):
+        self.camLens.setFov(value)
+
     def warn(self, title: str="Lorem Ipsum", description: str="Door Sit", button_confirm_txt: str = "OK", button_exit_txt: str = "NO", confirmFunc=None, exitFunc = None) -> bool:
         """
         Shows a warning onto the screen.
@@ -254,6 +257,7 @@ class TUO(ShowBase):
         self.workspace.add_ui("warning_exit", exit_button)
 
     def quit_to_menu(self):
+        self.networkClient.disconnect()
         self.change_state(1)
 
     def stop_music(self):
@@ -389,7 +393,8 @@ class TUO(ShowBase):
                 from src.client.render_pipeline.rpcore.render_pipeline import RenderPipeline
                 self.renderPipeline = RenderPipeline()
                 #self.renderPipeline.daytime_mgr.time = "11:55"
-                self.renderPipeline.prepare_scene(self.render)
+                self.renderPipeline.pre_showbase_init()
+                self.renderPipeline.create(self)
         else:
             def articleOpen(): self.browser.open("https://syntaxsupport.xtrayambak.repl.co/support_articles/pbr_incompatible_warning.html")
             warn(f"This GPU does not support OpenGL 4.3! [MAJOR={self.hardwareUtil.gl_version[0]};MINOR={self.hardwareUtil.gl_version[1]}]")

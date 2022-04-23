@@ -19,7 +19,7 @@ def installAllLibraries():
     Check if all the libraries required for the game to run are installed or not, if not, then install them
     by querying PyPi through `py -m pip install <package>`
     """
-    libs = open("assets/requirements").readlines()
+    libs = open("requirements.txt").readlines()
 
     for lib in libs:
         lib = lib.split("\n")[0]
