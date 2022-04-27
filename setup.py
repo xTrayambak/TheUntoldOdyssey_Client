@@ -10,7 +10,7 @@ setup(
             },
 
             # Set up output logging, important for GUI apps!
-            'log_filename': f'$syntaxstudios/TheUntoldOdyssey/output.log',
+            'log_filename': f'$USER_APPDATA/SyntaxStudios/TheUntoldOdyssey/debug.log',
             'log_append': False,
 
             # Specify which files are included with the distribution

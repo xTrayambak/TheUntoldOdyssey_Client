@@ -1,6 +1,15 @@
 from panda3d.core import Vec3, TransparencyAttrib
-from panda3d.bullet import BulletPlaneShape
-from panda3d.bullet import BulletRigidBodyNode
+from panda3d.bullet import (
+	BulletWorld,
+	BulletDebugNode,
+	BulletPlaneShape,
+	BulletBoxShape,
+	BulletRigidBodyNode,
+	BulletGhostNode,
+	BulletTriangleMesh,
+	BulletTriangleMeshShape,
+	BulletHelper
+)
 
 from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
@@ -11,6 +20,8 @@ from src.log import log, warn
 from src.client.entity import Entity
 from src.client.loader import getAsset
 from src.client.settingsreader import getSetting
+
+from characterController.PlayerController import PlayerController
 
 MOVEMENT_SPEED = 5 #m/s
 
@@ -39,6 +50,8 @@ class Player():
 		self.instance.spawnNewTask(
 			"player_update", self.update
 		)
+
+		self.controller = PlayerController(self.instance.workspace.world)
 
 	def giveEntity(self):
 		self.entity = Entity(self.name, self.instance, self.model, [0, 0, 0], True)

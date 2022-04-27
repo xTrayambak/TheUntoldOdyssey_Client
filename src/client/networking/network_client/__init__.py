@@ -102,6 +102,11 @@ class NetworkClient:
         self.cManager.closeConnection(self.connection)
 
     def _poll(self, task):
+        if self.instance.getState() != self.instance.getSharedData().GameStates.INGAME:
+            # since we are not a spooky multi-billion dollar corp, we won't connect your pc to our servers when it isn't needed.
+            # you're welcome :)
+            return task.done
+
         self.last_packet_ms += 0.5 + self.instance.clock.getDt()
         self.keep_alive_task()
 

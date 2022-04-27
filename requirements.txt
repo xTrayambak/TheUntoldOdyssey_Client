@@ -8,3 +8,4 @@ psutil
 pyscreenshot
 pydatanet
 distro
+panda3d-character-controller

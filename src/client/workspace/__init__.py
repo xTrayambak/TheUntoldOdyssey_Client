@@ -7,8 +7,16 @@ The workspace is essentially a datatype TUO uses to handle object rendering and 
 from src.log import *
 
 from panda3d.core import NodePath
-from panda3d.bullet import BulletDebugNode, BulletWorld
-from panda3d.physics import ForceNode, LinearVectorForce
+from panda3d.bullet import (
+    BulletWorld,
+    BulletDebugNode,
+    BulletPlaneShape,
+    BulletBoxShape,
+    BulletRigidBodyNode,
+    BulletGhostNode,
+    BulletTriangleMesh,
+    BulletTriangleMeshShape,
+    BulletHelper)
 
 from threading import Thread
 
@@ -48,7 +56,6 @@ class Workspace:
         """
         self.instance = instance
 
-        ## A force node. ##
         self.world = BulletWorld()
         self.world.setGravity(
             (0, 0, -9.81)

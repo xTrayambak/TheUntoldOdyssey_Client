@@ -4,7 +4,6 @@ from argparse import ArgumentParser
 import os
 import pathlib
 import sys
-from multiprocessing.pool import ThreadPool
 
 argparser = ArgumentParser(
     description = "Run The Untold Odyssey."
