@@ -1,5 +1,7 @@
 import logging
 import sys
+from colorama import Fore
+import traceback
 from datetime import datetime
 
 time_now = datetime.now()
@@ -14,21 +16,19 @@ logger = logging.getLogger()
 logger.addHandler(fileHandler)
 logger.addHandler(logging.StreamHandler(sys.stdout))
 
-class Color:
-    '''
-    ANSI escape codes for colored terminal.
-    '''
-    RESET = "\u001b[0m"
-    RED = "\u001b[31m"
-
 def log(msg = "Hello, World!", sender = "Worker/Thread-1"):
     logger.setLevel(logging.INFO)
-    logger.log(logging.INFO, msg = f"[{sender}/INFO]: {msg}")
+    logger.log(logging.INFO, msg = f"{Fore.GREEN}[{sender}/INFO]: {msg}{Fore.RESET}")
 
-def warn(msg = "Hello, World!", sender = "Worker/Thread-1"):
+def warn(msg = "Hello, World!", sender = "Worker/Thread-1", err = None):
     logger.setLevel(logging.WARN)
-    logger.log(logging.WARN, msg = f"[{sender}/WARN]: {msg}")
+    if err and isinstance(err, Exception):
+        logger.log(logging.WARN, msg = f"{Fore.RED}[{sender}/WARN]: {msg}")
+        traceback.print_exception(err)
+        logger.log(logging.WARN, msg = f"{Fore.RESET}")
+    else:
+        logger.log(logging.WARN, msg = f"{Fore.RED}[{sender}/WARN]: {msg}{Fore.RESET}")
 
 def fatal(msg = "Hello, World!", sender = "Worker/Thread-1"):
     logger.setLevel(logging.FATAL)
-    logger.log(logging.FATAL, msg = f"{Color.RED}[{sender}/FATAL]: {msg}{Color.RESET}")
+    logger.log(logging.FATAL, msg = f"{Fore.LIGHTRED_EX}[{sender}/FATAL]: {msg}{Fore.RESET}")

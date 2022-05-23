@@ -1,0 +1,4 @@
+[Worker/Thread-1/INFO]: ['NO_WAIT, 30, LINEAR', '\n']
+[Worker/Thread-1/INFO]: ['NO_WAIT, SINE, 0.5', '\n']
+[Worker/Thread-1/INFO]: ['WAIT, 5.5', '\n']
+[Worker/Thread-1/INFO]: ['NONE', '']

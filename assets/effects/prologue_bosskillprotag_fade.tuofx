@@ -1,0 +1,12 @@
+! The FX file that gets interpreted by FXManager after the protagonist is killed by the boss.
+
+! Set FOV to 30
+FOV[NO_WAIT, 30, LINEAR]
+
+! Shake the camera, using a sine value, and set the speed to 0.5
+CAM_SHAKE[NO_WAIT, SINE, 0.5]
+
+! Fade the scene out within 5.5 seconds, wait till other effects are done.
+FADE_OUT[WAIT, 5.5]
+
+END[NONE]

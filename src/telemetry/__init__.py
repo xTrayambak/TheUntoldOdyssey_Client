@@ -78,12 +78,12 @@ def compileCrashReport(instance=None) -> dict:
 
     return crashReport
 
-def telemetrySend_crash(log_func, instance):
-    log_func(f"{'='*8}\nSENDING TELEMETRY DATA TO SYNTAX STUDIOS SERVERS!\n{'='*8}")
+def telemetrySend_crash(log_func = print, instance = None):
+    #log_func(f"{'='*8}\nSENDING TELEMETRY DATA TO SYNTAX STUDIOS SERVERS!\n{'='*8}")
     data = compileCrashReport(instance)
 
     try:
         session_req = Session()
         session_req.send_crash_report(data)
     except Exception as exc:
-        log_func(f"{'='*8}\nTELEMETRY DATA SEND FAILED!\n[{exc}]\n{'='*8}")
+        pass

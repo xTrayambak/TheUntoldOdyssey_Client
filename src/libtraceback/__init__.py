@@ -1,12 +1,16 @@
+import traceback
 import sys
-import os
 import random
 
+def get_extensions():  return "~~NONE~~: PYGLET NOT INSTALLED. (OR OPENGL COULD NOT BE FOUND ON THIS MACHINE)"
+def get_vendor():  return "~~NONE~~: PYGLET NOT INSTALLED. (OR OPENGL COULD NOT BE FOUND ON THIS MACHINE)"
+def get_version():  return "~~NONE~~: PYGLET NOT INSTALLED. (OR OPENGL COULD NOT BE FOUND ON THIS MACHINE)"
+def get_renderer(): return "~~NONE~~: PYGLET NOT INSTALLED. (OR OPENGL COULD NOT BE FOUND ON THIS MACHINE)"
 
-def get_extensions():  return "~~NONE~~: PYGLET NOT INSTALLED."
-def get_vendor():  return "~~NONE~~: PYGLET NOT INSTALLED."
-def get_version():  return "~~NONE~~: PYGLET NOT INSTALLED."
-def get_renderer(): return "~~NONE~~: PYGLET NOT INSTALLED."
+try:
+    from pyglet.gl.gl_info import get_extensions, get_vendor, get_version, get_renderer
+except:
+    pass
 
 from src.log import log, fatal, warn
 from src.telemetry import telemetrySend_crash
@@ -54,10 +58,11 @@ CRASH_TXTS = [
     "Before we diagnose the crash, I'd like to thank our sponsor, amogussusfard VPN.",
     "Don't go full libre mode if you use a NVIDIA GPU, DUMMY! THEY DON'T SUPPORT FREE AS IN FREEDOM!",
     """
-    I'd just like to interject for a moment. What you're refering to as Linux, is in fact, GNU/Linux, or as I’ve recently taken to calling it, GNU plus Linux. Linux is not an operating system unto itself, but rather another free component of a fully functioning GNU system made useful by the GNU corelibs, shell utilities and vital system components comprising a full OS as defined by POSIX.
+    I'd just like to interject for a moment. What you're refering to as Linux, is in fact, GNU/Linux, or as I've recently taken to calling it, GNU plus Linux. Linux is not an operating system unto itself, but rather another free component of a fully functioning GNU system made useful by the GNU corelibs, shell utilities and vital system components comprising a full OS as defined by POSIX.
     Many computer users run a modified version of the GNU system every day, without realizing it. Through a peculiar turn of events, the version of GNU which is widely used today is often called Linux, and many of its users are not aware that it is basically the GNU system, developed by the GNU Project.
     There really is a Linux, and these people are using it, but it is just a part of the system they use. Linux is the kernel: the program in the system that allocates the machine's resources to the other programs that you run. The kernel is an essential part of an operating system, but useless by itself; it can only function in the context of a complete operating system. Linux is normally used in combination with the GNU operating system: the whole system is basically GNU with Linux added, or GNU/Linux. All the so-called Linux distributions are really distributions of GNU/Linux!
-    """
+    """,
+    "As a sorry, you get a GNU kissed by RMS himself!"
 
 ]
 
@@ -103,8 +108,6 @@ def log_traceback(instance=None):
     """
     Log all the traceback found into the log so people can send it to us so we can look at it and fix it.
     """
-    full_exc = sys.exc_info()
-
     if instance == None:
         VERSION = "~~INSTANCE NOT INITIALIZED, VERSION NOT FOUND~~"
     else:
@@ -127,12 +130,13 @@ def log_traceback(instance=None):
     Platform: {sys.platform}
 
     Full traceback (sys.exc_info):
-    {full_exc[0].__name__}: {full_exc[1]}
-
-    [IF YOUR GAME IS MODDED, CONTACT THE MOD DEVELOPERS FIRST BEFORE CONTACTING US.]
-    [The Untold Odyssey, developed by Syntax Studios (2022)]
     """
 
-    telemetrySend_crash(log, instance)
+    fatal(string) 
+    traceback.print_exc()
+    fatal("""
+    [IF YOUR GAME IS MODDED, CONTACT THE MOD DEVELOPERS FIRST BEFORE CONTACTING US.]
+    [The Untold Odyssey, developed by Syntax Studios (2022)]
+    """)
 
-    fatal(string)
+    telemetrySend_crash(log, instance)

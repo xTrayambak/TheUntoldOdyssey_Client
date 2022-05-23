@@ -1,0 +1,4 @@
+! Menu panorama spinning
+
+FOV_SET[NO_WAIT, 30]
+CAM_SHAKE[WAIT, SINE, 0.5]

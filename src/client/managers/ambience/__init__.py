@@ -57,18 +57,24 @@ class AmbienceManager:
             log("Ambience manager shutting down; self.running is False.", "Worker/Ambience")
             return Task.done
             
-        if self.instance.getState() == GameStates.END_CREDITS:
+        if tuo.getState() == GameStates.END_CREDITS:
             if self.end_credits.status() == self.end_credits.READY:
                 self.endCreditsPlaying = True
 
                 self.end_credits.play()
                 self.end_credits.setLoop(True)
-        elif self.instance.getState() == GameStates.MENU:
+        elif tuo.getState() == GameStates.MENU or tuo.getState() == GameStates.CONNECTING:
             song = tuo.audioLoader.load(0, choices(population=songs_menu, weights=probability_menu)[0])
             song.play()
 
             await Task.pause(
                 randint(int(song.length()), int(70+song.length()))
+            )
+        elif tuo.getState() == GameStates.INGAME:
+            song = tuo.audioLoader.load(0, choices(population=songs_ingame, weights=probability_menu))
+
+            await Task.pause(
+                randint(int(song.length()), int(100+song.length()))
             )
 
         return Task.cont

@@ -46,7 +46,9 @@ class InputManager:
             "forward_stop": instance.player.forward_stop,
             "backward_stop": instance.player.backward_stop,
             "left_stop": instance.player.left_stop,
-            "right_stop": instance.player.right_stop 
+            "right_stop": instance.player.right_stop,
+
+            "debug_mode": instance.debug_state_secret 
         }
 
         self.instance = instance

@@ -1,0 +1,4 @@
+[32m[Worker/Thread-1/INFO]: ['NO_WAIT', ' 30', ' LINEAR'][39m
+[32m[Worker/Thread-1/INFO]: ['NO_WAIT', ' SINE', ' 0.5'][39m
+[32m[Worker/Thread-1/INFO]: ['WAIT', ' 5.5'][39m
+[32m[Worker/Thread-1/INFO]: ['NONE'][39m

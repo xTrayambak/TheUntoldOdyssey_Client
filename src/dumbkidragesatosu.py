@@ -37,16 +37,6 @@ def laz():
 
     return combinations
 
-def veryexpensivefunc():
-    array = []
-    for x in range(64):
-        for z in range(64):
-            array.append(
-                (x ** z) ^ (z ** x)
-            )
-
-    return array
-
 if __name__ == "__main__":
     for combination in laz():
         string = ""

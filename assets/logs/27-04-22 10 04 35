@@ -67,3 +67,12 @@ Time info: 10:04:35
 [Worker/UIClear/INFO]: Removing UI object 'settingsBtn'
 [Worker/UIClear/INFO]: Removing UI object 'exit_button'
 [Worker/Thread-1/WARN]: The game is using more than 95.99713541666667% of the memory allocated! Attempting to reduce memory usage! (-1439.95703125MB/1500MB)
+[Worker/Thread-1/WARN]: The game is using more than 95.16822916666666% of the memory allocated! Attempting to reduce memory usage! (-1427.5234375MB/1500MB)
+[Worker/Thread-1/WARN]: The game is using more than 95.70677083333334% of the memory allocated! Attempting to reduce memory usage! (-1435.6015625MB/1500MB)
+[Worker/Thread-1/WARN]: The game is using more than 95.95338541666666% of the memory allocated! Attempting to reduce memory usage! (-1439.30078125MB/1500MB)
+[Worker/Thread-1/WARN]: The game is using more than 95.9640625% of the memory allocated! Attempting to reduce memory usage! (-1439.4609375MB/1500MB)
+[Worker/Thread-1/WARN]: The game is using more than 95.96484375% of the memory allocated! Attempting to reduce memory usage! (-1439.47265625MB/1500MB)
+[Worker/Thread-1/WARN]: The game is using more than 95.96484375% of the memory allocated! Attempting to reduce memory usage! (-1439.47265625MB/1500MB)
+[Worker/Thread-1/WARN]: The game is using more than 95.98984375% of the memory allocated! Attempting to reduce memory usage! (-1439.84765625MB/1500MB)
+[Worker/Thread-1/WARN]: The game is using more than 96.00885416666667% of the memory allocated! Attempting to reduce memory usage! (-1440.1328125MB/1500MB)
+[Worker/Thread-1/WARN]: The game is using more than 95.99869791666666% of the memory allocated! Attempting to reduce memory usage! (-1439.98046875MB/1500MB)

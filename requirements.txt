@@ -9,3 +9,7 @@ pyscreenshot
 pydatanet
 distro
 panda3d-character-controller
+colorama
+limeade
+PyMsgBox
+elevate

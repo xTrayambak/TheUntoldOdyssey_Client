@@ -1,0 +1,219 @@
+[32m[Worker/Thread-1/INFO]: PVM Environment: [/usr/sbin/python][39m
+[32m[Worker/Bootstrap/INFO]: Trying to find any libraries that need to be installed.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'panda3d==1.10.11' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'requests' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'pyglet' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'pypresence' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'DirectGuiExtension' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'pyttsx3' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'psutil' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'pyscreenshot' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'pydatanet' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'distro' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'panda3d-character-controller' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'colorama' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'limeade' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'PyMsgBox' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'elevate' is installed or not.[39m
+[32m[Worker/Bootstrap/INFO]: Library installation process complete.[39m
+[32m[Worker/Thread-1/INFO]: Pre-bootup client initialization complete, now changing into client mode.[39m
+[32m[Worker/Thread-1/INFO]: Changed into client mode. Now, the client code is going to be run.[39m
+[32m[Worker/Thread-1/INFO]: The Untold Odyssey 0.1.4-dev1 loaded up![39m
+[32m[Worker/Thread-1/INFO]: Initializing Panda3D rendering engine.[39m
+[32m[Worker/Thread-1/INFO]: Panda3D initialized.[39m
+[32m[NARRATORDATA/INFO]: assets/narrator_data/en_US.json[39m
+[32m[Worker/Thread-1/INFO]: Narrator is enabled.[39m
+[32m[Worker/Thread-1/INFO]: Loading translations for language [en_US][39m
+[32m[Worker/Bootstrap/INFO]: OpenGL: [4, 5] || Vendor: AMD[39m
+[32m[Worker/Bootstrap/INFO]: Panda3D lib location: [/home/trayambak/.local/lib/python3.10/site-packages/panda3d/__init__.py][39m
+[32m[Worker/Thread-1/INFO]: Entity [playertest_default] initialized.[39m
+[32m[Worker/TimeDetector/INFO]: Date info: 17-05-22
+Time info: 19:17:05[39m
+[32m[Worker/Config/INFO]: Syntax Studios account token is [no-tok-provided][39m
+[32m[Worker/Thread-1/INFO]: Binding function 'forward' to key 'w'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'backward' to key 's'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'left' to key 'a'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'right' to key 'd'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'forward_stop' to key 'w-up'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'backward_stop' to key 's-up'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'left_stop' to key 'a-up'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'right_stop' to key 'd-up'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'pause_menu' to key 'escape'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'screenshot' to key 'f3'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'inventory' to key 'i'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'trade_menu' to key 'p'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'server_list' to key '`'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'chat' to key '/'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'wireframe_toggle' to key 'tab'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'fps_toggle' to key 'f1'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'debug_mode' to key 'f4'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'freecam' to key 'f2'[39m
+[32m[Worker/InputManager/INFO]: Hooking input system into TUO process.[39m
+[32m[Worker/Thread-1/INFO]: Max framerate is capped to [240] FPS.[39m
+[32m[Worker/Thread-1/INFO]: Maximum memory is set to 1500 MB[39m
+[31m[Worker/Thread-1/WARN]: The Untold Odyssey: DEBUG MODE[39m
+[32m[Worker/RPCManager/INFO]: Rich presence started. Binding RPCManager._run to taskManager.[39m
+[32m[Worker/FontLoader/INFO]: Loaded font [edgegalaxy] and cached into memory.[39m
+[32m[Worker/FontLoader/INFO]: Loaded font [gentium_basic] and cached into memory.[39m
+[32m[Worker/FontLoader/INFO]: Loaded font [kritidev020] and cached into memory.[39m
+[32m[Worker/Thread-1/INFO]: The player is currently on the main menu.[39m
+[32m[Worker/Thread-1/INFO]: Simple day/month is 17-05; checking if a festival is occuring.[39m
+[32m[textformat/INFO]: 0: T[39m
+[32m[textformat/INFO]: 1: h[39m
+[32m[textformat/INFO]: 2: i[39m
+[32m[textformat/INFO]: 3: s[39m
+[32m[textformat/INFO]: 4:  [39m
+[32m[textformat/INFO]: 5: b[39m
+[32m[textformat/INFO]: 6: u[39m
+[32m[textformat/INFO]: 7: i[39m
+[32m[textformat/INFO]: 8: l[39m
+[32m[textformat/INFO]: 9: d[39m
+[32m[textformat/INFO]: 10:  [39m
+[32m[textformat/INFO]: 11: o[39m
+[32m[textformat/INFO]: 12: f[39m
+[32m[textformat/INFO]: 13:  [39m
+[32m[textformat/INFO]: 14: t[39m
+[32m[textformat/INFO]: 15: h[39m
+[32m[textformat/INFO]: 16: e[39m
+[32m[textformat/INFO]: 17:  [39m
+[32m[textformat/INFO]: 18: g[39m
+[32m[textformat/INFO]: 19: a[39m
+[32m[textformat/INFO]: 20: m[39m
+[32m[textformat/INFO]: 21: e[39m
+[32m[textformat/INFO]: 22:  [39m
+[32m[textformat/INFO]: 23: i[39m
+[32m[textformat/INFO]: 24: s[39m
+[32m[textformat/INFO]: 25:  [39m
+[32m[textformat/INFO]: 26: a[39m
+[32m[textformat/INFO]: 27:  [39m
+[32m[textformat/INFO]: 28: d[39m
+[32m[textformat/INFO]: 29: e[39m
+[32m[textformat/INFO]: 30: v[39m
+[32m[textformat/INFO]: 31: e[39m
+[32m[textformat/INFO]: 32: l[39m
+[32m[textformat/INFO]: 33: o[39m
+[32m[textformat/INFO]: 34: p[39m
+[32m[textformat/INFO]: 35: m[39m
+[32m[textformat/INFO]: 36: e[39m
+[32m[textformat/INFO]: 37: n[39m
+[32m[textformat/INFO]: 38: t[39m
+[32m[textformat/INFO]: 39:  [39m
+[32m[textformat/INFO]: 40: b[39m
+[32m[textformat/INFO]: 41: u[39m
+[32m[textformat/INFO]: 42: i[39m
+[32m[textformat/INFO]: 43: l[39m
+[32m[textformat/INFO]: 44: d[39m
+[32m[textformat/INFO]: 45: ,[39m
+[32m[textformat/INFO]: 46:  [39m
+[32m[textformat/INFO]: 47: a[39m
+[32m[textformat/INFO]: 48: n[39m
+[32m[textformat/INFO]: 49: d[39m
+[32m[textformat/INFO]: 50:  [39m
+[32m[textformat/INFO]: 51: i[39m
+[32m[textformat/INFO]: 52: s[39m
+[32m[textformat/INFO]: 53:  [39m
+[32m[textformat/INFO]: 54: n[39m
+[32m[textformat/INFO]: 55: o[39m
+[32m[textformat/INFO]: 56: t[39m
+[32m[textformat/INFO]: 57:  [39m
+[32m[textformat/INFO]: 58: t[39m
+[32m[textformat/INFO]: 59: h[39m
+[32m[textformat/INFO]: 60: e[39m
+[32m[textformat/INFO]: 61:  [39m
+[32m[textformat/INFO]: 62: f[39m
+[32m[textformat/INFO]: 63: i[39m
+[32m[textformat/INFO]: 64: n[39m
+[32m[textformat/INFO]: 65: a[39m
+[32m[textformat/INFO]: 66: l[39m
+[32m[textformat/INFO]: 67:  [39m
+[32m[textformat/INFO]: 68: p[39m
+[32m[textformat/INFO]: 69: r[39m
+[32m[textformat/INFO]: 70: o[39m
+[32m[textformat/INFO]: 71: d[39m
+[32m[textformat/INFO]: 72: u[39m
+[32m[textformat/INFO]: 73: c[39m
+[32m[textformat/INFO]: 74: t[39m
+[32m[textformat/INFO]: 75: .[39m
+[32m[textformat/INFO]: 76: 
+[39m
+[32m[textformat/INFO]: 77: B[39m
+[32m[textformat/INFO]: 78: u[39m
+[32m[textformat/INFO]: 79: g[39m
+[32m[textformat/INFO]: 80: s[39m
+[32m[textformat/INFO]: 81:  [39m
+[32m[textformat/INFO]: 82: a[39m
+[32m[textformat/INFO]: 83: n[39m
+[32m[textformat/INFO]: 84: d[39m
+[32m[textformat/INFO]: 85:  [39m
+[32m[textformat/INFO]: 86: g[39m
+[32m[textformat/INFO]: 87: l[39m
+[32m[textformat/INFO]: 88: i[39m
+[32m[textformat/INFO]: 89: t[39m
+[32m[textformat/INFO]: 90: c[39m
+[32m[textformat/INFO]: 91: h[39m
+[32m[textformat/INFO]: 92: e[39m
+[32m[textformat/INFO]: 93: s[39m
+[32m[textformat/INFO]: 94:  [39m
+[32m[textformat/INFO]: 95: a[39m
+[32m[textformat/INFO]: 96: r[39m
+[32m[textformat/INFO]: 97: e[39m
+[32m[textformat/INFO]: 98:  [39m
+[32m[textformat/INFO]: 99: t[39m
+[32m[textformat/INFO]: 100: o[39m
+[32m[textformat/INFO]: 101:  [39m
+[32m[textformat/INFO]: 102: b[39m
+[32m[textformat/INFO]: 103: e[39m
+[32m[textformat/INFO]: 104:  [39m
+[32m[textformat/INFO]: 105: f[39m
+[32m[textformat/INFO]: 106: i[39m
+[32m[textformat/INFO]: 107: x[39m
+[32m[textformat/INFO]: 108: e[39m
+[32m[textformat/INFO]: 109: d[39m
+[32m[textformat/INFO]: 110: 
+[39m
+[32m[textformat/INFO]: 111: a[39m
+[32m[textformat/INFO]: 112: n[39m
+[32m[textformat/INFO]: 113: d[39m
+[32m[textformat/INFO]: 114:  [39m
+[32m[textformat/INFO]: 115: f[39m
+[32m[textformat/INFO]: 116: e[39m
+[32m[textformat/INFO]: 117: a[39m
+[32m[textformat/INFO]: 118: t[39m
+[32m[textformat/INFO]: 119: u[39m
+[32m[textformat/INFO]: 120: r[39m
+[32m[textformat/INFO]: 121: e[39m
+[32m[textformat/INFO]: 122: s[39m
+[32m[textformat/INFO]: 123:  [39m
+[32m[textformat/INFO]: 124: m[39m
+[32m[textformat/INFO]: 125: a[39m
+[32m[textformat/INFO]: 126: y[39m
+[32m[textformat/INFO]: 127:  [39m
+[32m[textformat/INFO]: 128: c[39m
+[32m[textformat/INFO]: 129: h[39m
+[32m[textformat/INFO]: 130: a[39m
+[32m[textformat/INFO]: 131: n[39m
+[32m[textformat/INFO]: 132: g[39m
+[32m[textformat/INFO]: 133: e[39m
+[32m[textformat/INFO]: 134:  [39m
+[32m[textformat/INFO]: 135: i[39m
+[32m[textformat/INFO]: 136: n[39m
+[32m[textformat/INFO]: 137:  [39m
+[32m[textformat/INFO]: 138: t[39m
+[32m[textformat/INFO]: 139: h[39m
+[32m[textformat/INFO]: 140: e[39m
+[32m[textformat/INFO]: 141:  [39m
+[32m[textformat/INFO]: 142: f[39m
+[32m[textformat/INFO]: 143: i[39m
+[32m[textformat/INFO]: 144: n[39m
+[32m[textformat/INFO]: 145: a[39m
+[32m[textformat/INFO]: 146: l[39m
+[32m[textformat/INFO]: 147:  [39m
+[32m[textformat/INFO]: 148: p[39m
+[32m[textformat/INFO]: 149: r[39m
+[32m[textformat/INFO]: 150: o[39m
+[32m[textformat/INFO]: 151: d[39m
+[32m[textformat/INFO]: 152: u[39m
+[32m[Worker/Thread-1/INFO]: Initializing Ambience Manager.[39m
+[32m[Worker/Authenticator/INFO]: Authenticator is starting auth process...[39m
+[32m[Worker/Authenticator/INFO]: Authenticator has completed it's auth process...[39m
+[32m[Worker/Hardware/INFO]: This GPU does support OpenGL 4.3! [MAJOR=4;MINOR=5][39m

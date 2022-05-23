@@ -18,6 +18,7 @@ from src.client.shaderutil import loadAllShaders
 from src.client.settingsreader import *
 from src.client.objects import Object
 from src.client.tasks import *
+from src.client.io import IOFile
 
 from src.client.ui.button import Button
 from src.client.ui.text import Text
@@ -31,9 +32,7 @@ def endCredits(instance, previous_state: int = 1):
     instance.clear()
     log("End credits have started")
 
-    end_credits_dialog = open(
-            getAsset("dialogs", "end_credits")["path"]
-        ).readlines()
+    end_credits_dialog = IOFile.new('assets/dialogs/credits_scene', 'r').readlines()
 
     rondalFont = instance.fontLoader.load("rondal")
 
@@ -47,16 +46,19 @@ def endCredits(instance, previous_state: int = 1):
 
             length = len(line)
 
-
             delay = (
                 length // 8
             )
 
-            print(delay)
+            if line.isspace():
+                delay = 2
+
+            if instance.is_closing(): break
             sleep(int(delay))
         
-        instance.ambienceManager.end_credits.stop()
-        instance.change_state(previous_state)
+        if not instance.is_closing():
+            instance.ambienceManager.end_credits.stop()
+            instance.change_state(previous_state)
 
     threading.Thread(target = threaded, args = ()).start()
     return 'credits-complete'

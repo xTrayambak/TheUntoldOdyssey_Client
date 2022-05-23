@@ -38,13 +38,20 @@ You will be pushed back several times, but do know..
 The world sees potential in you.
 The world is going to help you.
 The world loves you, if you love it back.
-Go now, wake up.
+Is this the end?
+No.
+[I]This is not the end.
+[I]This is just the beginning.
+[I]The beginning, of your odyssey.
+[I]Your Untold Odyssey...
+Now go, wake up..
 
 
     SYNTAX STUDIOS
 
 === PROGRAMMING ===
-Trayambak - Lead programmer, original creator, storywriter, founder of Syntax
+Trayambak - Lead Programmer, original creator, storywriter, founder of Syntax
+Ezekiel/Felix - Second Lead Programmer
 Lucy - Assistant programmer, co-founder of Syntax
 
 === ART ===
@@ -59,7 +66,8 @@ h_vn - Music Composer
 ===== OPEN SOURCE BACKENDS USED =====
 
 ~ Game Client ~
-Panda3D, a robust and cutting-edge 3D game engine full with features - (C) Carnegie Mellon University and Walt Disney
+Panda3D, a robust and cutting-edge 3D game engine full with features - (C) Carnegie Mellon University
+RenderPipeline - A beautiful deferred rendering and physically based rendering pipeline - (C) tobspr
 Pyglet, a high-level library for exposing OpenGL functions to Python - (C) Pyglet developers and Alex Holkner
 Python 3.10, a powerful programming language - (C) Python Software Foundation (PSF)
 

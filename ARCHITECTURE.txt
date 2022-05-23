@@ -1,0 +1,28 @@
+Connect >>
+            C -> S: Send authentication token
+            S -> C: Send authentication result >>
+                If 0:
+                    S -> C: Send player list of entities
+                    S -> C: Send player inventory data
+                    S -> C: Send last position ([0, 0, 0] if player is new)
+                    S -> C: Send environment data (weather, wind speed)
+                    C -> S (LOOP): Send player position data, inventory manipulation data >>
+                        S (SANITIZE): Check if it's actually valid data (player didn't move a billion metres away, or randomly get an item they never had in their inventory) >>
+                            If Suspicious:
+                                S -> C: Revert changes and request apology packet from client (meaning, client sends data synced with server.)
+                                C -> S: Give apology packet and revert changes client side
+                            Else:
+                                S -> GAME_STORAGE: Keep in temporary data bank till a save event is triggered.
+                    S -> C (LOOP): Validate all player data, send keep-alive packets.
+                    C -> S (LOOP): Accept all server data, send keep-alive packets.
+                If 1:
+                    Go to disconnect screen with error, as server kicked us.
+        Disconnect [SERVER-INTENDED] >>
+            S -> C: Send disconnect packet with 'reason' ID (check src.client.shared.DisconnectStatusCodes)
+            S [P3D_NETWORK]: Terminate connection.
+        Disconnect [CLIENT-INTENDED] >>
+            C -> S: Send a 'disconnect' packet, server immediately terminates connection.
+            C&S [P3D_NETWORK]: Terminate connection.
+        Disconnect [CLIENT-CRASH] >>
+            S [KEEPALIVE]: Notice something is off within 1000 updates, indicating force disconnect.
+            S [P3D_NETWORK]: Terminate connection.

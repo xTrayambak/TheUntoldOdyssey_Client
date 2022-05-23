@@ -1,36 +1,18 @@
 #!/usr/bin/env python3
 
-from argparse import ArgumentParser
 import os
 import pathlib
 import sys
 
-argparser = ArgumentParser(
-    description = "Run The Untold Odyssey."
-)
-
 DEFAULT_MEM = 1500
 
-argparser.add_argument("memory",
-                        metavar = "m",
-                        type = int,
-                        help = f"The maximum amount of memory the game can use. (Defaults to {DEFAULT_MEM} MB)",
-                        const = DEFAULT_MEM,
-                        nargs = "?"
-)
-
-argparser.add_argument(
-    "token",
-    metavar = "t",
-    type = str,
-    help = f"The Syntax Studios account token.",
-    const = "",
-    nargs = "?"
-)
-
-VERSION = "0.1.3" #NOTE TO DEVELOPERS: MAKE SURE TO CHANGE THIS AS THE VERSION INCREASES, THIS IS NECESSARY SO THE CLIENT CAN LOCATE IT'S PROPER WORKING DIRECTORY.
+VERSION = "0.1.5" #NOTE TO DEVELOPERS: MAKE SURE TO CHANGE THIS AS THE VERSION INCREASES, THIS IS NECESSARY SO THE CLIENT CAN LOCATE IT'S PROPER WORKING DIRECTORY.
 
 class GameHandler:
+    """
+    The entire backbone class of the TUO instance -- patches the game for different systems, installs required libraries, and acts as an intermediary between
+    the TUO class and the raw CLI arguments.
+    """
     def __init__(self, max_mem: int = DEFAULT_MEM, token: str = 'no-token-provided'):
         from src.libinstaller import installAllLibraries
         from src.libtraceback import log_traceback
@@ -61,11 +43,7 @@ class GameHandler:
             log("Library installation process complete.", "Worker/Bootstrap")
             log("Pre-bootup client initialization complete, now changing into client mode.")
             from src.client import TUO
-            from src.client.linuxpatcher import patch
             log("Changed into client mode. Now, the client code is going to be run.")
-            if sys.platform == 'linux':
-                log("Running Linux patches...")
-                patch()
                 
             self.tuo = TUO(max_mem, token)
             self.tuo.enableParticles()
@@ -82,6 +60,12 @@ class GameHandler:
                 log_traceback()
                 exit(1)
 
+    def getInstance(self):
+        """
+        Get the current running instance of TUO.
+        """
+        return self.tuo
+
     def run(self):
         """
         GameHandler.run() -> self.tuo.run()
@@ -93,14 +77,14 @@ class GameHandler:
         from src.log import log, warn
         if os.path.exists("DEBUG_MODE"):
             warn("The Untold Odyssey: DEBUG MODE")
-            self.tuo.start_internal_game()
-            self.tuo.workspace.init(self.tuo)
-            self.tuo.run()
+            self.getInstance().start_internal_game()
+            self.getInstance().workspace.init(self.tuo)
+            self.getInstance().run()
         else:
             try:
-                self.tuo.start_internal_game()
-                self.tuo.workspace.init(self.tuo)
-                self.tuo.run()
+                self.getInstance().start_internal_game()
+                self.getInstance().workspace.init(self.tuo)
+                self.getInstance().run()
             except Exception as e:
                 log(f"Caught exception whilst running game: {str(e)}", "GameHandler/Run")
                 log_traceback(self.tuo)
@@ -109,11 +93,19 @@ class GameHandler:
         exit(0)
 
 if __name__ == "__main__":
-    args = argparser.parse_args()
-    mem_max = args.memory
-    token = args.token
-    if mem_max == None: mem_max = DEFAULT_MEM
-    if token == None: token = "no-tok-provided"
+    mem_max = None
+    token = None
+
+    if len(sys.argv) > 1:
+        mem_max = sys.argv[0]
+    if len(sys.argv) > 2:
+        token = sys.argv[1]
+    
+    if not isinstance(mem_max, int):
+        mem_max = DEFAULT_MEM
+    
+    if not isinstance(token, str):
+        token = 'no-tok-provided'
 
     game = GameHandler(mem_max, token)
     game.run()

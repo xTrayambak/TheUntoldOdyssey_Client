@@ -1,0 +1,86 @@
+[32m[Worker/Thread-1/INFO]: PVM Environment: [/bin/python][39m
+[32m[Worker/Bootstrap/INFO]: Trying to find any libraries that need to be installed.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'panda3d==1.10.11' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'requests' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'pyglet' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'pypresence' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'DirectGuiExtension' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'pyttsx3' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'psutil' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'pyscreenshot' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'pydatanet' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'distro' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'panda3d-character-controller' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'colorama' is installed or not.[39m
+[32m[Worker/Bootstrap/INFO]: Library installation process complete.[39m
+[32m[Worker/Thread-1/INFO]: Pre-bootup client initialization complete, now changing into client mode.[39m
+[32m[Worker/Thread-1/INFO]: Changed into client mode. Now, the client code is going to be run.[39m
+[32m[Worker/Thread-1/INFO]: The Untold Odyssey 0.1.3 loaded up![39m
+[32m[Worker/Thread-1/INFO]: Initializing Panda3D rendering engine.[39m
+[32m[Worker/Thread-1/INFO]: Panda3D initialized.[39m
+[32m[NARRATORDATA/INFO]: assets/narrator_data/en_US.json[39m
+[31m[Worker/Thread-1/WARN]: UNABLE TO INITIALIZE TEXT2SPEECH ENGINE! [libespeak.so.1: cannot open shared object file: No such file or directory][39m
+[32m[Worker/Thread-1/INFO]: Narrator is disabled.[39m
+[32m[Worker/Thread-1/INFO]: Loading translations for language [en_US][39m
+[32m[Worker/Bootstrap/INFO]: OpenGL: [4, 5] || Vendor: AMD[39m
+[32m[Worker/Bootstrap/INFO]: Panda3D lib location: [/home/trayambak/.local/lib/python3.10/site-packages/panda3d/__init__.py][39m
+[32m[Worker/Thread-1/INFO]: Entity [playertest_default] initialized.[39m
+[32m[Worker/TimeDetector/INFO]: Date info: 07-05-22
+Time info: 19:55:27[39m
+[32m[Worker/Config/INFO]: Syntax Studios account token is [no-tok-provided][39m
+[32m[Worker/Thread-1/INFO]: Binding function 'forward' to key 'w'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'backward' to key 's'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'left' to key 'a'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'right' to key 'd'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'forward_stop' to key 'w-up'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'backward_stop' to key 's-up'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'left_stop' to key 'a-up'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'right_stop' to key 'd-up'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'pause_menu' to key 'escape'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'screenshot' to key 'f3'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'inventory' to key 'i'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'trade_menu' to key 'p'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'server_list' to key '`'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'chat' to key '/'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'wireframe_toggle' to key 'tab'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'fps_toggle' to key 'f1'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'debug_mode' to key 'f4'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'freecam' to key 'f2'[39m
+[32m[Worker/InputManager/INFO]: Hooking input system into TUO process.[39m
+[32m[Worker/Thread-1/INFO]: Max framerate is capped to [240] FPS.[39m
+[32m[Worker/Thread-1/INFO]: Maximum memory is set to 1500 MB[39m
+[32m[Worker/RPCManager/INFO]: Rich presence started. Binding RPCManager._run to taskManager.[39m
+[32m[Worker/FontLoader/INFO]: Loaded font [edgegalaxy] and cached into memory.[39m
+[32m[Worker/FontLoader/INFO]: Loaded font [gentium_basic] and cached into memory.[39m
+[32m[Worker/FontLoader/INFO]: Loaded font [kritidev020] and cached into memory.[39m
+[32m[Worker/Thread-1/INFO]: The player is currently on the main menu.[39m
+[32m[Worker/Thread-1/INFO]: Simple day/month is 07-05; checking if a festival is occuring.[39m
+[32m[Worker/Thread-1/INFO]: Initializing Ambience Manager.[39m
+[32m[Worker/Authenticator/INFO]: Authenticator is starting auth process...[39m
+[32m[Worker/Authenticator/INFO]: Authenticator has completed it's auth process...[39m
+[32m[Worker/Hardware/INFO]: This GPU does support OpenGL 4.3! [MAJOR=4;MINOR=5][39m
+[32m[GameHandler/Run/INFO]: Caught exception whilst running game: Pipeline.pipeline_activity_task() missing 1 required positional argument: 'command_list'[39m
+[91m[Worker/Thread-1/FATAL]: 
+    The game has crashed, exiting.
+
+    # You should try listening to the Minecraft OST!
+
+    Configurations:
+    GPU: ~~NONE~~: PYGLET NOT INSTALLED.
+    Vendor: ~~NONE~~: PYGLET NOT INSTALLED.
+    OpenGL version: ~~NONE~~: PYGLET NOT INSTALLED.
+    OpenGL extensions loaded: ~~NONE~~: PYGLET NOT INSTALLED.
+
+    The Untold Odyssey Version: 0.1.3
+    Python version: 3.10.4 (main, Mar 23 2022, 23:05:40) [GCC 11.2.0]
+
+    Platform: linux
+
+    Full traceback (sys.exc_info):
+    [39m
+[91m[Worker/Thread-1/FATAL]: 
+    [IF YOUR GAME IS MODDED, CONTACT THE MOD DEVELOPERS FIRST BEFORE CONTACTING US.]
+    [The Untold Odyssey, developed by Syntax Studios (2022)]
+    [39m
+[31m[Worker/Telemetry/WARN]: An error occured whilst sending telemetry data!
+local variable 'data' referenced before assignment[39m

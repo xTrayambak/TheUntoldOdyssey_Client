@@ -5,6 +5,7 @@ import sys
 import gc
 import random
 import threading
+import limeade
 from time import sleep
 
 from direct.gui.DirectGui import *
@@ -32,13 +33,15 @@ FESTIVALS = {
     "02-04": "Eid Mubarak!",
     "06-06": "Happy Birthday Trayambak!",
     "25-12": "Merry Christmas!",
-    "18-01": "We all must strive for a free internet, with no monopolies!"
+    "18-01": "We all must strive for a free internet, with no monopolies!",
+    "01-01": "Happy New Year!"
 }
 
 def mainMenu(instance, previous_state: int = 1):
     """
     Main menu, you can go to the settings menu or play from here, or exit.
     """
+    limeade.refresh()
     ## Clear all UI. ##
     instance.clear()
 
@@ -69,7 +72,7 @@ def mainMenu(instance, previous_state: int = 1):
     skybox.set_material_off(0)
     skybox.set_color_off(1)
 
-    def cameraSpinTask(task):
+    '''def cameraSpinTask(task):
         if instance.state != instance.states_enum.MENU and instance.state != instance.states_enum.SETTINGS:
             return task.done
         
@@ -79,7 +82,7 @@ def mainMenu(instance, previous_state: int = 1):
                 sin(instance.clock.getFrameTime() / 1.5) * 5,
                 instance.clock.getFrameTime() * -1
             ))
-        return task.cont
+        return task.cont'''
 
     def skyboxTask(task):
         skybox.setPos((0, 0, 0))
@@ -93,7 +96,7 @@ def mainMenu(instance, previous_state: int = 1):
         return task.cont
 
     instance.spawnNewTask("skyboxTask", skyboxTask)
-    instance.spawnNewTask("cameraSpinTask", cameraSpinTask)
+    #instance.spawnNewTask("cameraSpinTask", cameraSpinTask)
 
 
     log("The player is currently on the main menu.")
@@ -160,15 +163,39 @@ def mainMenu(instance, previous_state: int = 1):
     log(f"Simple day/month is {time_split}; checking if a festival is occuring.")
 
     if time_split in FESTIVALS:
-        log(f"Festival found! Splash screen set to [{FESTIVALS[time_split]}]")
         splash_txt = FESTIVALS[time_split]
+
+    if instance.development_build:
+        splash_txt = "This build of the game is a development build, and is not the final product.\nBugs and glitches are to be fixed\nand features may change in the final product."
+    elif instance.gamereview_build:
+        splash_txt = "This build is for a game reviewer, it is not the final product."
 
     splash_screen_text = Text(instance, basic_font, splash_txt, 0.09, (0.5, 0, 0.5))
     splash_screen_text.setHpr(LVecBase3(-8.8, 0, -8.8))
 
+    if instance.gamereview_build or instance.development_build:
+        def rgb_task(task):
+            # nifty comprehension.
+            color_rgb_list = [sin((instance.getTimeElapsed() * x) - instance.getDt()) for x in range(3)]
+            color_rgb_list.append(1.0)
+
+            splash_screen_text.setColor(
+                LVecBase4f(*color_rgb_list)
+            )
+
+            return task.cont
+
+        instance.spawnNewTask('rgb_text_task', rgb_task)
+
     instance.spawnNewTask(
         "mainmenu-splash_screen_pop", splash_screen_pop, (None, instance, splash_screen_text, clip)
     )
+
+    tuo_ver_text = Text(instance, basic_font, "The Untold Odyssey {}".format(instance.version), 0.05, (1.1, 0, -0.9))
+    tuo_ver_text.setColor((0, 0, 0))
+
+    syntax_copyright_warning = Text(instance, basic_font, "[W](C) Syntax Studios 2022; do not share!", 0.05, (-1.1, 0, -0.9))
+    syntax_copyright_warning.setColor((0, 0, 0))
 
     ## PACK INTO WORKSPACE HIERARCHY ##
     instance.workspace.add_ui("play_btn", play_button)
@@ -176,5 +203,7 @@ def mainMenu(instance, previous_state: int = 1):
     instance.workspace.add_ui("tuoLogo", tuoLogo)
     instance.workspace.add_ui("settingsBtn", settings_button)
     instance.workspace.add_ui("exit_button", exit_button)
+    instance.workspace.add_ui("tuo_ver_text", tuo_ver_text)
+    instance.workspace.add_ui("syntax_copyright_warning", syntax_copyright_warning)
 
     return 'menu-close'

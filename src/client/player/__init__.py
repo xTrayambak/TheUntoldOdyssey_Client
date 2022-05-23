@@ -51,7 +51,7 @@ class Player():
 			"player_update", self.update
 		)
 
-		self.controller = PlayerController(self.instance.workspace.world)
+		#self.controller = PlayerController(self.instance.workspace.world, 'assets/character.json')
 
 	def giveEntity(self):
 		self.entity = Entity(self.name, self.instance, self.model, [0, 0, 0], True)

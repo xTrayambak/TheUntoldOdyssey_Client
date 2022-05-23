@@ -92,11 +92,9 @@ class Workspace:
         thr = Thread(target = self._clear, args = (category,))
         thr.start()
 
-    def _clear(self, category: str = "parts"):
+    def _clear(self, category: str = "parts", cleanRender: bool = True):
         """
-        Destroy every object in the workspace hierarchy, or in other words..
-
-        Let's yeet 'em all idiots, 'cause be no carin'!
+        Destroy every object in the workspace hierarchy.
         """
         for _object in self.objects[category]:
             if type(self.objects[category]) == dict:
@@ -104,6 +102,11 @@ class Workspace:
 
                 if type(object) == NodePath:
                     object.removeNode()
+
+        if cleanRender:
+            for np in self.instance.render:
+                if np.is_empty() != False:
+                    np.removeNode()
 
     def add_object(self, name, obj):
         """

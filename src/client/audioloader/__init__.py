@@ -18,6 +18,7 @@ class AudioLoader:
         if _cat_type[category_type] == 'songs':
             path = path['path']
 
-        return self.instance.loader.loadSfx(
-            path
-        )
+        return self.instance.loader.loadSfx(path)
+
+    def load_path(self, path: str):
+        return self.instance.loader.loadSfx(path)

@@ -23,6 +23,7 @@ from src.client.ui.button import Button
 from src.client.ui.text import Text
             
 from math import sin, pi
+import limeade
 
 def connectingPage(instance, previous_state: int = 1):
     """
@@ -30,6 +31,7 @@ def connectingPage(instance, previous_state: int = 1):
 
     (Arima your art is amazing xddddd)
     """
+    limeade.refresh()
     instance.clear()
 
     mangabey_font = instance.fontLoader.load("mangabey")
@@ -55,9 +57,7 @@ def connectingPage(instance, previous_state: int = 1):
         instance = instance,
         command = back_cmd
     )
-
-    #back_button.hide()
-
+    
     label_connecting = TextNode(name = "node_text_connect")
     label_connecting.setText(f"Connecting to [{instance.networkClient.connectingTo}]; locating host and establishing connection.")
     label_connecting.setTextColor((0.1,0.1,0.1,1))
@@ -90,9 +90,22 @@ def connectingPage(instance, previous_state: int = 1):
     label_gpuNode = instance.aspect2d.attachNewNode(label_gpu)
     label_gpuNode.setScale(0.07)
 
+    if sys.platform == 'linux':
+        import distro
+        label_distroData = TextNode(name = "node_linuxdistro")
+        label_distroData.setText("{} '{}' Build {} ({} Linux)".format(distro.name(True), distro.codename(), distro.build_number(), distro.like().upper()))
+        label_distroData.setTextColor((0, 0, 0, 1))
+        label_distroData.setAlign(TextNode.ARight)
+        label_distroData.setFont(mangabey_font)
+        label_distroNode = instance.aspect2d.attachNewNode(label_distroData)
+        label_distroNode.setScale(0.07)
+
+        instance.workspace.add_ui("distroData", label_distroNode)
+
     label_gpuNode.setPos((-1.9, 0, -0.8))
     label_tuoNode.setPos((-1.9, 0, -0.9))
     label_artistNode.setPos((1.9, 0, -0.9))
+    label_distroNode.setPos((1.9, 0, 0.9))
 
     instance.workspace.add_ui("connecting_screen_status", label_connectingNode)
     instance.workspace.add_ui("gpu_text", label_gpuNode)
@@ -100,5 +113,3 @@ def connectingPage(instance, previous_state: int = 1):
     instance.workspace.add_ui("artist_text", label_artistNode)
     instance.workspace.add_ui("connecting_screen_backbtn", back_button)
     instance.workspace.add_ui("background_connecting_screen", background)
-
-    return "connected-to-game"

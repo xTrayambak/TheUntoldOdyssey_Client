@@ -1,0 +1,221 @@
+[32m[Worker/Thread-1/INFO]: PVM Environment: [/usr/sbin/python][39m
+[32m[Worker/Bootstrap/INFO]: Trying to find any libraries that need to be installed.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'panda3d==1.10.11' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'requests' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'pyglet' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'pypresence' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'DirectGuiExtension' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'pyttsx3' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'psutil' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'pyscreenshot' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'pydatanet' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'distro' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'panda3d-character-controller' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'colorama' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'limeade' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'PyMsgBox' is installed or not.[39m
+[32m[Worker/Requirements/INFO]: Checking if library 'elevate' is installed or not.[39m
+[32m[Worker/Bootstrap/INFO]: Library installation process complete.[39m
+[32m[Worker/Thread-1/INFO]: Pre-bootup client initialization complete, now changing into client mode.[39m
+[32m[Worker/Thread-1/INFO]: Changed into client mode. Now, the client code is going to be run.[39m
+[32m[Worker/Thread-1/INFO]: The Untold Odyssey 0.1.4-dev1 loaded up![39m
+[32m[Worker/Thread-1/INFO]: Initializing Panda3D rendering engine.[39m
+[32m[Worker/Thread-1/INFO]: Panda3D initialized.[39m
+[32m[NARRATORDATA/INFO]: assets/narrator_data/en_US.json[39m
+[32m[Worker/Thread-1/INFO]: Narrator is enabled.[39m
+[32m[Worker/Thread-1/INFO]: Loading translations for language [en_US][39m
+[32m[Worker/Bootstrap/INFO]: OpenGL: [4, 5] || Vendor: AMD[39m
+[32m[Worker/Bootstrap/INFO]: Panda3D lib location: [/home/trayambak/.local/lib/python3.10/site-packages/panda3d/__init__.py][39m
+[32m[Worker/Thread-1/INFO]: Entity [playertest_default] initialized.[39m
+[32m[Worker/TimeDetector/INFO]: Date info: 17-05-22
+Time info: 19:21:26[39m
+[32m[Worker/Config/INFO]: Syntax Studios account token is [no-tok-provided][39m
+[32m[Worker/Thread-1/INFO]: Binding function 'forward' to key 'w'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'backward' to key 's'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'left' to key 'a'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'right' to key 'd'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'forward_stop' to key 'w-up'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'backward_stop' to key 's-up'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'left_stop' to key 'a-up'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'right_stop' to key 'd-up'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'pause_menu' to key 'escape'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'screenshot' to key 'f3'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'inventory' to key 'i'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'trade_menu' to key 'p'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'server_list' to key '`'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'chat' to key '/'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'wireframe_toggle' to key 'tab'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'fps_toggle' to key 'f1'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'debug_mode' to key 'f4'[39m
+[32m[Worker/Thread-1/INFO]: Binding function 'freecam' to key 'f2'[39m
+[32m[Worker/InputManager/INFO]: Hooking input system into TUO process.[39m
+[32m[Worker/Thread-1/INFO]: Max framerate is capped to [240] FPS.[39m
+[32m[Worker/Thread-1/INFO]: Maximum memory is set to 1500 MB[39m
+[31m[Worker/Thread-1/WARN]: The Untold Odyssey: DEBUG MODE[39m
+[32m[Worker/RPCManager/INFO]: Rich presence started. Binding RPCManager._run to taskManager.[39m
+[32m[Worker/FontLoader/INFO]: Loaded font [edgegalaxy] and cached into memory.[39m
+[32m[Worker/FontLoader/INFO]: Loaded font [gentium_basic] and cached into memory.[39m
+[32m[Worker/FontLoader/INFO]: Loaded font [kritidev020] and cached into memory.[39m
+[32m[Worker/Thread-1/INFO]: The player is currently on the main menu.[39m
+[32m[Worker/Thread-1/INFO]: Simple day/month is 17-05; checking if a festival is occuring.[39m
+[32m[Worker/Thread-1/INFO]: 1: b[39m
+[32m[Worker/Thread-1/INFO]: 2: ][39m
+[32m[Worker/Thread-1/INFO]: 3: T[39m
+[32m[Worker/Thread-1/INFO]: 4: h[39m
+[32m[Worker/Thread-1/INFO]: 5: i[39m
+[32m[Worker/Thread-1/INFO]: 6: s[39m
+[32m[Worker/Thread-1/INFO]: 7:  [39m
+[32m[Worker/Thread-1/INFO]: 8: b[39m
+[32m[Worker/Thread-1/INFO]: 9: u[39m
+[32m[Worker/Thread-1/INFO]: 10: i[39m
+[32m[Worker/Thread-1/INFO]: 11: l[39m
+[32m[Worker/Thread-1/INFO]: 12: d[39m
+[32m[Worker/Thread-1/INFO]: 13:  [39m
+[32m[Worker/Thread-1/INFO]: 14: o[39m
+[32m[Worker/Thread-1/INFO]: 15: f[39m
+[32m[Worker/Thread-1/INFO]: 16:  [39m
+[32m[Worker/Thread-1/INFO]: 17: t[39m
+[32m[Worker/Thread-1/INFO]: 18: h[39m
+[32m[Worker/Thread-1/INFO]: 19: e[39m
+[32m[Worker/Thread-1/INFO]: 20:  [39m
+[32m[Worker/Thread-1/INFO]: 21: g[39m
+[32m[Worker/Thread-1/INFO]: 22: a[39m
+[32m[Worker/Thread-1/INFO]: 23: m[39m
+[32m[Worker/Thread-1/INFO]: 24: e[39m
+[32m[Worker/Thread-1/INFO]: 25:  [39m
+[32m[Worker/Thread-1/INFO]: 26: i[39m
+[32m[Worker/Thread-1/INFO]: 27: s[39m
+[32m[Worker/Thread-1/INFO]: 28:  [39m
+[32m[Worker/Thread-1/INFO]: 29: a[39m
+[32m[Worker/Thread-1/INFO]: 30:  [39m
+[32m[Worker/Thread-1/INFO]: 31: d[39m
+[32m[Worker/Thread-1/INFO]: 32: e[39m
+[32m[Worker/Thread-1/INFO]: 33: v[39m
+[32m[Worker/Thread-1/INFO]: 34: e[39m
+[32m[Worker/Thread-1/INFO]: 35: l[39m
+[32m[Worker/Thread-1/INFO]: 36: o[39m
+[32m[Worker/Thread-1/INFO]: 37: p[39m
+[32m[Worker/Thread-1/INFO]: 38: m[39m
+[32m[Worker/Thread-1/INFO]: 39: e[39m
+[32m[Worker/Thread-1/INFO]: 40: n[39m
+[32m[Worker/Thread-1/INFO]: 41: t[39m
+[32m[Worker/Thread-1/INFO]: 42:  [39m
+[32m[Worker/Thread-1/INFO]: 43: b[39m
+[32m[Worker/Thread-1/INFO]: 44: u[39m
+[32m[Worker/Thread-1/INFO]: 45: i[39m
+[32m[Worker/Thread-1/INFO]: 46: l[39m
+[32m[Worker/Thread-1/INFO]: 47: d[39m
+[32m[Worker/Thread-1/INFO]: 48: ,[39m
+[32m[Worker/Thread-1/INFO]: 49:  [39m
+[32m[Worker/Thread-1/INFO]: 50: a[39m
+[32m[Worker/Thread-1/INFO]: 51: n[39m
+[32m[Worker/Thread-1/INFO]: 52: d[39m
+[32m[Worker/Thread-1/INFO]: 53:  [39m
+[32m[Worker/Thread-1/INFO]: 54: i[39m
+[32m[Worker/Thread-1/INFO]: 55: s[39m
+[32m[Worker/Thread-1/INFO]: 56:  [39m
+[32m[Worker/Thread-1/INFO]: 57: n[39m
+[32m[Worker/Thread-1/INFO]: 58: o[39m
+[32m[Worker/Thread-1/INFO]: 59: t[39m
+[32m[Worker/Thread-1/INFO]: 60:  [39m
+[32m[Worker/Thread-1/INFO]: 61: t[39m
+[32m[Worker/Thread-1/INFO]: 62: h[39m
+[32m[Worker/Thread-1/INFO]: 63: e[39m
+[32m[Worker/Thread-1/INFO]: 64:  [39m
+[32m[Worker/Thread-1/INFO]: 65: f[39m
+[32m[Worker/Thread-1/INFO]: 66: i[39m
+[32m[Worker/Thread-1/INFO]: 67: n[39m
+[32m[Worker/Thread-1/INFO]: 68: a[39m
+[32m[Worker/Thread-1/INFO]: 69: l[39m
+[32m[Worker/Thread-1/INFO]: 70:  [39m
+[32m[Worker/Thread-1/INFO]: 71: p[39m
+[32m[Worker/Thread-1/INFO]: 72: r[39m
+[32m[Worker/Thread-1/INFO]: 73: o[39m
+[32m[Worker/Thread-1/INFO]: 74: d[39m
+[32m[Worker/Thread-1/INFO]: 75: u[39m
+[32m[Worker/Thread-1/INFO]: 76: c[39m
+[32m[Worker/Thread-1/INFO]: 77: t[39m
+[32m[Worker/Thread-1/INFO]: 78: .[39m
+[32m[Worker/Thread-1/INFO]: 79: 
+[39m
+[32m[Worker/Thread-1/INFO]: 80: B[39m
+[32m[Worker/Thread-1/INFO]: 81: u[39m
+[32m[Worker/Thread-1/INFO]: 82: g[39m
+[32m[Worker/Thread-1/INFO]: 83: s[39m
+[32m[Worker/Thread-1/INFO]: 84:  [39m
+[32m[Worker/Thread-1/INFO]: 85: a[39m
+[32m[Worker/Thread-1/INFO]: 86: n[39m
+[32m[Worker/Thread-1/INFO]: 87: d[39m
+[32m[Worker/Thread-1/INFO]: 88:  [39m
+[32m[Worker/Thread-1/INFO]: 89: g[39m
+[32m[Worker/Thread-1/INFO]: 90: l[39m
+[32m[Worker/Thread-1/INFO]: 91: i[39m
+[32m[Worker/Thread-1/INFO]: 92: t[39m
+[32m[Worker/Thread-1/INFO]: 93: c[39m
+[32m[Worker/Thread-1/INFO]: 94: h[39m
+[32m[Worker/Thread-1/INFO]: 95: e[39m
+[32m[Worker/Thread-1/INFO]: 96: s[39m
+[32m[Worker/Thread-1/INFO]: 97:  [39m
+[32m[Worker/Thread-1/INFO]: 98: a[39m
+[32m[Worker/Thread-1/INFO]: 99: r[39m
+[32m[Worker/Thread-1/INFO]: 100: e[39m
+[32m[Worker/Thread-1/INFO]: 101:  [39m
+[32m[Worker/Thread-1/INFO]: 102: t[39m
+[32m[Worker/Thread-1/INFO]: 103: o[39m
+[32m[Worker/Thread-1/INFO]: 104:  [39m
+[32m[Worker/Thread-1/INFO]: 105: b[39m
+[32m[Worker/Thread-1/INFO]: 106: e[39m
+[32m[Worker/Thread-1/INFO]: 107:  [39m
+[32m[Worker/Thread-1/INFO]: 108: f[39m
+[32m[Worker/Thread-1/INFO]: 109: i[39m
+[32m[Worker/Thread-1/INFO]: 110: x[39m
+[32m[Worker/Thread-1/INFO]: 111: e[39m
+[32m[Worker/Thread-1/INFO]: 112: d[39m
+[32m[Worker/Thread-1/INFO]: 113: 
+[39m
+[32m[Worker/Thread-1/INFO]: 114: a[39m
+[32m[Worker/Thread-1/INFO]: 115: n[39m
+[32m[Worker/Thread-1/INFO]: 116: d[39m
+[32m[Worker/Thread-1/INFO]: 117:  [39m
+[32m[Worker/Thread-1/INFO]: 118: f[39m
+[32m[Worker/Thread-1/INFO]: 119: e[39m
+[32m[Worker/Thread-1/INFO]: 120: a[39m
+[32m[Worker/Thread-1/INFO]: 121: t[39m
+[32m[Worker/Thread-1/INFO]: 122: u[39m
+[32m[Worker/Thread-1/INFO]: 123: r[39m
+[32m[Worker/Thread-1/INFO]: 124: e[39m
+[32m[Worker/Thread-1/INFO]: 125: s[39m
+[32m[Worker/Thread-1/INFO]: 126:  [39m
+[32m[Worker/Thread-1/INFO]: 127: m[39m
+[32m[Worker/Thread-1/INFO]: 128: a[39m
+[32m[Worker/Thread-1/INFO]: 129: y[39m
+[32m[Worker/Thread-1/INFO]: 130:  [39m
+[32m[Worker/Thread-1/INFO]: 131: c[39m
+[32m[Worker/Thread-1/INFO]: 132: h[39m
+[32m[Worker/Thread-1/INFO]: 133: a[39m
+[32m[Worker/Thread-1/INFO]: 134: n[39m
+[32m[Worker/Thread-1/INFO]: 135: g[39m
+[32m[Worker/Thread-1/INFO]: 136: e[39m
+[32m[Worker/Thread-1/INFO]: 137:  [39m
+[32m[Worker/Thread-1/INFO]: 138: i[39m
+[32m[Worker/Thread-1/INFO]: 139: n[39m
+[32m[Worker/Thread-1/INFO]: 140:  [39m
+[32m[Worker/Thread-1/INFO]: 141: t[39m
+[32m[Worker/Thread-1/INFO]: 142: h[39m
+[32m[Worker/Thread-1/INFO]: 143: e[39m
+[32m[Worker/Thread-1/INFO]: 144:  [39m
+[32m[Worker/Thread-1/INFO]: 145: f[39m
+[32m[Worker/Thread-1/INFO]: 146: i[39m
+[32m[Worker/Thread-1/INFO]: 147: n[39m
+[32m[Worker/Thread-1/INFO]: 148: a[39m
+[32m[Worker/Thread-1/INFO]: 149: l[39m
+[32m[Worker/Thread-1/INFO]: 150:  [39m
+[32m[Worker/Thread-1/INFO]: 151: p[39m
+[32m[Worker/Thread-1/INFO]: 152: r[39m
+[32m[Worker/Thread-1/INFO]: 153: o[39m
+[32m[Worker/Thread-1/INFO]: 154: d[39m
+[32m[Worker/Thread-1/INFO]: 155: u[39m
+[32m[Worker/Thread-1/INFO]: Initializing Ambience Manager.[39m
+[32m[Worker/Authenticator/INFO]: Authenticator is starting auth process...[39m
+[32m[Worker/Authenticator/INFO]: Authenticator has completed it's auth process...[39m
+[32m[Worker/Hardware/INFO]: This GPU does support OpenGL 4.3! [MAJOR=4;MINOR=5][39m

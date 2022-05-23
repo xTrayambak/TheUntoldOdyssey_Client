@@ -1,0 +1,6 @@
+[32m[Worker/Thread-1/INFO]: PVM Environment: [/bin/python][39m
+[32m[Worker/Bootstrap/INFO]: Library installation process complete.[39m
+[32m[Worker/Thread-1/INFO]: Pre-bootup client initialization complete, now changing into client mode.[39m
+[32m[Worker/Thread-1/INFO]: Changed into client mode. Now, the client code is going to be run.[39m
+[32m[Worker/Thread-1/INFO]: Running Linux patches...[39m
+[31m[Worker/PrivilegeEscalator/WARN]: Elevating privileges of TUO process![39m
