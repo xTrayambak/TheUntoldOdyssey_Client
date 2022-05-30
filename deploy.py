@@ -48,7 +48,7 @@ def deploy():
                 exit(-1)
             if git_push_confirm == 'y':
                 print(':git: Pushing to online repository. Here goes nothing!')
-                commit_result = call('git', 'push', 'origin', 'master')
+                commit_result = call(['git', 'push', 'origin', 'master'])
                 print(':git: Done. Exiting with code ', commit_result)
 
     print(':death: Cleaning up environment.')
