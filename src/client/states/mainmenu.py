@@ -163,26 +163,15 @@ def mainMenu(instance, previous_state: int = 1):
         splash_txt = FESTIVALS[time_split]
 
     if instance.development_build:
-        splash_txt = "This build of the game is a development build, and is not the final product.\nBugs and glitches are to be fixed\nand features may change in the final product."
+        splash_txt = "[RGB]This build of the game is a development build, and is not the final product.\nBugs and glitches are to be fixed\nand features may change in the final product."
     elif instance.gamereview_build:
-        splash_txt = "This build is for a game reviewer, it is not the final product."
+        splash_txt = "[I]This build is for a game reviewer, it is not the final product."
 
-    splash_screen_text = Text(instance, basic_font, splash_txt, 0.09, (0.5, 0, 0.5))
-    splash_screen_text.setHpr(LVecBase3(-8.8, 0, -8.8))
-
-    if instance.gamereview_build or instance.development_build:
-        def rgb_task(task):
-            # nifty comprehension.
-            color_rgb_list = [sin((instance.getTimeElapsed() * x) - instance.getDt()) for x in range(3)]
-            color_rgb_list.append(1.0)
-
-            splash_screen_text.setColor(
-                LVecBase4f(*color_rgb_list)
-            )
-
-            return task.cont
-
-        instance.spawnNewTask('rgb_text_task', rgb_task)
+    if splash_txt != "This splash text will never show up in the game, isn't that pretty weird?":
+        splash_screen_text = Text(instance, basic_font, splash_txt, 0.09, (0.5, 0, 0.5))
+        splash_screen_text.setHpr(LVecBase3(-8.8, 0, -8.8))
+    else:
+        splash_screen_text = None
 
     instance.spawnNewTask(
         "mainmenu-splash_screen_pop", splash_screen_pop, (None, instance, splash_screen_text, clip)
@@ -191,12 +180,13 @@ def mainMenu(instance, previous_state: int = 1):
     tuo_ver_text = Text(instance, basic_font, "The Untold Odyssey {}".format(instance.version), 0.05, (1.1, 0, -0.9))
     tuo_ver_text.setColor((0, 0, 0))
 
-    syntax_copyright_warning = Text(instance, basic_font, "[W](C) Syntax Studios 2022; do not share!", 0.05, (-1.1, 0, -0.9))
+    syntax_copyright_warning = Text(instance, basic_font, "[I](C) Syntax Studios 2022; do not share!", 0.05, (-1.1, 0, -0.9))
     syntax_copyright_warning.setColor((0, 0, 0))
 
     ## PACK INTO WORKSPACE HIERARCHY ##
     instance.workspace.add_ui("play_btn", play_button)
-    instance.workspace.add_ui("splash_text", splash_screen_text)
+    if splash_screen_text:
+        instance.workspace.add_ui("splash_text", splash_screen_text)
     instance.workspace.add_ui("tuoLogo", tuoLogo)
     instance.workspace.add_ui("settingsBtn", settings_button)
     instance.workspace.add_ui("exit_button", exit_button)

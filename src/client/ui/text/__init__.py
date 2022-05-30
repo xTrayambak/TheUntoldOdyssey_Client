@@ -23,6 +23,7 @@ class TextFormatting:
     BOLD = "[B]"
     SHAKE = "[S]"
     WAVE = "[W]"
+    RGB = "[RGB]"
 
 def tuple_to_vec4f(tup: tuple):
     return LVecBase4f(*tup)
@@ -78,9 +79,12 @@ class Text:
         elif self.text.startswith(TextFormatting.WAVE):
             self.setText(self.text.split(TextFormatting.WAVE)[1])
             self.instance.spawnNewTask('wave-text', self.wave_task)
+        elif self.text.startswith(TextFormatting.RGB):
+            self.setText(self.text.split(TextFormatting.RGB)[1])
+            self.instance.spawnNewTask('rgb_text_task', self.rgb_task)
         elif not self.text.startswith(TextFormatting.ITALIC):
             self.node.setSlant(0)
-            
+
 
     def setHpr(self, position: tuple):
         """
@@ -90,11 +94,13 @@ class Text:
         """
         self.nodePath.setHpr(position)
 
+
     def get_text(self) -> str:
         """
         Get the text of the Text object. (note: if the last `setText` call had `virtual` argument as `True`, then this value may be inaccurate.)
         """
         return self.text
+
 
     def shake_task(self, task):
         """
@@ -123,6 +129,21 @@ class Text:
             return task.done
 
     
+    def rgb_task(self, task):
+        """
+        The Text RGB color gradient task.
+        """
+        # nifty comprehension.
+        color_rgb_list = [math.sin((self.instance.getTimeElapsed() * x) - self.instance.getDt()) for x in range(3)]
+        color_rgb_list.append(1.0)
+
+        self.setColor(
+            LVecBase4f(*color_rgb_list)
+        )
+
+        return task.cont
+
+    
     def jumble_task(self, task):
         """
         The Text jumbling task.
@@ -144,6 +165,7 @@ class Text:
         except:
             return task.done
 
+
     def wave_task(self, task):
         elapsed = self.instance.getFrameTime()
         self.setPos(
@@ -155,12 +177,14 @@ class Text:
         )
         return task.cont
 
+
     def hide(self):
         """
         Hide the text, better known as setting the text to nothing. If we delete this object then the `Text.show` function won't work.
         """
         if self.nodePath.is_empty(): return
-        self.node.setText(" ")
+        self.node.setText(' ')
+
 
     def getPos(self, attr: str = None):
         """
@@ -180,10 +204,12 @@ class Text:
                 return self.pos[1]
         else:
             return self.pos
+
     
     def show(self):
         if self.nodePath.is_empty(): return
         self.node.setText(self.text)
+
 
     def setPos(self, position = (0, 0, 0), virtual: bool = False):
         """
@@ -200,6 +226,7 @@ class Text:
             self.pos = position
 
         self.nodePath.setPos(position)
+
     
     def setScale(self, scale: float = 0.01):
         """
@@ -207,6 +234,7 @@ class Text:
         """
         if self.nodePath.is_empty(): return
         self.nodePath.setScale(scale)
+
 
     def setColor(self, rgb):
         """
@@ -224,6 +252,7 @@ class Text:
         else:
             self.nodePath.setColor(rgb)
 
+
     def setText(self, text: str = "Hello, World!"):
         """
         Set the `text` in this Text object to something.
@@ -234,6 +263,7 @@ class Text:
 
         # make sure to update formatting.
         self.format()
+
 
     def destroy(self):
         """

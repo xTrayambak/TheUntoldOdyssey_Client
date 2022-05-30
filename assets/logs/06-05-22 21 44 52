@@ -1,8 +1,0 @@
-[Worker/Thread-1/INFO]: ['\n']
-[Worker/Thread-1/INFO]: ['FOV', 'NO_WAIT, 30, LINEAR]\n']
-[Worker/Thread-1/INFO]: ['\n']
-[Worker/Thread-1/INFO]: ['CAM_SHAKE', 'NO_WAIT, SINE, 0.5]\n']
-[Worker/Thread-1/INFO]: ['\n']
-[Worker/Thread-1/INFO]: ['FADE_OUT', 'WAIT, 5.5]\n']
-[Worker/Thread-1/INFO]: ['\n']
-[Worker/Thread-1/INFO]: ['END', 'NONE]']

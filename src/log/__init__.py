@@ -1,5 +1,7 @@
 import logging
 import sys
+import os
+
 try:
     from colorama import Fore
 except:
@@ -13,11 +15,18 @@ time_now = datetime.now()
 date_info = time_now.strftime("%d-%m-%y")
 time_info = time_now.strftime('%H %M %S')
 
-fileHandler = logging.FileHandler(
-    f'assets/logs/{date_info} {time_info}'
-)
+try:
+    fileHandler = logging.FileHandler(
+        f'assets/logs/{date_info} {time_info}'
+    )
+except FileNotFoundError:
+    fileHandler = None
+
+if os.path.exists('DEBUG_MODE'):
+    fileHandler = None
+
 logger = logging.getLogger()
-logger.addHandler(fileHandler)
+if fileHandler: logger.addHandler(fileHandler)
 logger.addHandler(logging.StreamHandler(sys.stdout))
 
 def log(msg = "Hello, World!", sender = "Worker/Thread-1"):

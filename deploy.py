@@ -10,6 +10,8 @@ def call(cmd_list):
     return subprocess.call(cmd_list)
 
 def deploy():
+    print("Adding fake launcher tag.")
+    call(['touch', 'LAUNCHER_ENVIRONMENT'])
     print('=-'*4, ' The Untold Odyssey Deployer ', '=-'*4)
     if sys.platform in ('win32', 'win64'): print(":warning: You are running Windows. The build may fail.")
     version = input('Enter the version of this client: ')
@@ -48,6 +50,9 @@ def deploy():
                 print(':git: Pushing to online repository. Here goes nothing!')
                 commit_result = call('git', 'push', 'origin', 'master')
                 print(':git: Done. Exiting with code ', commit_result)
+
+    print(':death: Cleaning up environment.')
+    call(['rm', '-rf', 'LAUNCHER_ENVIRONMENT', '&&', 'rm', '-rf', 'build'])
 
 if __name__ == '__main__':
     deploy()
