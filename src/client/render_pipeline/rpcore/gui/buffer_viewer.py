@@ -25,25 +25,22 @@ THE SOFTWARE.
 """
 
 from __future__ import division
-from functools import partial
-
-from panda3d.core import Texture, Vec3
 
 from direct.gui.DirectFrame import DirectFrame
 from direct.gui.DirectGui import DGG
 from direct.gui.DirectScrolledFrame import DirectScrolledFrame
-
-from rplibs.six import itervalues
-
-from rpcore.image import Image
-from rpcore.util.display_shader_builder import DisplayShaderBuilder
+from functools import partial
+from panda3d.core import Texture, Vec3
 from rpcore.globals import Globals
-from rpcore.render_target import RenderTarget
-from rpcore.gui.texture_preview import TexturePreview
-from rpcore.gui.sprite import Sprite
-from rpcore.gui.labeled_checkbox import LabeledCheckbox
-from rpcore.gui.text import Text
 from rpcore.gui.draggable_window import DraggableWindow
+from rpcore.gui.labeled_checkbox import LabeledCheckbox
+from rpcore.gui.sprite import Sprite
+from rpcore.gui.text import Text
+from rpcore.gui.texture_preview import TexturePreview
+from rpcore.image import Image
+from rpcore.render_target import RenderTarget
+from rpcore.util.display_shader_builder import DisplayShaderBuilder
+from rplibs.six import itervalues
 
 
 class BufferViewer(DraggableWindow):

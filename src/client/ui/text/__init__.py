@@ -1,12 +1,11 @@
 import math
-from panda3d.core import TextNode
-from panda3d.core import TextProperties
-from panda3d.core import TextPropertiesManager
-from panda3d.core import LVecBase4f
-
 import random
 import sys
 import threading
+from panda3d.core import LVecBase4f
+from panda3d.core import TextNode
+from panda3d.core import TextProperties
+from panda3d.core import TextPropertiesManager
 
 from src.libs.noise.perlin import SimplexNoise
 from src.log import log, warn

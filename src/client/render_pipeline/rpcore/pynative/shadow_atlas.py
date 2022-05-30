@@ -25,9 +25,9 @@ THE SOFTWARE.
 """
 
 from __future__ import print_function, division
-from rplibs.six.moves import range  # pylint: disable=import-error
 
 from panda3d.core import LVecBase4i, LVecBase4
+from rplibs.six.moves import range  # pylint: disable=import-error
 
 
 class ShadowAtlas(object):

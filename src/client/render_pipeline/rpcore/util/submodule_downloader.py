@@ -27,12 +27,11 @@ THE SOFTWARE.
 from __future__ import print_function
 
 import os
+import shutil
 import sys
 import zipfile
-import shutil
-
-from rplibs.six.moves import urllib  # pylint: disable=import-error
 from rplibs.six import BytesIO, binary_type
+from rplibs.six.moves import urllib  # pylint: disable=import-error
 
 
 def download_file(url, chunk_size=100 * 1024):

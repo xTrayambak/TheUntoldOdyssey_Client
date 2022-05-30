@@ -1,9 +1,10 @@
-from src.log import *
-from src.client.loader import getAsset
-
 import json
-import random
 import math
+import random
+
+from src.client.loader import getAsset
+from src.log import *
+
 
 class Chunk:
     SIZE_X = 32

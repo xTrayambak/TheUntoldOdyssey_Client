@@ -24,10 +24,9 @@ THE SOFTWARE.
 
 """
 
-from rplibs.six.moves import range  # pylint: disable=import-error
-
 import math
 from panda3d.core import PNMImage
+from rplibs.six.moves import range  # pylint: disable=import-error
 
 
 class IESDataset(object):

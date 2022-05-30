@@ -1,5 +1,5 @@
-import requests
 import hashlib
+import requests
 
 from src.client.shared import DATA_PROVIDER, SYNTAX_AUTHENTICATION_PROVIDER
 from src.log import *

@@ -25,9 +25,9 @@ THE SOFTWARE.
 """
 
 from panda3d.core import CardMaker, Vec2, GraphicsWindow
-from rpcore.rpobject import RPObject
 from rpcore.globals import Globals
 from rpcore.loader import RPLoader
+from rpcore.rpobject import RPObject
 
 
 class PixelInspector(RPObject):

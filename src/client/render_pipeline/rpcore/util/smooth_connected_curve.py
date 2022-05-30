@@ -24,9 +24,8 @@ THE SOFTWARE.
 
 """
 
-from rplibs.six.moves import range  # pylint: disable=import-error
-
 from panda3d.core import Vec3, CurveFitter
+from rplibs.six.moves import range  # pylint: disable=import-error
 
 
 class SmoothConnectedCurve(object):

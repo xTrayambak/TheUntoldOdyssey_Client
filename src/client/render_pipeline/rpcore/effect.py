@@ -24,14 +24,12 @@ THE SOFTWARE.
 
 """
 
+from direct.stdpy.file import open
+from panda3d.core import Filename
+from rpcore.loader import RPLoader
+from rpcore.rpobject import RPObject
 from rplibs.six import iteritems, iterkeys
 from rplibs.yaml import load_yaml_file
-
-from panda3d.core import Filename
-from direct.stdpy.file import open
-
-from rpcore.rpobject import RPObject
-from rpcore.loader import RPLoader
 
 
 class Effect(RPObject):

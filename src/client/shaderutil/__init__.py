@@ -6,10 +6,10 @@ Do not read, 5 years of my life have been cut off because of this atrocity.
 """
 
 import os
-
-from src.log import log, warn
-from src.client.loader import getAsset
 from panda3d.core import Shader
+
+from src.client.loader import getAsset
+from src.log import log, warn
 
 SHADER_DIRECTORY = getAsset("shader_directory", "path")
 

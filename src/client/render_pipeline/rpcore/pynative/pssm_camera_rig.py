@@ -24,9 +24,8 @@ THE SOFTWARE.
 
 """
 
-from panda3d.core import PTALVecBase2f, PTALMatrix4f, Vec2, OrthographicLens
 from panda3d.core import Camera, NodePath, Mat4
-
+from panda3d.core import PTALVecBase2f, PTALMatrix4f, Vec2, OrthographicLens
 from rpcore.util.generic import snap_shadow_map
 
 

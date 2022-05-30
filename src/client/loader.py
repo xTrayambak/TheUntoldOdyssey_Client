@@ -3,9 +3,9 @@
 Asset locator. Locates the destination for assets inside resource_pointer.json
 """
 import json
+from pathlib import Path
 
 from src.log import log, warn
-from pathlib import Path
 
 POINTER = f"resource_pointer.json"
 

@@ -27,10 +27,9 @@ THE SOFTWARE.
 # pylint: disable=line-too-long
 
 from direct.stdpy.file import isfile, open
-
 from rpcore.image import Image
-from rpcore.rpobject import RPObject
 from rpcore.loader import RPLoader
+from rpcore.rpobject import RPObject
 
 
 class DisplayShaderBuilder(object):  # pylint: disable=too-few-public-methods

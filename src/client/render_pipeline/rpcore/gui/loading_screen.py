@@ -25,11 +25,10 @@ THE SOFTWARE.
 """
 from __future__ import division
 
-from rplibs.six.moves import range  # pylint: disable=import-error
-
+from rpcore.globals import Globals
 from rpcore.gui.sprite import Sprite
 from rpcore.rpobject import RPObject
-from rpcore.globals import Globals
+from rplibs.six.moves import range  # pylint: disable=import-error
 
 
 class LoadingScreen(RPObject):

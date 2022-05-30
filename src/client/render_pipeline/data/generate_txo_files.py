@@ -8,8 +8,8 @@ This is called during the setup.
 from __future__ import print_function
 
 import os
-
 from panda3d.core import Filename, Texture, load_prc_file_data
+
 load_prc_file_data("", "window-type none")
 load_prc_file_data("", "notify-level-pnmimage error")
 load_prc_file_data("", "textures-power-2 none")

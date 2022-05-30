@@ -27,9 +27,8 @@ THE SOFTWARE.
 
 from __future__ import print_function
 
-import time
 import hashlib
-
+import time
 from panda3d.core import PStatCollector, Mat4, Point4, Vec3
 from rpcore.globals import Globals
 

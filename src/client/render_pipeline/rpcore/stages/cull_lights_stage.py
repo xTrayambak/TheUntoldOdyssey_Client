@@ -25,9 +25,8 @@ THE SOFTWARE.
 """
 
 import math
-
-from rpcore.render_stage import RenderStage
 from rpcore.image import Image
+from rpcore.render_stage import RenderStage
 
 
 class CullLightsStage(RenderStage):

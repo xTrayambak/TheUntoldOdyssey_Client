@@ -4,9 +4,6 @@ Managed class for game Workspace.
 The workspace is essentially a datatype TUO uses to handle object rendering and hierarchy.
 """
 
-from src.log import *
-
-from panda3d.core import NodePath
 from panda3d.bullet import (
     BulletWorld,
     BulletDebugNode,
@@ -17,8 +14,11 @@ from panda3d.bullet import (
     BulletTriangleMesh,
     BulletTriangleMeshShape,
     BulletHelper)
-
+from panda3d.core import NodePath
 from threading import Thread
+
+from src.log import *
+
 
 class Workspace:
     def __init__(self):

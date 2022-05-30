@@ -24,8 +24,8 @@ THE SOFTWARE.
 
 """
 
-from rplibs.yaml import load_yaml_file
 from rpcore.rpobject import RPObject
+from rplibs.yaml import load_yaml_file
 
 
 class TaskScheduler(RPObject):

@@ -1,5 +1,6 @@
-from src.log import *
 from src.client.game.entitymanager import EntityManager
+from src.log import *
+
 
 class Game:
     def __init__(self):

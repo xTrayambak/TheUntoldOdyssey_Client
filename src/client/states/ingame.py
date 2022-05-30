@@ -1,31 +1,28 @@
-from distutils.command.sdist import sdist
-import json
-import sys
 import gc
+import json
+import psutil
 import random
+import sys
 import threading
+from direct.gui import DirectGuiGlobals as DGG
+from direct.gui.DirectGui import *
+from direct.task import Task
+from distutils.command.sdist import sdist
+from math import sin, pi
+from panda3d.core import CardMaker, Fog, LVecBase4f, TextNode, GeoMipTerrain, Texture, TextureStage, DirectionalLight, \
+    AmbientLight, ClockObject, LVecBase3, LVecBase4f, TransparencyAttrib, AmbientLight
 from time import sleep
 
-from direct.gui.DirectGui import *
-from direct.gui import DirectGuiGlobals as DGG
-from direct.task import Task
-
-from panda3d.core import CardMaker, Fog, LVecBase4f, TextNode, GeoMipTerrain, Texture, TextureStage, DirectionalLight, AmbientLight, ClockObject, LVecBase3, LVecBase4f, TransparencyAttrib, AmbientLight
-import psutil
-from src.client.util.conversion import encode
-
 from src.client.loader import getAsset, getAllFromCategory
-from src.log import log, warn
-from src.client.shaderutil import loadAllShaders
-from src.client.settingsreader import *
 from src.client.objects import Object
+from src.client.settingsreader import *
+from src.client.shaderutil import loadAllShaders
 from src.client.tasks import *
-from src.client.visual_shared import *
-
 from src.client.ui.button import Button
 from src.client.ui.text import Text
-
-from math import sin, pi
+from src.client.util.conversion import encode
+from src.client.visual_shared import *
+from src.log import log, warn
 
 process = psutil.Process()
 

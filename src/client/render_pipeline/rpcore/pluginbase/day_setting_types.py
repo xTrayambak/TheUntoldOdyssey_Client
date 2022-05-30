@@ -25,13 +25,12 @@ THE SOFTWARE.
 """
 
 from __future__ import division, print_function
+
 from math import exp, log
-
 from panda3d.core import PTAFloat, PTALVecBase3f
-
+from rpcore.pluginbase.setting_types import make_setting_from_factory
 from rpcore.rpobject import RPObject
 from rpcore.util.smooth_connected_curve import SmoothConnectedCurve
-from rpcore.pluginbase.setting_types import make_setting_from_factory
 
 __all__ = ["make_daysetting_from_data"]
 

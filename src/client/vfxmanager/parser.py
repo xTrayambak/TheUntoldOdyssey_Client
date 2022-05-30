@@ -1,5 +1,7 @@
+from ast import literal_eval  # eval is dangerous, little timmy. do not use eval, never, ever.
+
 from src.log import log, warn
-from ast import literal_eval # eval is dangerous, little timmy. do not use eval, never, ever.
+
 
 def parse(file):
     """

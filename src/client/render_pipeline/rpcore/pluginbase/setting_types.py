@@ -26,8 +26,8 @@ THE SOFTWARE.
 
 from __future__ import print_function
 
-from rplibs.six import iteritems, string_types
 from rpcore.rpobject import RPObject
+from rplibs.six import iteritems, string_types
 
 __all__ = ["make_setting_from_data"]
 

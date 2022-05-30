@@ -27,16 +27,14 @@ THE SOFTWARE.
 from __future__ import print_function, division
 
 from panda3d.core import GraphicsOutput, Texture, AuxBitplaneAttrib, NodePath
+from panda3d.core import LVecBase2i
 from panda3d.core import Vec4, TransparencyAttrib, ColorWriteAttrib, SamplerState
 from panda3d.core import WindowProperties, FrameBufferProperties, GraphicsPipe
-from panda3d.core import LVecBase2i
-
-from rplibs.six.moves import range  # pylint: disable=import-error
-from rplibs.six import iterkeys, itervalues
-
 from rpcore.globals import Globals
 from rpcore.rpobject import RPObject
 from rpcore.util.post_process_region import PostProcessRegion
+from rplibs.six import iterkeys, itervalues
+from rplibs.six.moves import range  # pylint: disable=import-error
 
 __all__ = "RenderTarget",
 __version__ = "2.0"

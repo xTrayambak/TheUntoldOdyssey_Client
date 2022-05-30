@@ -27,9 +27,8 @@ THE SOFTWARE.
 from __future__ import division
 
 from panda3d.core import SamplerState, Vec4
-
-from rpcore.rpobject import RPObject
 from rpcore.image import Image
+from rpcore.rpobject import RPObject
 
 
 class CubemapFilter(RPObject):

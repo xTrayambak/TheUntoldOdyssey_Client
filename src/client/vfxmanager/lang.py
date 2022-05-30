@@ -1,6 +1,7 @@
-from panda3d.core import LVecBase3f
 import math
 import random
+from panda3d.core import LVecBase3f
+
 
 def fov_set(instance, fov):
     instance.setFov(int(fov))

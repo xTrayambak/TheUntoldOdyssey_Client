@@ -24,18 +24,15 @@ THE SOFTWARE.
 
 """
 
-import importlib
 import collections
-
+import importlib
+from direct.stdpy.file import listdir, isdir, join, open
+from rpcore.native import NATIVE_CXX_LOADED
+from rpcore.pluginbase.day_setting_types import make_daysetting_from_data
+from rpcore.pluginbase.setting_types import make_setting_from_data
+from rpcore.rpobject import RPObject
 from rplibs.six import iteritems, itervalues
 from rplibs.yaml import load_yaml_file
-
-from direct.stdpy.file import listdir, isdir, join, open
-
-from rpcore.rpobject import RPObject
-from rpcore.native import NATIVE_CXX_LOADED
-from rpcore.pluginbase.setting_types import make_setting_from_data
-from rpcore.pluginbase.day_setting_types import make_daysetting_from_data
 
 
 class PluginManager(RPObject):

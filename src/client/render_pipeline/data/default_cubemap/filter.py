@@ -28,10 +28,11 @@ from __future__ import print_function, division
 
 import os
 import shutil
+from direct.showbase.ShowBase import ShowBase
+from direct.stdpy.file import isdir, isfile, join
 from os.path import dirname, realpath
 from panda3d.core import *
-from direct.stdpy.file import isdir, isfile, join
-from direct.showbase.ShowBase import ShowBase
+
 
 class Application(ShowBase):
     def __init__(self):

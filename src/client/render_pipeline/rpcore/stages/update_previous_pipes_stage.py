@@ -25,9 +25,8 @@ THE SOFTWARE.
 """
 
 from direct.stdpy.file import open
-
-from rpcore.render_stage import RenderStage
 from rpcore.globals import Globals
+from rpcore.render_stage import RenderStage
 
 
 class UpdatePreviousPipesStage(RenderStage):

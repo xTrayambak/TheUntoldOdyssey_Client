@@ -13,7 +13,6 @@ except:
     pass
 
 from src.log import log, fatal, warn
-from src.telemetry import telemetrySend_crash
 
 CRASH_TXTS = [
     "Wait, you hadn't completed the ice bridge?",
@@ -112,7 +111,7 @@ def log_traceback(instance=None):
         VERSION = "~~INSTANCE NOT INITIALIZED, VERSION NOT FOUND~~"
     else:
         VERSION = instance.version
-    
+
     string = f"""
     The game has crashed, exiting.
 
@@ -132,11 +131,12 @@ def log_traceback(instance=None):
     Full traceback (sys.exc_info):
     """
 
-    fatal(string) 
+    fatal(string)
     traceback.print_exc()
     fatal("""
     [IF YOUR GAME IS MODDED, CONTACT THE MOD DEVELOPERS FIRST BEFORE CONTACTING US.]
     [The Untold Odyssey, developed by Syntax Studios (2022)]
     """)
+    from src.telemetry import telemetrySend_crash
 
     telemetrySend_crash(log, instance)

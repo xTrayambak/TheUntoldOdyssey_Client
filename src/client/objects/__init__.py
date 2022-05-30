@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-from panda3d.core import Vec3, TransparencyAttrib
 from panda3d.bullet import BulletPlaneShape
 from panda3d.bullet import BulletRigidBodyNode
+from panda3d.core import Vec3, TransparencyAttrib
 
-from src.log import log, warn
 from src.client.loader import getAsset
+from src.log import log, warn
+
 
 class Object:
     """

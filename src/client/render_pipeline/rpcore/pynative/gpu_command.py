@@ -25,9 +25,9 @@ THE SOFTWARE.
 """
 
 from __future__ import print_function
-from rplibs.six.moves import range  # pylint: disable=import-error
 
 import struct
+from rplibs.six.moves import range  # pylint: disable=import-error
 
 
 class GPUCommand(object):

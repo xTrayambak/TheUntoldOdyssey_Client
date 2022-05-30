@@ -25,8 +25,8 @@ THE SOFTWARE.
 """
 
 from __future__ import print_function
-from panda3d.core import RenderState, ColorWriteAttrib, ShaderAttrib, BitMask32
 
+from panda3d.core import RenderState, ColorWriteAttrib, ShaderAttrib, BitMask32
 from rplibs.six import itervalues
 
 

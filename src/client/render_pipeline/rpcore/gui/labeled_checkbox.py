@@ -24,12 +24,11 @@ THE SOFTWARE.
 
 """
 
-from panda3d.core import Vec3
 import direct.gui.DirectGuiGlobals as DGG
-
-from rpcore.rpobject import RPObject
+from panda3d.core import Vec3
 from rpcore.gui.checkbox import Checkbox
 from rpcore.gui.text import Text
+from rpcore.rpobject import RPObject
 
 
 class LabeledCheckbox(RPObject):

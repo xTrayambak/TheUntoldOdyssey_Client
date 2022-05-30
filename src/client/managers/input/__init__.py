@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-from src.log import log, warn
 from src.client.settingsreader import getSetting
+from src.log import log, warn
 
 DEFAULT_KEYBINDS = {
     "w": "forward",

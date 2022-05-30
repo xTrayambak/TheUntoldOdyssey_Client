@@ -24,12 +24,11 @@ THE SOFTWARE.
 
 """
 
-from panda3d.core import TransparencyAttrib, SamplerState
-from direct.gui.DirectCheckBox import DirectCheckBox
 import direct.gui.DirectGuiGlobals as DGG
-
-from rpcore.rpobject import RPObject
+from direct.gui.DirectCheckBox import DirectCheckBox
+from panda3d.core import TransparencyAttrib, SamplerState
 from rpcore.loader import RPLoader
+from rpcore.rpobject import RPObject
 
 
 class Checkbox(RPObject):

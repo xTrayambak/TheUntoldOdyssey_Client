@@ -29,10 +29,10 @@ THE SOFTWARE.
 # This file includes all modules from the native module.
 
 from __future__ import print_function
-import sys
-from os.path import dirname, realpath
 
+import sys
 from direct.stdpy.file import join, isfile
+from os.path import dirname, realpath
 from rpcore.rpobject import RPObject
 
 # Store a global flag, indicating whether the C++ modules were loaded or the python

@@ -24,12 +24,10 @@ THE SOFTWARE.
 
 """
 
-from rplibs.six.moves import range  # pylint: disable=import-error
-
 from panda3d.core import Vec3
-
 from rpcore.pynative.rp_light import RPLight
 from rpcore.pynative.shadow_source import ShadowSource
+from rplibs.six.moves import range  # pylint: disable=import-error
 
 
 class RPPointLight(RPLight):

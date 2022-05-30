@@ -27,32 +27,26 @@ THE SOFTWARE.
 from __future__ import division
 
 import os
-import sys
 import subprocess
-
-from rplibs.six.moves import range  # pylint: disable=import-error
-
-from panda3d.core import Vec4, Vec3, Vec2, RenderState, TransformState
-from panda3d.core import TexturePool, SceneGraphAnalyzer
+import sys
 from direct.interval.IntervalGlobal import Sequence
-
-from rpcore.gui.sprite import Sprite
+from panda3d.core import TexturePool, SceneGraphAnalyzer
+from panda3d.core import Vec4, Vec3, Vec2, RenderState, TransformState
+from rpcore.globals import Globals
 from rpcore.gui.buffer_viewer import BufferViewer
-from rpcore.gui.pipe_viewer import PipeViewer
-from rpcore.gui.render_mode_selector import RenderModeSelector
-
-from rpcore.gui.text_node import TextNode
 from rpcore.gui.error_message_display import ErrorMessageDisplay
 from rpcore.gui.exposure_widget import ExposureWidget
 from rpcore.gui.fps_chart import FPSChart
+from rpcore.gui.pipe_viewer import PipeViewer
 from rpcore.gui.pixel_inspector import PixelInspector
-
-from rpcore.globals import Globals
-from rpcore.rpobject import RPObject
-
+from rpcore.gui.render_mode_selector import RenderModeSelector
+from rpcore.gui.sprite import Sprite
+from rpcore.gui.text_node import TextNode
+from rpcore.image import Image
 from rpcore.native import NATIVE_CXX_LOADED
 from rpcore.render_target import RenderTarget
-from rpcore.image import Image
+from rpcore.rpobject import RPObject
+from rplibs.six.moves import range  # pylint: disable=import-error
 
 
 class Debugger(RPObject):

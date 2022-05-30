@@ -24,8 +24,8 @@ THE SOFTWARE.
 
 """
 
-from panda3d.core import Mat4, PerspectiveLens, LVector3, LVecBase2i, LVecBase2f
 from panda3d.core import BoundingSphere
+from panda3d.core import Mat4, PerspectiveLens, LVector3, LVecBase2i, LVecBase2f
 
 
 class ShadowSource(object):

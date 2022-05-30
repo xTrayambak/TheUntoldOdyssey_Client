@@ -25,10 +25,9 @@ THE SOFTWARE.
 """
 
 from panda3d.core import Texture, GeomEnums
-
-from rpcore.rpobject import RPObject
 from rpcore.globals import Globals
 from rpcore.render_target import RenderTarget
+from rpcore.rpobject import RPObject
 
 
 class ImageFormatTypes(object):  # pylint: disable=too-few-public-methods

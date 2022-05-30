@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 from direct.task import Task
+from random import randint, choices
+
 from src.client.loader import getAllFromCategory, getAsset
 from src.client.shared import GAMESTATES_TO_BLANDSTRING, GameStates
 from src.log import log, warn
-
-from random import randint, choices
 
 """
 SONG LIST:

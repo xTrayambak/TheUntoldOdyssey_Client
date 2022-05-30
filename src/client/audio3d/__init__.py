@@ -1,6 +1,8 @@
-from src.log import *
 from direct.showbase import Audio3DManager
 from panda3d.core import NodePath
+
+from src.log import *
+
 
 class Audio3D:
     def __init__(self, instance):

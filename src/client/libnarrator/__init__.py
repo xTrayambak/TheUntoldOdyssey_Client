@@ -1,9 +1,9 @@
 import pyttsx3
-
 from multiprocessing.pool import ThreadPool
 
-from src.log import *
 from src.client.settingsreader import getSetting
+from src.log import *
+
 
 class NarratorUtil:
     def __init__(self, instance):

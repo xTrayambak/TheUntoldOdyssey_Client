@@ -6,9 +6,9 @@ Uses mitsuba to generate the environment brdf
 
 from __future__ import print_function
 
+import math
 import os
 import sys
-import math
 from panda3d.core import PNMImage, load_prc_file_data, Vec3
 
 load_prc_file_data("", "notify-level error")

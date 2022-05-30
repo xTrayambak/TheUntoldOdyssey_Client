@@ -27,11 +27,9 @@ THE SOFTWARE.
 from __future__ import print_function
 
 from panda3d.core import Notify, LineStream, Vec3
-
 from rpcore.globals import Globals
-from rpcore.rpobject import RPObject
-
 from rpcore.gui.text import Text
+from rpcore.rpobject import RPObject
 
 
 class ErrorMessageDisplay(RPObject):

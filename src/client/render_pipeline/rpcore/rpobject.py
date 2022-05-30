@@ -32,10 +32,10 @@ THE SOFTWARE.
 from __future__ import print_function
 
 import sys
-
+from rplibs.colorama import Fore, Style
 # Load and init colorama, used to color the output
 from rplibs.colorama import init as init_colorama
-from rplibs.colorama import Fore, Style
+
 init_colorama()
 
 

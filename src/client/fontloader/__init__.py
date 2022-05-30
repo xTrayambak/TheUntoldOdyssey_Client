@@ -1,5 +1,6 @@
-from src.log import log, warn
 from src.client.loader import getAsset
+from src.log import log, warn
+
 
 class FontLoader:
     def __init__(self, instance):

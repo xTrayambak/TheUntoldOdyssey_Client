@@ -26,12 +26,11 @@ THE SOFTWARE.
 
 from __future__ import division
 
-from rplibs.six import iteritems
 from direct.stdpy.file import open
-
+from rpcore.pluginbase.day_setting_types import ColorType
 from rpcore.rpobject import RPObject
 from rpcore.util.shader_input_blocks import GroupedInputBlock
-from rpcore.pluginbase.day_setting_types import ColorType
+from rplibs.six import iteritems
 
 
 class DayTimeManager(RPObject):

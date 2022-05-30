@@ -1,9 +1,8 @@
 import pyscreenshot
+import threading
 from datetime import datetime
 
 from src.log import *
-
-import threading
 
 
 class RecordingUtil:

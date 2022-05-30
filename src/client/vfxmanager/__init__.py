@@ -1,6 +1,7 @@
-from src.log import log, warn
 from src.client.vfxmanager.parser import parse
 from src.client.vfxmanager.pipeline import Pipeline
+from src.log import log, warn
+
 
 class VFXManager:
     def __init__(self, instance = None) -> None:

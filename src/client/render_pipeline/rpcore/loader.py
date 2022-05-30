@@ -27,10 +27,8 @@ THE SOFTWARE.
 from __future__ import print_function
 
 import time
-
 from panda3d.core import PNMImage, VirtualFileSystem, VirtualFileMountRamdisk
 from panda3d.core import Shader
-
 from rpcore.globals import Globals
 from rpcore.rpobject import RPObject
 

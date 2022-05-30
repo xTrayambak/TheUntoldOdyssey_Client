@@ -7,47 +7,44 @@ networking.
 Very good already, doesn't need too much refactoring later.
 """
 
-import panda3d
-from direct.showbase.ShowBase import ShowBase
-from direct.filter.CommonFilters import CommonFilters
-from direct.gui.DirectFrame import DirectFrame
-from direct.task import Task
-from panda3d.core import loadPrcFile
-from panda3d.core import WindowProperties
-from panda3d.core import ClockObject
-from datetime import datetime
-
-from src.log import log, warn
-from src.client.shared import *
-from src.client.workspace import Workspace
-from src.client.managers.ambience import AmbienceManager
-from src.client.managers.input import InputManager
-from src.client.networking import NetworkClient
-from src.client.managers.presence import RPCManager
-from src.client.fontloader import FontLoader
-from src.client.textureloader import TextureLoader
-from src.client.objectloader import ObjectLoader
-from src.client.player import Player
-from src.client.translationutil import TranslationUtility
-from src.client.maploader import MapLoader
-from src.client.libnarrator import *
-from src.client.settingsreader import *
-from src.client.recordingutil import RecordingUtil
-from src.client.syntaxutil.authlib import Authenticator
-from src.client.narrator_dialog_finder import NarratorDialogFinder
-from src.client.hardware import HardwareUtil
-from src.client.browserutil import BrowserUtil
-from src.client.audioloader import AudioLoader
-from src.client.vfxmanager import VFXManager
-
-from src.client import shared
-
-from src.client.ui.text import *
-from src.client.ui.button import *
-
 import gc
 import os
+import panda3d
 import time
+from datetime import datetime
+from direct.filter.CommonFilters import CommonFilters
+from direct.gui.DirectFrame import DirectFrame
+from direct.showbase.ShowBase import ShowBase
+from direct.task import Task
+from panda3d.core import ClockObject
+from panda3d.core import WindowProperties
+from panda3d.core import loadPrcFile
+
+from src.client import shared
+from src.client.audioloader import AudioLoader
+from src.client.browserutil import BrowserUtil
+from src.client.fontloader import FontLoader
+from src.client.hardware import HardwareUtil
+from src.client.libnarrator import *
+from src.client.managers.ambience import AmbienceManager
+from src.client.managers.input import InputManager
+from src.client.managers.presence import RPCManager
+from src.client.maploader import MapLoader
+from src.client.narrator_dialog_finder import NarratorDialogFinder
+from src.client.networking import NetworkClient
+from src.client.objectloader import ObjectLoader
+from src.client.player import Player
+from src.client.recordingutil import RecordingUtil
+from src.client.settingsreader import *
+from src.client.shared import *
+from src.client.syntaxutil.authlib import Authenticator
+from src.client.textureloader import TextureLoader
+from src.client.translationutil import TranslationUtility
+from src.client.ui.button import *
+from src.client.ui.text import *
+from src.client.vfxmanager import VFXManager
+from src.client.workspace import Workspace
+from src.log import log, warn
 
 VERSION = open("VER").read()
 

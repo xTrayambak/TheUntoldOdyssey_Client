@@ -26,9 +26,8 @@ THE SOFTWARE.
 
 import math
 from panda3d.core import Vec3
-
-from rpcore.pynative.shadow_source import ShadowSource
 from rpcore.pynative.rp_light import RPLight
+from rpcore.pynative.shadow_source import ShadowSource
 
 
 class RPSpotLight(RPLight):

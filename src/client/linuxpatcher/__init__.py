@@ -2,14 +2,14 @@
 Buggy as hell Linux patcher. May fix it once I have an actual team of programmers.
 """
 
-import subprocess
 import distro
-import os
-from pymsgbox import alert, confirm
 import elevate
+import os
+import subprocess
+from pymsgbox import alert, confirm
 
-from src.log import log, warn
 from src.client.io import IOFile
+from src.log import log, warn
 
 current_uid_before_escalate = os.getuid()
 current_wdir_before_escalate = os.getcwd()

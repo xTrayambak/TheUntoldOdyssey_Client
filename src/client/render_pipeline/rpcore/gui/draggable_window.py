@@ -24,14 +24,13 @@ THE SOFTWARE.
 
 """
 
-from panda3d.core import Vec2, TransparencyAttrib, Vec3
-from direct.gui.DirectFrame import DirectFrame
 from direct.gui.DirectButton import DirectButton
+from direct.gui.DirectFrame import DirectFrame
 from direct.gui.DirectGui import DGG
-
-from rpcore.rpobject import RPObject
+from panda3d.core import Vec2, TransparencyAttrib, Vec3
 from rpcore.globals import Globals
 from rpcore.gui.text import Text
+from rpcore.rpobject import RPObject
 
 
 class DraggableWindow(RPObject):

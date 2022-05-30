@@ -28,8 +28,9 @@ from __future__ import print_function, division
 
 import os
 import sys
-from panda3d.core import *
 from direct.showbase.ShowBase import ShowBase
+from panda3d.core import *
+
 
 def _error(msg):
     print("\n" * 4, file=sys.stderr)

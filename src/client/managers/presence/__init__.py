@@ -1,10 +1,10 @@
 import pypresence
+from direct.task import Task
 
+from src.client.loader import getAsset
 from src.client.shared import GAMESTATES_TO_STRING, GameStates
 from src.log import log, warn
-from src.client.loader import getAsset
 
-from direct.task import Task
 
 class RPCManager:
     def __init__(self, instance):

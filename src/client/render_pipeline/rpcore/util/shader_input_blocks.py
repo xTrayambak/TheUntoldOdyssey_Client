@@ -23,12 +23,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 """
-from rplibs.six import iteritems
-
 from panda3d.core import PTAFloat, PTALVecBase3f, PTALMatrix4f, PTALVecBase2f
 from panda3d.core import PTALVecBase4f, PTALMatrix3f, PTAInt, TypeRegistry, PTALVecBase2i
-
 from rpcore.rpobject import RPObject
+from rplibs.six import iteritems
 
 
 class SimpleInputBlock(RPObject):

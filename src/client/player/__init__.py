@@ -1,27 +1,25 @@
-from panda3d.core import Vec3, TransparencyAttrib
-from panda3d.bullet import (
-	BulletWorld,
-	BulletDebugNode,
-	BulletPlaneShape,
-	BulletBoxShape,
-	BulletRigidBodyNode,
-	BulletGhostNode,
-	BulletTriangleMesh,
-	BulletTriangleMeshShape,
-	BulletHelper
-)
-
+from characterController.PlayerController import PlayerController
 from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
 from direct.showbase.DirectObject import *
 from direct.task import Task
+from panda3d.bullet import (
+    BulletWorld,
+    BulletDebugNode,
+    BulletPlaneShape,
+    BulletBoxShape,
+    BulletRigidBodyNode,
+    BulletGhostNode,
+    BulletTriangleMesh,
+    BulletTriangleMeshShape,
+    BulletHelper
+)
+from panda3d.core import Vec3, TransparencyAttrib
 
-from src.log import log, warn
 from src.client.entity import Entity
 from src.client.loader import getAsset
 from src.client.settingsreader import getSetting
-
-from characterController.PlayerController import PlayerController
+from src.log import log, warn
 
 MOVEMENT_SPEED = 5 #m/s
 

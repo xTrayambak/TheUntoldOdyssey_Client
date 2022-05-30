@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
-from src.log import log, warn
-from src.client.shared import DisconnectStatusCodes
-from src.client.settingsreader import getSetting
-from src.client.util.conversion import *
-from src.client.game import Game
-from src.client.game.entity import Entity
-from src.client.util.conversion import encode, decode
-
+from direct.distributed.PyDatagram import PyDatagram
+from panda3d.core import ConnectionWriter
 from panda3d.core import QueuedConnectionManager
 from panda3d.core import QueuedConnectionReader
-from panda3d.core import ConnectionWriter
-from direct.distributed.PyDatagram import PyDatagram
+
+from src.client.game import Game
+from src.client.game.entity import Entity
+from src.client.settingsreader import getSetting
+from src.client.shared import DisconnectStatusCodes
+from src.client.util.conversion import *
+from src.client.util.conversion import encode, decode
+from src.log import log, warn
+
 
 class NetworkClient:
     def __init__(self, instance):

@@ -1,31 +1,26 @@
-from time import sleep
-
+import gc
+import limeade
+import psutil
+from DirectGuiExtension.DirectOptionMenu import DirectOptionMenu
+from direct.gui import DirectGuiGlobals as DGG
+from direct.gui.DirectFrame import DirectFrame
 from direct.gui.DirectGui import *
 from direct.gui.DirectSlider import DirectSlider
-from direct.gui.DirectFrame import DirectFrame
-from direct.gui import DirectGuiGlobals as DGG
-from DirectGuiExtension.DirectOptionMenu import DirectOptionMenu
-
-import psutil
-import gc
-
+from math import sin, pi
 from panda3d.core import (
     NodePath, TextNode
 )
+from time import sleep
 
 from src.client.loader import getAsset, getAllFromCategory
-from src.log import log, warn
-from src.client.shaderutil import loadAllShaders
-from src.client.settingsreader import *
 from src.client.objects import Object
+from src.client.settingsreader import *
+from src.client.shaderutil import loadAllShaders
 from src.client.tasks import *
-from src.client.visual_shared import *
-
 from src.client.ui.button import Button
 from src.client.ui.text import Text
-
-import limeade
-from math import sin, pi
+from src.client.visual_shared import *
+from src.log import log, warn
 
 process = psutil.Process()
 

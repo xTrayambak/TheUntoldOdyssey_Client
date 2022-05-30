@@ -25,9 +25,8 @@ THE SOFTWARE.
 """
 
 import socket
-from threading import Thread
-
 from rpcore.rpobject import RPObject
+from threading import Thread
 
 
 class NetworkCommunication(RPObject):

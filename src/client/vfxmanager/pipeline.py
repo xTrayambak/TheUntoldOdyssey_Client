@@ -4,11 +4,11 @@ VFXPipeline
 Executes the instruction given by the parser to Panda3D.
 """
 import uuid
-
-from src.log import log, warn
-from src.client.vfxmanager.lang import COMMANDS
-
 from direct.task import Task
+
+from src.client.vfxmanager.lang import COMMANDS
+from src.log import log, warn
+
 
 class Pipeline:
     """

@@ -28,13 +28,12 @@ THE SOFTWARE.
 
 __all__ = ("RenderPipeline", "SpotLight", "PointLight")
 
-# This file includes all classes from the pipeline which are exposed
-from rpcore.render_pipeline import RenderPipeline
-from rpcore.native import SpotLight, PointLight
-
+from direct.extensions_native.extension_native_helpers import Dtool_funcToMethod
 # Polyfill a set_shader_inputs function for older versions of Panda.
 from panda3d.core import NodePath
-from direct.extensions_native.extension_native_helpers import Dtool_funcToMethod
+from rpcore.native import SpotLight, PointLight
+# This file includes all classes from the pipeline which are exposed
+from rpcore.render_pipeline import RenderPipeline
 from rplibs.six import iteritems
 
 if not hasattr(NodePath, 'set_shader_inputs'):

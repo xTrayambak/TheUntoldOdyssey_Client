@@ -24,9 +24,8 @@ THE SOFTWARE.
 
 """
 
-from rpcore.rpobject import RPObject
-
 import direct.gui.DirectGuiGlobals as DGG
+from rpcore.rpobject import RPObject
 
 
 class CheckboxCollection(RPObject):

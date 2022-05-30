@@ -24,11 +24,10 @@ THE SOFTWARE.
 
 """
 
-from panda3d.core import TransparencyAttrib, Vec3, Texture, SamplerState
 from direct.gui.OnscreenImage import OnscreenImage
-
-from rpcore.rpobject import RPObject
+from panda3d.core import TransparencyAttrib, Vec3, Texture, SamplerState
 from rpcore.loader import RPLoader
+from rpcore.rpobject import RPObject
 
 
 class Sprite(RPObject):

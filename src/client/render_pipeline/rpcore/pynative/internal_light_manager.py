@@ -24,12 +24,11 @@ THE SOFTWARE.
 
 """
 from __future__ import print_function
-from rplibs.six.moves import range  # pylint: disable=import-error
 
 from panda3d.core import Vec3
-
-from rpcore.pynative.pointer_slot_storage import PointerSlotStorage
 from rpcore.pynative.gpu_command import GPUCommand
+from rpcore.pynative.pointer_slot_storage import PointerSlotStorage
+from rplibs.six.moves import range  # pylint: disable=import-error
 
 MAX_LIGHT_COUNT = 65535
 MAX_SHADOW_SOURCES = 2048

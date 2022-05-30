@@ -25,14 +25,12 @@ THE SOFTWARE.
 """
 
 from panda3d.core import Vec3
-
-from rpcore.image import Image
 from rpcore.gui.draggable_window import DraggableWindow
+from rpcore.gui.labeled_checkbox import LabeledCheckbox
+from rpcore.gui.slider import Slider
 from rpcore.gui.sprite import Sprite
 from rpcore.gui.text import Text
-from rpcore.gui.slider import Slider
-from rpcore.gui.labeled_checkbox import LabeledCheckbox
-
+from rpcore.image import Image
 from rpcore.util.display_shader_builder import DisplayShaderBuilder
 
 

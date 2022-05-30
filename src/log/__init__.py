@@ -1,6 +1,10 @@
 import logging
 import sys
-from colorama import Fore
+try:
+    from colorama import Fore
+except:
+    Fore = None
+
 import traceback
 from datetime import datetime
 
@@ -18,17 +22,30 @@ logger.addHandler(logging.StreamHandler(sys.stdout))
 
 def log(msg = "Hello, World!", sender = "Worker/Thread-1"):
     logger.setLevel(logging.INFO)
-    logger.log(logging.INFO, msg = f"{Fore.GREEN}[{sender}/INFO]: {msg}{Fore.RESET}")
+    if Fore:
+        logger.log(logging.INFO, msg = f"{Fore.GREEN}[{sender}/INFO]: {msg}{Fore.RESET}")
+    else:
+        logger.log(logging.INFO, msg = f"[{sender}/INFO]: {msg}")
 
 def warn(msg = "Hello, World!", sender = "Worker/Thread-1", err = None):
     logger.setLevel(logging.WARN)
     if err and isinstance(err, Exception):
-        logger.log(logging.WARN, msg = f"{Fore.RED}[{sender}/WARN]: {msg}")
+        if Fore:
+            logger.log(logging.WARN, msg = f"{Fore.RED}[{sender}/WARN]: {msg}")
+        else:
+            logger.log(logging.INFO, msg = f"[{sender}/WARN]: {msg}")
         traceback.print_exception(err)
-        logger.log(logging.WARN, msg = f"{Fore.RESET}")
+        if Fore:
+            logger.log(logging.WARN, msg = f"{Fore.RESET}")
     else:
-        logger.log(logging.WARN, msg = f"{Fore.RED}[{sender}/WARN]: {msg}{Fore.RESET}")
+        if Fore:
+            logger.log(logging.WARN, msg = f"{Fore.RED}[{sender}/WARN]: {msg}{Fore.RESET}")
+        else:
+            logger.log(logging.INFO, msg = f"[{sender}/WARN]: {msg}")
 
 def fatal(msg = "Hello, World!", sender = "Worker/Thread-1"):
     logger.setLevel(logging.FATAL)
-    logger.log(logging.FATAL, msg = f"{Fore.LIGHTRED_EX}[{sender}/FATAL]: {msg}{Fore.RESET}")
+    if Fore:
+        logger.log(logging.FATAL, msg = f"{Fore.LIGHTRED_EX}[{sender}/FATAL]: {msg}{Fore.RESET}")
+    else:
+        logger.log(logging.FATAL, msg = f"[{sender}/FATAL]: {msg}")

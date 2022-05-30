@@ -24,8 +24,8 @@ THE SOFTWARE.
 
 """
 
-from rpcore.render_stage import RenderStage
 from rpcore.image import Image
+from rpcore.render_stage import RenderStage
 
 
 class FlagUsedCellsStage(RenderStage):

@@ -24,11 +24,10 @@ THE SOFTWARE.
 
 """
 
-from rpcore.rpobject import RPObject
-
-from panda3d.core import GeomVertexFormat, GeomVertexData, Geom, GeomVertexWriter
 from panda3d.core import GeomTriangles, GeomNode, NodePath, Camera, OmniBoundingVolume
+from panda3d.core import GeomVertexFormat, GeomVertexData, Geom, GeomVertexWriter
 from panda3d.core import TransparencyAttrib, OrthographicLens, Vec4
+from rpcore.rpobject import RPObject
 
 
 class PostProcessRegion(RPObject):

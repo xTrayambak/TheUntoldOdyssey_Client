@@ -31,16 +31,13 @@ THE SOFTWARE.
 from __future__ import print_function
 
 import re
-
+from direct.stdpy.file import open, join, isfile
 from panda3d.core import PTAFloat, Filename, SamplerState, VirtualFileSystem
 from panda3d.core import get_model_path
-from direct.stdpy.file import open, join, isfile
-
-from rplibs.six.moves import range  # pylint: disable=import-error
-
-from rpcore.native import IESDataset
 from rpcore.image import Image
+from rpcore.native import IESDataset
 from rpcore.rpobject import RPObject
+from rplibs.six.moves import range  # pylint: disable=import-error
 
 
 class InvalidIESProfileException(Exception):

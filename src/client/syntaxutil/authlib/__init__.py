@@ -1,5 +1,6 @@
-from src.log import *
 from src.client.syntaxutil.authlib.session import Session
+from src.log import *
+
 
 class Authenticator:
     def __init__(self, instance):

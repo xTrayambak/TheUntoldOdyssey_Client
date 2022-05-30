@@ -25,16 +25,14 @@ THE SOFTWARE.
 """
 from __future__ import division
 
-from panda3d.core import ComputeNode, Vec4, Vec3
 from direct.gui.DirectFrame import DirectFrame
-
+from panda3d.core import ComputeNode, Vec4, Vec3
+from rpcore.globals import Globals
 from rpcore.gui.sprite import Sprite
 from rpcore.gui.text import Text
-
-from rpcore.rpobject import RPObject
 from rpcore.image import Image
-from rpcore.globals import Globals
 from rpcore.loader import RPLoader
+from rpcore.rpobject import RPObject
 
 
 class ExposureWidget(RPObject):

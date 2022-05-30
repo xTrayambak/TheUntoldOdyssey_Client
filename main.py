@@ -19,23 +19,23 @@ class GameHandler:
         from src.log import log
 
         log(f"PVM Environment: [{sys.executable}]")
-        
+
         if os.path.exists("LAUNCHER_ENVIRONMENT"):
             log("Patching directory...")
             entire_path = str(pathlib.Path(__file__))
             client_path = ""
-            
+
             log(f"Full path to client startup file is [{entire_path}]")
-            
-            for dirName in entire_path.split("/"):
-                client_path += dirName + "/"
+
+            for dirName in entire_path.split('/'):
+                client_path += dirName + '/'
                 if dirName == VERSION:
                     break
-            
+
             log("Setting client data path to ["+client_path+"]", "ClientPathDEBUG")
             os.chdir(client_path)
             log("Client working directory patch completed!", "ClientDirectoryWorkaround")
-            
+
         log("Trying to find any libraries that need to be installed.", "Worker/Bootstrap")
         installAllLibraries()
 
@@ -44,10 +44,10 @@ class GameHandler:
             log("Pre-bootup client initialization complete, now changing into client mode.")
             from src.client import TUO
             log("Changed into client mode. Now, the client code is going to be run.")
-                
+
             self.tuo = TUO(max_mem, token)
             self.tuo.enableParticles()
-        else:    
+        else:
             try:
                 log("Library installation process complete.", "Worker/Bootstrap")
                 log("Pre-bootup client initialization complete, now changing into client mode.")
@@ -61,6 +61,12 @@ class GameHandler:
                 exit(1)
 
     def getInstance(self):
+        """
+        Get the current running instance of TUO.
+        """
+        return self.tuo
+
+    def get_instance(self):
         """
         Get the current running instance of TUO.
         """
@@ -100,10 +106,10 @@ if __name__ == "__main__":
         mem_max = sys.argv[0]
     if len(sys.argv) > 2:
         token = sys.argv[1]
-    
+
     if not isinstance(mem_max, int):
         mem_max = DEFAULT_MEM
-    
+
     if not isinstance(token, str):
         token = 'no-tok-provided'
 

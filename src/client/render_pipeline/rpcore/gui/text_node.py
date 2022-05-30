@@ -25,12 +25,11 @@ THE SOFTWARE.
 """
 
 
-from panda3d.core import Vec2, Vec3, Vec4
 from panda3d.core import TextNode as TextNodeImpl
-
+from panda3d.core import Vec2, Vec3, Vec4
 from rpcore.globals import Globals
-from rpcore.rpobject import RPObject
 from rpcore.loader import RPLoader
+from rpcore.rpobject import RPObject
 
 
 class TextNode(RPObject):

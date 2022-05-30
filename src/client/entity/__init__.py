@@ -6,17 +6,16 @@ without killing the CPU.
 Also, Navmesh time!!! :-D
 """
 
-from panda3d.core import LVecBase3
-from panda3d.core import Vec3, TransparencyAttrib
+from direct.actor.Actor import Actor
 from panda3d.bullet import BulletPlaneShape
 from panda3d.bullet import BulletRigidBodyNode
-
-
-from direct.actor.Actor import Actor
+from panda3d.core import LVecBase3
+from panda3d.core import Vec3, TransparencyAttrib
 from random import randint
 
-from src.log import log, warn
 from src.client.objects import Object
+from src.log import log, warn
+
 
 class Entity:
     def __init__(self, name: str, instance, model: str, position: list, clientOwned: bool = False):

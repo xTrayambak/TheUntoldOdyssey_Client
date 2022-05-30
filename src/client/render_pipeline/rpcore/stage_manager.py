@@ -24,16 +24,14 @@ THE SOFTWARE.
 
 """
 
-from rplibs.six import iteritems
-from rplibs.yaml import load_yaml_file
-
 from direct.stdpy.file import open
-
-from rpcore.rpobject import RPObject
 from rpcore.gui.pipe_viewer import PipeViewer
 from rpcore.image import Image
-from rpcore.util.shader_input_blocks import SimpleInputBlock, GroupedInputBlock
+from rpcore.rpobject import RPObject
 from rpcore.stages.update_previous_pipes_stage import UpdatePreviousPipesStage
+from rpcore.util.shader_input_blocks import SimpleInputBlock, GroupedInputBlock
+from rplibs.six import iteritems
+from rplibs.yaml import load_yaml_file
 
 
 class StageManager(RPObject):

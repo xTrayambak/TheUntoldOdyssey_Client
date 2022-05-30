@@ -25,16 +25,14 @@ THE SOFTWARE.
 """
 
 from __future__ import division
+
 from functools import partial
-
 from panda3d.core import Vec3
-
-from rplibs.yaml import load_yaml_file
-
-from rpcore.native import NATIVE_CXX_LOADED
+from rpcore.gui.checkbox_collection import CheckboxCollection
 from rpcore.gui.draggable_window import DraggableWindow
 from rpcore.gui.labeled_checkbox import LabeledCheckbox
-from rpcore.gui.checkbox_collection import CheckboxCollection
+from rpcore.native import NATIVE_CXX_LOADED
+from rplibs.yaml import load_yaml_file
 
 
 class RenderModeSelector(DraggableWindow):
