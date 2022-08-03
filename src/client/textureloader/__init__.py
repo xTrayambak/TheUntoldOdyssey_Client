@@ -10,13 +10,13 @@ class TextureLoader:
 
         }
 
-    def loadTexture(self, name: str, loadCache: bool = True):
-        if name in self.cache and loadCache: return self.cache[name]
+    def loadTexture(self, path: str, loadCache: bool = True):
+        if path in self.cache and loadCache: return self.cache[path]
 
         texture = self.instance.loader.loadTexture(
-            getAsset("textures", name)["path"]
+            path
         )
 
-        self.cache[name] = texture
+        self.cache[path] = texture
 
         return texture

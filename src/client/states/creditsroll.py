@@ -30,6 +30,36 @@ def endCredits(instance, previous_state: int = 1):
     instance.clear()
     log("End credits have started")
 
+    def stop_credits():
+        instance.change_state(1)
+
+    delay_offset = 0
+
+    def increase_speed_001():
+        log('The speed is now 4')
+        delay_offset = 4
+    
+    def increase_speed_002():
+        log('The speed is now 6')
+        delay_offset = 6
+
+    def increase_speed_003():
+        log('The speed is now 8.\nVROOOOM, VROOOOOOOOM, VROOOMMMMM AHHH AHHHHHHEWIURWEREWUIRWRWHHWEHRWURWER WHY HELP HEEEEELPPPPPP')
+        delay_offset = 7
+
+    def reset_speed():
+        log('Reset the speed!')
+        delay_offset = 0
+
+    # speed controls
+    instance.accept('escape', stop_credits)
+    instance.accept('spacebar-down', increase_speed_001)
+    instance.accept('spacebar+ctrl-down', increase_speed_002)
+    instance.accept('spacebar+ctrl+shift-down', increase_speed_003)
+    instance.accept('spacebar-up', reset_speed)
+    instance.accept('ctrl-up', reset_speed)
+    instance.accept('shift-up', reset_speed)
+
     end_credits_dialog = IOFile.new('assets/dialogs/credits_scene', 'r').readlines()
 
     rondalFont = instance.fontLoader.load("rondal")
@@ -45,14 +75,17 @@ def endCredits(instance, previous_state: int = 1):
             length = len(line)
 
             delay = (
-                length // 8
+                length // 8-delay_offset
             )
 
             if line.isspace():
                 delay = 2
 
             if instance.is_closing(): break
-            sleep(int(delay))
+            try:
+                sleep(int(delay))
+            except:
+                warn(f'Unable to pause credits speed (value is {delay})')
         
         if not instance.is_closing():
             instance.ambienceManager.end_credits.stop()

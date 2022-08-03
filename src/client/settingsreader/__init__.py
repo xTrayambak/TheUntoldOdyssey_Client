@@ -22,4 +22,5 @@ def getAllSettings():
     return DATA
 
 def dumpSetting(data):
-    return dump(obj = data, fp = open(PATH, "w"))
+    # this will help!
+    return dump(obj = data, fp = open(PATH, "w"), indent=4, sort_keys=True)

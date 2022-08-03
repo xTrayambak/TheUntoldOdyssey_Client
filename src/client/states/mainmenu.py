@@ -7,8 +7,8 @@ import threading
 from datetime import datetime
 from direct.gui import DirectGuiGlobals as DGG
 from direct.gui.DirectGui import *
-from direct.task import Task
-from distutils.command.sdist import sdist
+from direct.gui.DirectEntry import DirectEntry
+
 from math import sin, pi
 from panda3d.core import CardMaker, TextNode, GeoMipTerrain, Texture, TextureStage, DirectionalLight, AmbientLight, \
     ClockObject, LVecBase3, LVecBase4f, TransparencyAttrib, AmbientLight
@@ -22,14 +22,13 @@ from src.client.tasks import *
 from src.client.ui.button import Button
 from src.client.ui.text import Text
 from src.client.util.math import *
+from src.client.savefileutil import get_all_savefiles
 from src.log import log, warn
+from src.client.ui.textinput import TextInput
+from src.client import helpers
 
 FESTIVALS = {
-    "18-03": "Happy Holi!",
-    "01-04": "Happy Hindu New Year!",
-    "02-04": "Eid Mubarak!",
     "06-06": "Happy Birthday Trayambak!",
-    "25-12": "Merry Christmas!",
     "18-01": "We all must strive for a free internet, with no monopolies!",
     "01-01": "Happy New Year!"
 }
@@ -58,7 +57,7 @@ def mainMenu(instance, previous_state: int = 1):
         getAsset("splash_texts", "path")
     ).readlines()
 
-    skybox = Object(instance, "skybox")
+    skybox = Object(instance, "assets/models/skybox1024.egg")
     skybox.reparentTo(instance.render)
     skybox.set_two_sided(True)
     skybox.set_bin("background", 0)
@@ -69,7 +68,7 @@ def mainMenu(instance, previous_state: int = 1):
     skybox.set_material_off(0)
     skybox.set_color_off(1)
 
-    '''def cameraSpinTask(task):
+    def camera_spin_task(task):
         if instance.state != instance.states_enum.MENU and instance.state != instance.states_enum.SETTINGS:
             return task.done
         
@@ -79,7 +78,7 @@ def mainMenu(instance, previous_state: int = 1):
                 sin(instance.clock.getFrameTime() / 1.5) * 5,
                 instance.clock.getFrameTime() * -1
             ))
-        return task.cont'''
+        return task.cont
 
     def skyboxTask(task):
         skybox.setPos((0, 0, 0))
@@ -100,8 +99,26 @@ def mainMenu(instance, previous_state: int = 1):
 
     ## Networking stuff ##
     addr, port = getSetting("networking", "proxy")[0]["ip"], getSetting("networking", "proxy")[0]["port"]
-    def _cmd_ingame():  
-        instance.networkClient.connect(addr, port)
+
+    def button_singleplayer():
+        instance.change_state(5)
+        instance.globals['world_select'] = 0
+
+        instance.workspace.get_component('ui', 'status_text').node().setText('')
+
+        savefiles = get_all_savefiles()
+        if len(savefiles) > 0:
+            log('Found worlds, opening world list instead of world creation screen.')
+            helpers.mainmenu_worldlist(instance, savefiles)
+            return
+
+        log('Found 0 worlds, opening world creation screen instead of world list.')
+
+        def name_chosen(name: str):
+            helpers.mainmenu_worldcreate_screen_001(name, instance)
+
+        save_name = TextInput(instance, name_chosen, '', 'World Name')
+        instance.workspace.add_ui('world_name_input', save_name)
 
     def _cmd_settings():
         instance.change_state(2)
@@ -129,10 +146,10 @@ def mainMenu(instance, previous_state: int = 1):
     tuoLogo.setTransparency(TransparencyAttrib.MAlpha)
     tuoLogo.setScale(0.5)
 
-    play_button = Button(text = instance.translator.translate("ui", "play"),
+    play_button = Button(text = instance.translator.translate("ui", "singleplayer"),
                                 text_scale = 0.1, 
                                 pos = (0, 0, 0),
-                                command = _cmd_ingame,
+                                command = button_singleplayer,
                                 text_font = default_font,
                                 instance = instance
     )
@@ -192,5 +209,6 @@ def mainMenu(instance, previous_state: int = 1):
     instance.workspace.add_ui("exit_button", exit_button)
     instance.workspace.add_ui("tuo_ver_text", tuo_ver_text)
     instance.workspace.add_ui("syntax_copyright_warning", syntax_copyright_warning)
+    instance.spawnNewTask('menu_spin_task', camera_spin_task)
 
     return 'menu-close'

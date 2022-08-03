@@ -1,6 +1,7 @@
 {
     "ui": {
-        "play": "Play",
+        "singleplayer": "Singleplayer",
+        "multiplayer": "Multiplayer",
         "settings": "Settings",
         "exit": "Exit",
 
@@ -12,6 +13,20 @@
                 "title": "Accessibility"
             }
         }
+    },
+
+    "singleplayer_menu_createworld": {
+        "create_savefile": "Creating savefile, please wait.",
+        "save_savefile": "Saving progress...",
+        "load_savefile": "Loading savefile",
+        "gamedata_savefile": "Writing game data to disk.",
+        "playerdata_savefile": "Writing player information to disk.",
+        "firstsave_savefile": "Saving world to disk for first time.",
+        "simulation_savefile": "Loading up internal server and simulating world.",
+        
+        "corruption_savefile": "The savefile may be invalid or corrupted.",
+
+        "convert_savefile": "This savefile is made for TUO {}, and you are running TUO {}. We are going to convert the world."
     },
 
     "dialogs": {

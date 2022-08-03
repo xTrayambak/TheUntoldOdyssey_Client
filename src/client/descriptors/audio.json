@@ -1,0 +1,28 @@
+{
+    "sounds": {
+        "entity.player.hurt": "assets/sounds/player_hurt.mp3",
+        "entity.grandma.speak": [
+            "assets/sounds/grandma_speak_001.mp3",
+            "assets/sounds/grandma_speak_002.mp3"
+        ],
+        
+        "weather.thunder.thunder": [
+            "assets/sounds/thunder_clap001.mp3",
+            "assets/sounds/thunder_clap002.mp3"
+        ],
+        "weather.thunder.ambient": "assets/sounds/thunder_ambient.mp3"
+    },
+    "music": {
+        "ingame.overworld.day": [
+            "assets/music/sonata.flac"
+        ],
+        "ingame.overworld.early_day": [
+            "assets/music/gone.mp3"
+        ],
+        "ingame.voidlands": [
+            "assets/music/mist001.flac",
+            "assets/music/mist002.flac"
+        ],
+        "ingame.credits": "assets/music/white_phantom.mp3"
+    }
+}

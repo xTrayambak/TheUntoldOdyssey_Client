@@ -77,11 +77,13 @@ class Workspace:
                 if name == shader:
                     object.setShader(_shader)
 
-    def getComponent(self, category, name):
+    def get_component(self, category, name):
         """
         Get a component from the workspace.
         """
         return self.objects[category][name]
+
+    def getComponent(self, category, name): return self.get_component(category, name)
 
     def clear(self, category: str = "parts"):
         """

@@ -2,7 +2,7 @@ from direct.gui import DirectGuiGlobals as DGG
 from direct.gui.DirectButton import DirectButton
 
 
-class Button():
+class Button:
     def __init__(self, instance, text: str, scale: float = 0.1, text_scale: float = 0.1, pos = (0, 0, 0), command = None, text_font = None, parent = None, hover_text: str = "button.play.hover", click_text: str = "button.play.click") -> None:
         self.text = text
         def command_extra():

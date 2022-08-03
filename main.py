@@ -58,6 +58,10 @@ class GameHandler:
             except Exception as exc:
                 log(f"An error occured whilst initializing the game. [{exc}]")
                 log_traceback()
+                log('Initializing PDB.', 'Worker/PostMortem')
+
+                import pdb
+                pdb.main()
                 exit(1)
 
     def getInstance(self):

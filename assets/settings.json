@@ -1,1 +1,50 @@
-{"keybinds": {"forward": "w", "backward": "s", "left": "a", "right": "d", "forward_stop": "w-up", "backward_stop": "s-up", "left_stop": "a-up", "right_stop": "d-up", "pause_menu": "escape", "screenshot": "f3", "inventory": "i", "trade_menu": "p", "server_list": "`", "chat": "/", "wireframe_toggle": "tab", "fps_toggle": "f1", "debug_mode": "f4", "freecam": "f2"}, "video": {"god_rays": true, "pbr": false, "fov": 90, "max_framerate": 240, "vignette": false, "antialiasing_levels": 0}, "debugging": {}, "audio": {"volume": 100}, "networking": {"proxy": [{"ip": "localhost", "port": 5050}], "auth_server": "waveauthserver.pythonanywhere.com"}, "language": "en_US", "accessibility": {"narrator": true}, "volumes": {"master": 100}}
+{
+    "accessibility": {
+        "narrator": true
+    },
+    "audio": {
+        "volume": 100
+    },
+    "debugging": {},
+    "keybinds": {
+        "backward": "s",
+        "backward_stop": "s-up",
+        "chat": "/",
+        "debug_mode": "f4",
+        "forward": "w",
+        "forward_stop": "w-up",
+        "fps_toggle": "f1",
+        "freecam": "f2",
+        "inventory": "i",
+        "left": "a",
+        "left_stop": "a-up",
+        "pause_menu": "escape",
+        "right": "d",
+        "right_stop": "d-up",
+        "screenshot": "f3",
+        "server_list": "`",
+        "trade_menu": "p",
+        "wireframe_toggle": "tab"
+    },
+    "language": "en_US",
+    "networking": {
+        "auth_server": "waveauthserver.pythonanywhere.com",
+        "proxy": [
+            {
+                "ip": "localhost",
+                "port": 5050
+            }
+        ]
+    },
+    "video": {
+        "antialiasing_levels": 0,
+        "fov": 90,
+        "god_rays": true,
+        "max_framerate": 240,
+        "pbr": false,
+        "vignette": false
+    },
+    "volumes": {
+        "master": 100
+    }
+}

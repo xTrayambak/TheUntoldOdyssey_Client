@@ -39,7 +39,7 @@ class NarratorUtil:
         """
         if self.enabled != True: return self.enabled
 
-        self.pool.apply_async(self._say, (self.instance.narratorDialogFinder.get_dialog(text)))
+        self.pool.apply_async(self._say, (self.instance.narrator_dialog_finder.get_dialog(text)))
 
         return True
 

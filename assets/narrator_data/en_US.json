@@ -6,6 +6,9 @@
     "button.video.hover": "hover over video settings button",
     "button.audio.hover": "hover over audio settings button",
     "button.account.hover": "hover over account settings button",
+
+    "menu.pause.enable": "open pause menu",
+    "menu.pause.disable": "close pause menu",
     
     "button.play.click": "click play button",
     "button.quit.click": "click quit button",

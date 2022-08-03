@@ -1,16 +1,18 @@
 from direct.task.Task import Task
 from math import sin
+import limeade
 
 from src.log import log
 
-SIN_VAL_DIV = 15
-SIN_VAL_AFTER_DIV = 10
+SIN_VAL_DIV = 1
+SIN_VAL_AFTER_DIV = 16
 
 def splash_screen_pop(task, instance, spl_scrn_txt_node, clipFunc):
+    limeade.refresh()
     _SIN_VAL_DIV = SIN_VAL_DIV + (instance.clock.dt/15)
     sin_Val = clipFunc(
-        sin((instance.getFrameTime() / _SIN_VAL_DIV) * 25) / SIN_VAL_AFTER_DIV,
-        0.04,
+        sin((instance.getFrameTime() / _SIN_VAL_DIV) * 16) / SIN_VAL_AFTER_DIV,
+        0.05,
         0.8
     )
 

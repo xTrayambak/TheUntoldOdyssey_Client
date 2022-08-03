@@ -73,14 +73,11 @@ class TUO(ShowBase):
         self.workspace = Workspace()
         self.workspace.init(self)
 
-        # Ambience manager
-        self.ambienceManager = AmbienceManager()
-
         # Network client
-        self.networkClient = NetworkClient(self)
+        self.network_client = NetworkClient(self)
 
         # Narrator dialog finding utility
-        self.narratorDialogFinder = NarratorDialogFinder(getSetting("language"))
+        self.narrator_dialog_finder = NarratorDialogFinder(getSetting("language"))
 
         # Narrator/TTS utility
         self.narrator = NarratorUtil(self)
@@ -92,25 +89,28 @@ class TUO(ShowBase):
         self.recordingUtil = RecordingUtil(self)
 
         # Hardware specs detection utility
-        self.hardwareUtil = HardwareUtil()
-        self.hardwareUtil.get()
+        self.hardware_util = HardwareUtil()
+        self.hardware_util.get()
 
         # Audio loading utility
         self.audioLoader = AudioLoader(self)
         self.rpcManager = None
 
+        # Ambience Manager
+        self.ambienceManager = AmbienceManager(self)
+
         # VFX manager (TUOFX)
         #self.vfxmanager = VFXManager(self)
         #self.vfxmanager.load_file(open('assets/effects/menu_panorama_spin.tuofx'))
 
-        log(f"OpenGL: {self.hardwareUtil.gl_version} || Vendor: {self.hardwareUtil.gpu_vendor}", "Worker/Bootstrap")
+        log(f"OpenGL: {self.hardware_util.gl_version} || Vendor: {self.hardware_util.gpu_vendor}", "Worker/Bootstrap")
         
         self.clock = ClockObject()
 
         log(f"Panda3D lib location: [{panda3d.__file__}]", "Worker/Bootstrap")
 
         try:
-            self.rpcManager = RPCManager(self)
+            self.rpc_manager = RPCManager(self)
         except Exception as exc:
             log(f"Failed to initialize Discord rich presence. [{exc}]")
 
@@ -126,6 +126,8 @@ class TUO(ShowBase):
 
         self.date_info = time_now.strftime("%d-%m-%y")
         self.time_info = time_now.strftime('%H:%M:%S')
+
+        self.globals = {'world_select': -1}
 
         log(f"Date info: {self.date_info}\nTime info: {self.time_info}", "Worker/TimeDetector")
         log(f"Syntax Studios account token is [{token}]", "Worker/Config")
@@ -194,7 +196,9 @@ class TUO(ShowBase):
         
         self.spawnNewTask("tuo-poll", self.poll)
 
-        log("TUO client instance initialized successfully within {}ms".format(time.time() - start_time), "Worker/StartupFinalizer")
+        self.modules = []
+
+        log("TUO client instance initialized successfully within {} ms".format(time.time() - start_time), "Worker/StartupFinalizer")
 
 
     def pause_menu(self):
@@ -206,6 +210,10 @@ class TUO(ShowBase):
             self.paused = False
         
         self._pause_menu(self.paused)
+
+
+    def add_module(self, module):
+        self.modules.append(module(self))
 
 
     def is_closing(self) -> bool: 
@@ -245,12 +253,12 @@ class TUO(ShowBase):
         Show/hide the pause menu based on the `bool` passed.
         """
         if isPaused:
-            self.narrator.say("open pause menu")
+            self.narrator.say("menu.pause.enable")
             self.workspace.getComponent("ui", "paused_text").show()
             self.workspace.getComponent("ui", "return_to_menu_button").show()
             self.workspace.getComponent("ui", "settings_button").show()
         else:
-            self.narrator.say("close pause menu")
+            self.narrator.say("menu.pause.disable")
             self.workspace.getComponent("ui", "settings_button").hide()
             self.workspace.getComponent("ui", "paused_text").hide()
             self.workspace.getComponent("ui", "return_to_menu_button").hide()
@@ -342,22 +350,23 @@ class TUO(ShowBase):
         TUO.poll -> TUO.clock.tick
         """
         self.clock.tick()
+
+        for module in self.modules:
+            module.tick(self)
+
         return Task.cont
 
 
-    def change_state(self, state: int):
+    def change_state(self, state: int, extArgs: list = None):
         """
         Change the game's story/part "state"; basically tell the game at which point of gameplay it should switch to.
         Eg. menu, loading screen, in-game or connecting screen.
         """
         self.previousState = self.state
         self.state = GameStates(state)
-        self.update()
+        self.update(extArgs)
 
-        PROPERTIES = WindowProperties()
-        PROPERTIES.setTitle("The Untold Odyssey {} | {}".format(VERSION, GAMESTATES_TO_STRING[self.state]))
-
-        self.win.requestProperties(PROPERTIES)
+        self.set_title('The Untold Odyssey {} | {}'.format(self.version, GAMESTATES_TO_STRING[self.state]))
 
         if self.state == GameStates.SETTINGS and self.previousState == GameStates.INGAME:
             return
@@ -370,6 +379,13 @@ class TUO(ShowBase):
 
         self.stop_music()
 
+
+    def set_title(self, title: str):
+        assert type(title) == str, 'Window title must be string!'
+        PROPERTIES = WindowProperties()
+        PROPERTIES.setTitle(title)
+
+        self.win.requestProperties(PROPERTIES)
 
 
     def new_task(self, name, function, args = None):
@@ -414,14 +430,14 @@ class TUO(ShowBase):
 
 
 
-    def update(self):
+    def update(self, extArgs: list = None):
         """
         Updates the game state manager.
 
         TUO.update() -> state_execution[state] <args=self (TUO instance), previousState (GameStates)>
         """
-        GAMESTATE_TO_FUNC[self.state](self, self.previousState)
-
+        if not extArgs: GAMESTATE_TO_FUNC[self.state](self, self.previousState)
+        else: GAMESTATE_TO_FUNC[self.state](self, self.previousState, *extArgs)
 
 
     def getState(self):
@@ -436,12 +452,20 @@ class TUO(ShowBase):
 
     def getAllStates(self):
         """
-        Get a list of all game states, in case you cannot import the shared file in case of a circular import.
+        Get a list of all game states, in case you cannot import the shared file because of a circular import.
 
         TUO.getAllStates() -> `src.client.shared.GameStates`
         """
         return self.states_enum
 
+    
+    def initialize_pbr_pipeline(self):
+        sys.path.insert(0, "src/client/render_pipeline")
+        from src.client.render_pipeline.rpcore.render_pipeline import RenderPipeline
+        self.renderPipeline = RenderPipeline()
+        #self.renderPipeline.daytime_mgr.time = "11:55"
+        self.renderPipeline.pre_showbase_init()
+        self.renderPipeline.create(self)
 
 
     def start_internal_game(self):
@@ -456,7 +480,7 @@ class TUO(ShowBase):
             self.rpcManager.run()
             
         self.update()
-        self.ambienceManager.update(self)
+        self.new_task(name='ambience_manager_update', function=self.ambienceManager._update)
         self.authenticator.start_auth()
         
         if self.max_mem < 500:
@@ -469,18 +493,13 @@ class TUO(ShowBase):
                 exitFunc = self.quit
             )
         
-        if self.hardwareUtil.gl_version[0] == 4 and self.hardwareUtil.gl_version[1] > 2:
-            log(f"This GPU does support OpenGL 4.3! [MAJOR={self.hardwareUtil.gl_version[0]};MINOR={self.hardwareUtil.gl_version[1]}]", "Worker/Hardware")
+        if self.hardware_util.gl_version[0] == 4 and self.hardware_util.gl_version[1] > 2:
+            log(f"This GPU does support OpenGL 4.3! [MAJOR={self.hardware_util.gl_version[0]};MINOR={self.hardware_util.gl_version[1]}]", "Worker/Hardware")
             if getSetting("video", "pbr") == True:
                 log("Initializing tobspr's render pipeline! May the ricing begin!", "Worker/PBR")
-                sys.path.insert(0, "src/client/render_pipeline")
-                from src.client.render_pipeline.rpcore.render_pipeline import RenderPipeline
-                self.renderPipeline = RenderPipeline()
-                #self.renderPipeline.daytime_mgr.time = "11:55"
-                self.renderPipeline.pre_showbase_init()
-                self.renderPipeline.create(self)
+                self.initialize_pbr_pipeline()
         else:
-            warn(f"This GPU does not support OpenGL 4.3! [MAJOR={self.hardwareUtil.gl_version[0]};MINOR={self.hardwareUtil.gl_version[1]}]")
+            warn(f"This GPU does not support OpenGL 4.3! [MAJOR={self.hardware_util.gl_version[0]};MINOR={self.hardware_util.gl_version[1]}]")
             settings = getAllSettings()
             settings['video']['pbr'] = False
 

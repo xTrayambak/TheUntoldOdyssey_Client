@@ -75,6 +75,11 @@ DisconnectStatusCodes = {
     "disconnect-throttled": "Connection throttled!\nPlease wait before joining."
 }
 
+class DIMENSION(IntEnum, Enum):
+    OVERWORLD = 0
+    HELL = 1
+    VOIDLANDS = 2
+
 DATA_PROVIDER = "https://tuoDataDelivery.xtrayambak.repl.co/"
 SYNTAX_PAYMENTS_PROVIDER = "https://syntaxpayments.xtrayambak.repl.co/"
 SYNTAX_AUTHENTICATION_PROVIDER = "https://waveauthserver.pythonanywhere.com/"

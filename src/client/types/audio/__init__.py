@@ -57,11 +57,14 @@ class Audio:
         """
         self.sound.setTime(time)
 
+    def set_loop(self, value: bool):
+        self.sound.setLoop(value)
+
     def set(self, attr: str, val):
         """
         Generic function for any attributes-set method not implemented via built-in functions.
         """
-        return getattr(self.sound, f'set{attr}')(val)
+        return getattr(self.sound, f'set_{attr}')(val)
 
 
     # Attribute-get functions.
@@ -70,6 +73,9 @@ class Audio:
         Get the status of the song playing currently.
         """
         return self.sound.status()
+
+    def get_length(self) -> float | int:
+        return self.sound.length()
 
     def is_corrupted(self) -> bool:
         """
@@ -90,4 +96,4 @@ class Audio:
         """
         Generic function for any attribute-get method not implemented via built-in functions.
         """
-        return getattr(self.sound, f'get{attr}')()
+        return getattr(self.sound, f'get_{attr}')()

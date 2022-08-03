@@ -1,14 +1,26 @@
 from src.client.game.entitymanager import EntityManager
 from src.log import *
+from src.client.shared import DIMENSION
+from src.client.module import Module, ModuleCodes
 
 
 class Game:
-    def __init__(self):
+    def __init__(self, game_type: int, extra_data: dict = None):
         self.entityManager = EntityManager()
 
         self.isFightingBoss = False
         self.bossID = None
         self.players = {}
+
+        self.game_type = game_type
+
+        if game_type == 0:
+            # local/singleplayer session
+            self.extra_data = extra_data
+
+            self.savedata = extra_data['savefiles']
+
+        self.dimension = None
 
     def setPlayers(self, plr_list: dict):
         self.players = plr_list
@@ -43,3 +55,5 @@ class Game:
 
     def add_new_entity(self, entity):
         self.entityManager.add_entity(entity)
+
+    def get_dimension(self): return self.dimension

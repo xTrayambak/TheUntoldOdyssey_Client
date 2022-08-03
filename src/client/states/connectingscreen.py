@@ -57,7 +57,9 @@ def connectingPage(instance, previous_state: int = 1):
     )
     
     label_connecting = TextNode(name = "node_text_connect")
-    label_connecting.setText(f"Connecting to [{instance.networkClient.connectingTo}]; locating host and establishing connection.")
+
+    if instance.globals['world_select'] == 1:
+        label_connecting.setText(f"Connecting to [{instance.network_client.connectingTo}]; locating host and establishing connection.")
     label_connecting.setTextColor((0.1,0.1,0.1,1))
     label_connecting.setAlign(TextNode.ACenter)
     label_connecting.setFont(mangabey_font)
@@ -81,7 +83,7 @@ def connectingPage(instance, previous_state: int = 1):
     label_artistNode.setScale(0.07)
 
     label_gpu = TextNode(name = "node_text_gpu")
-    label_gpu.setText("OpenGL " +instance.hardwareUtil.gl_version_string_detailed)
+    label_gpu.setText("OpenGL " +instance.hardware_util.gl_version_string_detailed)
     label_gpu.setTextColor((0,0,0,1))
     label_gpu.setAlign(TextNode.ALeft)
     label_gpu.setFont(mangabey_font)
@@ -105,7 +107,7 @@ def connectingPage(instance, previous_state: int = 1):
     label_artistNode.setPos((1.9, 0, -0.9))
     label_distroNode.setPos((1.9, 0, 0.9))
 
-    instance.workspace.add_ui("connecting_screen_status", label_connectingNode)
+    instance.workspace.add_ui("status_text", label_connectingNode)
     instance.workspace.add_ui("gpu_text", label_gpuNode)
     instance.workspace.add_ui("tuo_ver_text", label_tuoNode)
     instance.workspace.add_ui("artist_text", label_artistNode)
