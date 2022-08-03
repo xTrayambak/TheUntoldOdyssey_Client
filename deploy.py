@@ -59,6 +59,7 @@ def deploy():
     
     if do_build_confirm == 'y':
         print(':panda3d-build: Instructing Python to build the client.')
+        call(['python3', 'setup.py'])
         
 
     print(':death: Cleaning up environment.')
