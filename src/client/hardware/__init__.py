@@ -1,12 +1,16 @@
 import sys
 
 from src.log import *
+from src.client.hardware.platformutil import PlatformUtil
+from src.client.hardware.displayutil import DisplayUtil
 
 
 class HardwareUtil:
     def __init__(self):
         self.gl_version = [0, 0]
         self.gpu_vendor = "NOTDETECTED"
+        self.platform_util = PlatformUtil()
+        self.display_util = DisplayUtil()
 
     def get(self):
         try:

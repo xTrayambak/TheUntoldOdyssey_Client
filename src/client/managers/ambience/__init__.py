@@ -65,7 +65,7 @@ class AmbienceManager:
         tuo = self.instance
         
         # Initial delay before the main menu loads up.
-        #await Task.pause(randint(10, 25))
+        await Task.pause(randint(5, 10))
         
         if self.running == False:
             log("Ambience manager shutting down; self.running is False.", "Worker/Ambience")
@@ -82,14 +82,14 @@ class AmbienceManager:
             song.play()
 
             await Task.pause(
-                randint(int(song.get_length()), int(70+song.get_length()))
+                randint(int(song.get_length()), int(8+song.get_length()))
             )
         elif tuo.getState() == GameStates.INGAME:
             if tuo.game.get_dimension() == tuo.getSharedData().DIMENSION.OVERWORLD:
                 song = tuo.audioLoader.load(choices(population=songs_ingame_overworld, weights=probability_ingame_overworld))
 
                 await Task.pause(
-                    randint(int(song.get_length()), int(100+song.get_length()))
+                    randint(int(song.get_length()), int(1+song.get_length()))
                 )
             elif tuo.game.get_dimension() == tuo.getSharedData().DIMENSION.VOIDLANDS:
                 song = tuo.audioLoader.load(choices(population=songs_ingame_voidlands, weights=probability_ingame_voidlands))

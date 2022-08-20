@@ -49,7 +49,6 @@ class Savefile:
                         if not 'version' in data:
                             fatal('Corrupted/tampered savefile detected! Abort. [core.tuo does not contain key "version"]', 'Worker/Savefile')
                             return -1
-                                    
                         if data['version'] != self.tuo.version:
                             warn(f'Savefile has different version than current client version. Attempting to convert, this may corrupt the savefile. Here goes nothing! [core.tuo indicates this world was last loaded in version "{data["version"]}", and this client is running version "{self.tuo.version}" according to VER.', 'Worker/Savefile')
 

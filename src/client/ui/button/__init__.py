@@ -1,13 +1,21 @@
 from direct.gui import DirectGuiGlobals as DGG
 from direct.gui.DirectButton import DirectButton
 
+from src.client.utils import load_image_as_plane, tuple_conv_vec3
 
 class Button:
-    def __init__(self, instance, text: str, scale: float = 0.1, text_scale: float = 0.1, pos = (0, 0, 0), command = None, text_font = None, parent = None, hover_text: str = "button.play.hover", click_text: str = "button.play.click") -> None:
+    def __init__(self, instance, text: str, scale: float = 0.1, text_scale: float = 0.1, pos = (0, 0, 0), command = None, text_font = None, parent = None, hover_text: str = "button.play.hover", click_text: str = "button.play.click", overlay_img: str = None, geom = None) -> None:
+        import limeade; limeade.refresh()
         self.text = text
         def command_extra():
             instance.narrator.say(click_text)
             if command != None: command()
+
+        if geom == None and overlay_img == None:
+            # I for the love of God, cannot make this stupid text either fit into the box properly or resize the box. Gosh I would rather be working a minimum wage job at McDonalds than this.
+
+            div_factor = (256 + len(text) / 1.1) + len(text) / 4
+            geom = load_image_as_plane(instance, 'assets/img/button_template.png', div_factor)
 
         self.click_text = click_text
         self.hover_text = hover_text
@@ -18,7 +26,10 @@ class Button:
             pos = pos,
             command = command_extra,
             text_font = text_font,
-            parent = parent
+            parent = parent,
+            image = overlay_img,
+            relief = None,
+            geom = geom
         )
         self.instance = instance
 

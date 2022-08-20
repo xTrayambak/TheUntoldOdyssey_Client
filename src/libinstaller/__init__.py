@@ -1,5 +1,5 @@
 from subprocess import check_call as call
-from sys import executable
+from sys import executable, platform
 from pkg_resources import get_distribution, DistributionNotFound
 
 from src.log import warn, log
@@ -22,6 +22,17 @@ def installAllLibraries():
     libs = open("requirements.txt").readlines()
 
     for lib in libs:
+        if lib.startswith('#'): continue
+        
+        # Your CPU fans will make demonic screeching noises whilst running this segment of code. I am to blame, but you will never catch me alive!!!!!!!
+        if lib.startswith('!!windows!!') and platform not in ('win32', 'win64'): continue
+        if lib.startswith('!!mac!!') and platform != 'darwin': continue
+        if lib.startswith('!!linux!!') and platform != 'linux': continue
+
+        lib = lib.replace('!!windows!!', '', 1)
+        lib = lib.replace('!!mac!!', '', 1)
+        lib = lib.replace('!!linux!!', '', 1)
+
         lib = lib.split("\n")[0]
         log(f"Checking if library '{lib}' is installed or not.", "Worker/Requirements")
         if not exists(lib):

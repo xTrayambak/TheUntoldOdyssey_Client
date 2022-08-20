@@ -55,7 +55,7 @@ def connectingPage(instance, previous_state: int = 1):
         instance = instance,
         command = back_cmd
     )
-    
+
     label_connecting = TextNode(name = "node_text_connect")
 
     if instance.globals['world_select'] == 1:

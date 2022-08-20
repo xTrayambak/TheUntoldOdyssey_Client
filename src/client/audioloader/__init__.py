@@ -9,9 +9,19 @@ _cat_type = [
 class AudioLoader:
     def __init__(self, instance):
         self.instance = instance
+        self.sounds = []
     
     def load(self, path: str):
-        return Audio(path, self.instance)
+        audio = Audio(path, self.instance)
+        self.sounds.append(audio)
+
+        return audio
 
     def load_path(self, path: str):
-        return self.instance.loader.loadSfx(path)
+        audio = self.instance.loader.loadSfx(path)
+        self.sounds.append(audio)
+
+        return audio
+
+    def stop_all_sounds(self):
+        for sound in self.sounds: sound.stop()

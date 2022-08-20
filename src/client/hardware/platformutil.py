@@ -7,18 +7,17 @@ class PlatformUtil:
     def __init__(self):
         self.data = {
             'os.global.architecture': 'NOINIT',
-            'device.is_phone': 'NOINIT',
-            
+            'device.is_phone': 'NOINIT', 
             'os.linux.distro_data': 'NOINIT'
         }
-    
+
     def collect(self):
         """
         Collect all the data about this system and store it.
         """
         self.data['os.global.architecture'] = sys.platform,
         self.data['device.is_phone'] = hasattr(sys, 'getandroidapilevel')
-        
+
         if sys.platform == 'linux':
             import distro
             self.data['os.linux.distro_data'] = {
@@ -42,8 +41,3 @@ class PlatformUtil:
         """
         if not val: return self.data
         if val in self.data: return self.data[val]
-
-p = PlatformUtil()
-p.collect()
-
-print(p.get('device.is_phone'))

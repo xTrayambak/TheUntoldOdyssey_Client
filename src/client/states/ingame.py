@@ -22,23 +22,21 @@ from src.client.ui.button import Button
 from src.client.ui.text import Text
 from src.client.util.conversion import encode
 from src.client.visual_shared import *
+from src.client.game import Game
 from src.log import log, warn
 
 process = psutil.Process()
 
 def inGameState(instance, previous_state: int = 1):
     instance.clear()
-    instance.setFov(getSetting("video", "fov"))
-    """
-    Apply visual shaders
-    using Panda3D's built-in shader pipeline.
-    """
+    instance.game = Game(instance, 0)
+    instance.set_fov(getSetting("video", "fov"))
     shaders = loadAllShaders()
     for _shd in shaders:
         instance.workspace.objects["shaders"].append(_shd)
     log("The player is in-game now.")
 
-    instance.mapLoader.load()
+    #instance.mapLoader.load()
 
     basic_font = instance.fontLoader.load("gentium_basic")
     font = basic_font
@@ -67,12 +65,12 @@ def inGameState(instance, previous_state: int = 1):
     tuo_version = Text(instance, font, text=f"The Untold Odyssey {instance.version}", scale=0.05, alignment=TextNode.ALeft, position=(-1, 0, 0.8))
     debug_stats_world = Text(instance, font, f"E: 0", scale=0.05, position=(-1, 0, 0.6), alignment=TextNode.ALeft)
     memory_stats = Text(instance, font, f"USE: {int(process.memory_info().rss / (1024*1024))}MB / THRES: {gc.get_threshold()[1]} MB/s", scale=0.1, position=(-1, 0, 0.4), alignment=TextNode.ALeft)
-    network_stats = Text(instance, font, f"LP: {int(instance.networkClient.last_packet_ms)}ms", scale=0.1, position=(-1, 0, 0))
+    #network_stats = Text(instance, font, f"LP: {int(instance.networkClient.last_packet_ms)}ms", scale=0.1, position=(-1, 0, 0))
     ## TASKS ##
 
     async def camera_update_task(task):
         if instance.state != instance.states_enum.INGAME: return task.done
-        
+ 
         position = player.entity.getPos()
 
         instance.cam.setPos(
@@ -84,8 +82,8 @@ def inGameState(instance, previous_state: int = 1):
     async def debug_menu_update(task):
         if instance.game is not None:
             memory_stats.setText(f"USE: {int(process.memory_info().rss / (1024*1024))} MB")
-            debug_stats_world.setText(f"E: {instance.game.entityManager.entity_count} / D: {int(instance.networkClient.last_packet_ms)}")
-            network_stats.setText(f"LP: {instance.networkClient.last_packet_ms}ms")
+            #debug_stats_world.setText(f"E: {instance.game.entityManager.entity_count} / D: {int(instance.networkClient.last_packet_ms)}")
+            #network_stats.setText(f"LP: {instance.networkClient.last_packet_ms}ms")
         return task.cont
 
     def settingsPage():
@@ -110,5 +108,5 @@ def inGameState(instance, previous_state: int = 1):
     instance.workspace.add_ui("debug_stats_world", debug_stats_world)
     instance.workspace.add_ui("debug_stats_version", tuo_version)
     instance.workspace.add_ui("memory_stats_text", memory_stats)
-    instance.workspace.add_ui("debug_network_stats", network_stats)
+    #instance.workspace.add_ui("debug_network_stats", network_stats)
     instance.spawnNewTask("debug_menu_update", debug_menu_update)

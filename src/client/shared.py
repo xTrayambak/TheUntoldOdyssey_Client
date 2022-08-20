@@ -10,6 +10,7 @@ from src.client.states.debug_state import debug_state
 from src.client.states.ingame import inGameState
 from src.client.states.mainmenu import mainMenu
 from src.client.states.settings import settingsPage
+from src.client.states.mods_menu import mods_menu
 
 
 class GameStates(IntEnum, Enum):
@@ -19,7 +20,8 @@ class GameStates(IntEnum, Enum):
     INGAME = 3
     END_CREDITS = 4,
     CONNECTING = 5,
-    DEBUG = 6
+    DEBUG = 6,
+    MODS_LIST = 7
 
 class TextFormatting:
     JUMBLE = "[J]"
@@ -32,7 +34,8 @@ GAMESTATES_TO_BLANDSTRING = {
     GameStates.INGAME: "ingame",
     GameStates.END_CREDITS: "end_credits",
     GameStates.CONNECTING: "connecting",
-    GameStates.DEBUG: "debug"
+    GameStates.DEBUG: "debug",
+    GameStates.MODS_LIST: 'mods_list'
 }
 
 GAMESTATES_TO_STRING = {
@@ -42,7 +45,8 @@ GAMESTATES_TO_STRING = {
     GameStates.INGAME: "In-Game",
     GameStates.END_CREDITS: "Watching the End Credits",
     GameStates.CONNECTING: "Connecting to The Server",
-    GameStates.DEBUG: "Are ya coding son?"
+    GameStates.DEBUG: "Are ya coding son?",
+    GameStates.MODS_LIST: "Customizing Mods"
 }
 
 GAMESTATE_TO_FUNC = {
@@ -51,7 +55,8 @@ GAMESTATE_TO_FUNC = {
     GameStates.INGAME: inGameState,
     GameStates.CONNECTING: connectingPage,
     GameStates.SETTINGS: settingsPage,
-    GameStates.DEBUG: debug_state
+    GameStates.DEBUG: debug_state,
+    GameStates.MODS_LIST: mods_menu
 }
 
 class Language:

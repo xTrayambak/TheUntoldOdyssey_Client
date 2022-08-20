@@ -13,3 +13,6 @@ colorama
 limeade
 PyMsgBox
 elevate
+lupa
+!!linux!! python-xlib
+!!mac!! pyobjc-framework-cocoa

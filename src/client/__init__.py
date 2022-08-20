@@ -16,9 +16,7 @@ from direct.filter.CommonFilters import CommonFilters
 from direct.gui.DirectFrame import DirectFrame
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
-from panda3d.core import ClockObject
-from panda3d.core import WindowProperties
-from panda3d.core import loadPrcFile
+from panda3d.core import ClockObject, loadPrcFile, WindowProperties, AntialiasAttrib
 
 from src.client import shared
 from src.client.audioloader import AudioLoader
@@ -42,9 +40,11 @@ from src.client.textureloader import TextureLoader
 from src.client.translationutil import TranslationUtility
 from src.client.ui.button import *
 from src.client.ui.text import *
+from src.client.modloader import ModLoader
 from src.client.vfxmanager import VFXManager
 from src.client.workspace import Workspace
 from src.log import log, warn
+from src.client.event import Event
 
 VERSION = open("VER").read()
 
@@ -55,7 +55,7 @@ class TUO(ShowBase):
     """
     Initialize the game client.
     """
-    def __init__(self, memory_max: int = 800, token: str = ""):
+    def __init__(self, memory_max: int = 800, token: str = "", disable_mod_lvm: int = 0):
         start_time = time.time()
         log(f"The Untold Odyssey {VERSION} loaded up! Initializing Panda3D.")
         loadPrcFile("assets/config.prc")
@@ -99,12 +99,15 @@ class TUO(ShowBase):
         # Ambience Manager
         self.ambienceManager = AmbienceManager(self)
 
+
+        self.null_lvm = 'RESTRICTED-OBJ-ACCESS-LUA'
+
         # VFX manager (TUOFX)
         #self.vfxmanager = VFXManager(self)
         #self.vfxmanager.load_file(open('assets/effects/menu_panorama_spin.tuofx'))
 
         log(f"OpenGL: {self.hardware_util.gl_version} || Vendor: {self.hardware_util.gpu_vendor}", "Worker/Bootstrap")
-        
+
         self.clock = ClockObject()
 
         log(f"Panda3D lib location: [{panda3d.__file__}]", "Worker/Bootstrap")
@@ -115,12 +118,15 @@ class TUO(ShowBase):
             log(f"Failed to initialize Discord rich presence. [{exc}]")
 
         self.fontLoader = FontLoader(self)
-        self.textureLoader = TextureLoader(self)
+        self.texture_loader = TextureLoader(self)
         self.objectLoader = ObjectLoader(self)
         self.mapLoader = MapLoader(self)
         self.player = Player(self, "player", "playertest_default")
         self.token = token
         self.debug_mode = os.path.exists("DEBUG_MODE")
+
+        self.events = []
+        self.modules = []
 
         self.time_now = datetime.now()
 
@@ -174,6 +180,8 @@ class TUO(ShowBase):
         self.inputManager.init()
         self.inputManager.hook()
 
+        self.render.setAntialias(AntialiasAttrib.MAuto)
+
         self.development_build = False
         self.gamereview_build = False
 
@@ -184,19 +192,17 @@ class TUO(ShowBase):
 
         self.paused = False
         self.renderPipeline = None
+        self.disable_mod_lvm = disable_mod_lvm
+
 
         self.browser = BrowserUtil()
 
-        self.clock.setMode(ClockObject.MForced)
-
-        log(f"Max framerate is capped to [{self.settings['video']['max_framerate']}] FPS.")
+        self.clock.setMode(ClockObject.MLimited)
         self.clock.setFrameRate(
             self.settings["video"]["max_framerate"]
         )
-        
-        self.spawnNewTask("tuo-poll", self.poll)
 
-        self.modules = []
+        self.spawnNewTask("tuo-poll", self.poll)
 
         log("TUO client instance initialized successfully within {} ms".format(time.time() - start_time), "Worker/StartupFinalizer")
 
@@ -208,25 +214,37 @@ class TUO(ShowBase):
             self.paused = True
         else:
             self.paused = False
-        
         self._pause_menu(self.paused)
 
 
     def add_module(self, module):
-        self.modules.append(module(self))
+        self.modules.append(module)
+        self.new_task(module.name, module.call_task, (self,))
 
 
-    def is_closing(self) -> bool: 
+    def create_event(self, name: str) -> Event:
+        event = Event(name)
+        self.events.append(event)
+
+        return event
+
+
+    def get_event(self, name: str) -> Event:
+        for event in self.events:
+            if event.name == name: return event
+
+
+    def is_closing(self) -> bool:
         """
         Return a `bool` indicating if an exit process is going on.
         """
         return self.closing
 
-    
+
     def debug_state_secret(self):
         """
         Debug state secret key.
-        """ 
+        """
         self.change_state(GameStates.END_CREDITS)
 
 
@@ -268,8 +286,16 @@ class TUO(ShowBase):
         return shared
 
 
-    def setFov(self, value: int):
+    def set_fov(self, value: int):
         self.camLens.setFov(value)
+
+
+    def get_task_signals(self) -> dict:
+        """
+        This is meant for the LUA modding API.
+        Please refain from using this in the Python codebase, use `direct.task.Task` instead.
+        """
+        return {'cont': Task.cont, 'done': Task.done}
 
 
     def warn(self, title: str="Lorem Ipsum", description: str="Door Sit", button_confirm_txt: str = "OK", button_exit_txt: str = "NO", confirmFunc=None, exitFunc = None) -> bool:
@@ -299,7 +325,7 @@ class TUO(ShowBase):
             confirm_button.destroy()
             exit_button.destroy()
             frame.destroy()
-            
+
             if exitFunc is not None:
                 exitFunc()
 
@@ -315,7 +341,7 @@ class TUO(ShowBase):
 
             if confirmFunc is not None:
                 confirmFunc()
-            
+
             return True
 
         confirm_button = Button(
@@ -340,7 +366,7 @@ class TUO(ShowBase):
 
 
     def stop_music(self):
-        self.ambienceManager.stop_all_tracks()
+        self.audioLoader.stop_all_sounds()
 
 
     def poll(self, task):
@@ -350,9 +376,6 @@ class TUO(ShowBase):
         TUO.poll -> TUO.clock.tick
         """
         self.clock.tick()
-
-        for module in self.modules:
-            module.tick(self)
 
         return Task.cont
 
@@ -366,6 +389,8 @@ class TUO(ShowBase):
         self.state = GameStates(state)
         self.update(extArgs)
 
+        self.get_event('on_state_change').fire([self.state, self.previousState])
+
         self.set_title('The Untold Odyssey {} | {}'.format(self.version, GAMESTATES_TO_STRING[self.state]))
 
         if self.state == GameStates.SETTINGS and self.previousState == GameStates.INGAME:
@@ -376,7 +401,10 @@ class TUO(ShowBase):
             return
         elif self.previousState == GameStates.SETTINGS and self.state == GameStates.MENU:
             return
-
+        elif self.previousState == GameStates.CONNECTING and self.state == GameStates.INGAME:
+            return
+        
+        log('Stopping music...')
         self.stop_music()
 
 
@@ -405,7 +433,7 @@ class TUO(ShowBase):
         `function` :: The function to be converted to a task/coroutine and called by Panda3D.
         """
         return self.taskMgr.add(function, name, extraArgs=args)
-        
+
 
     def spawnNewTask(self, name, function, args = None):
         """
@@ -425,7 +453,7 @@ class TUO(ShowBase):
                 obj.removeNode()
             except:
                 obj.destroy()
-            
+
         gc.collect()
 
 
@@ -458,7 +486,7 @@ class TUO(ShowBase):
         """
         return self.states_enum
 
-    
+
     def initialize_pbr_pipeline(self):
         sys.path.insert(0, "src/client/render_pipeline")
         from src.client.render_pipeline.rpcore.render_pipeline import RenderPipeline
@@ -476,13 +504,14 @@ class TUO(ShowBase):
                                 -> self.ambienceManager.update <args=[self]>
                                 -> self.rpcManager.run
         """
+        start = time.perf_counter()
         if self.rpcManager != None:
             self.rpcManager.run()
-            
+
         self.update()
         self.new_task(name='ambience_manager_update', function=self.ambienceManager._update)
         self.authenticator.start_auth()
-        
+ 
         if self.max_mem < 500:
             warn("The game has lesser than 500 MB of memory allocated!")
             self.warn(
@@ -492,7 +521,7 @@ class TUO(ShowBase):
                 "I will restart the game.",
                 exitFunc = self.quit
             )
-        
+
         if self.hardware_util.gl_version[0] == 4 and self.hardware_util.gl_version[1] > 2:
             log(f"This GPU does support OpenGL 4.3! [MAJOR={self.hardware_util.gl_version[0]};MINOR={self.hardware_util.gl_version[1]}]", "Worker/Hardware")
             if getSetting("video", "pbr") == True:
@@ -504,7 +533,25 @@ class TUO(ShowBase):
             settings['video']['pbr'] = False
 
             dumpSetting(settings)
-            self.warn("Your GPU does not support OpenGL 4.3!", "The game will run as usual,\nhowever, features like PBR will\nnot work. If you have a new GPU, try updating\nyour drivers.", "OK.", "HELP!", exitFunc = lambda: self.browser.open(""))
+            #self.warn("Your GPU does not support OpenGL 4.3!", "The game will run as usual,\nhowever, features like PBR will\nnot work. If you have a new GPU, try updating\nyour drivers.", "OK.", "HELP!", exitFunc = lambda: self.browser.open(""))
+
+        # Create the events
+        log('Creating all the events necessary for the game to function (on_state_change, on_exit, on_progress_screen_finish)', 'Worker/PostInit')
+        self.create_event('on_state_change')
+        self.create_event('on_start')
+        self.create_event('on_exit')
+        self.create_event('on_progress_screen_finish')
+
+        if self.disable_mod_lvm == 0:
+            self.mod_loader = ModLoader(self)
+            self.mod_loader.load_mods()
+
+            self.mod_loader.run_mods()
+        else:
+            warn('Modding API has been explicitly disabled.', 'Worker/Client')
+        
+        self.get_event('on_start').fire([time.perf_counter() - start])
+        log(f'Game has fully loaded up within {time.perf_counter() - start} ms.', 'Worker/start_internal_game')
 
 
     def quit(self):
@@ -515,8 +562,10 @@ class TUO(ShowBase):
                     self.finalizeExit
         """
         log("The Untold Odyssey is now stopping!", "Worker/Exit")
+        self.get_event('on_exit').fire()
         self.ambienceManager.running = False
         self.closing = True
         gc.collect()
         self.closeWindow(win=self.win)
         self.finalizeExit()
+        exit(0)

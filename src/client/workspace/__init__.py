@@ -81,6 +81,8 @@ class Workspace:
         """
         Get a component from the workspace.
         """
+        if not category in self.objects: return None
+        if not name in self.objects[category]: return None
         return self.objects[category][name]
 
     def getComponent(self, category, name): return self.get_component(category, name)
@@ -100,10 +102,10 @@ class Workspace:
         """
         for _object in self.objects[category]:
             if type(self.objects[category]) == dict:
-                object = self.objects[category][_object]
+                obj = self.objects[category][_object]
 
-                if type(object) == NodePath:
-                    object.removeNode()
+                if type(obj) == NodePath:
+                    obj.removeNode()
 
         if cleanRender:
             for np in self.instance.render:

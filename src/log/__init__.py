@@ -1,6 +1,7 @@
 import logging
 import sys
 import os
+import threading
 
 try:
     from colorama import Fore
@@ -25,18 +26,30 @@ except FileNotFoundError:
 if os.path.exists('DEBUG_MODE'):
     fileHandler = None
 
+# Scopes are evil. I say they are EVIIIIILLLLLL!!!
+conf = {'enabled': True}
+
 logger = logging.getLogger()
 if fileHandler: logger.addHandler(fileHandler)
 logger.addHandler(logging.StreamHandler(sys.stdout))
 
-def log(msg = "Hello, World!", sender = "Worker/Thread-1"):
+def set_enabled(value: int):
+    if value == 0:
+        conf['enabled'] = True
+    else:
+        #sys.stdout = None
+        conf['enabled'] = False
+
+def log(msg = "Hello, World!", sender = f"Worker/Thread-{threading.get_ident()}"):
+    if not conf['enabled']: return
     logger.setLevel(logging.INFO)
     if Fore:
         logger.log(logging.INFO, msg = f"{Fore.GREEN}[{sender}/INFO]: {msg}{Fore.RESET}")
     else:
         logger.log(logging.INFO, msg = f"[{sender}/INFO]: {msg}")
 
-def warn(msg = "Hello, World!", sender = "Worker/Thread-1", err = None):
+def warn(msg = "Hello, World!", sender = f"Worker/Thread-{threading.get_ident()}", err = None):
+    if not conf['enabled']: return
     logger.setLevel(logging.WARN)
     if err and isinstance(err, Exception):
         if Fore:
@@ -52,7 +65,8 @@ def warn(msg = "Hello, World!", sender = "Worker/Thread-1", err = None):
         else:
             logger.log(logging.INFO, msg = f"[{sender}/WARN]: {msg}")
 
-def fatal(msg = "Hello, World!", sender = "Worker/Thread-1"):
+def fatal(msg = "Hello, World!", sender = f"Worker/Thread-{threading.get_ident()}"):
+    if not conf['enabled']: return
     logger.setLevel(logging.FATAL)
     if Fore:
         logger.log(logging.FATAL, msg = f"{Fore.LIGHTRED_EX}[{sender}/FATAL]: {msg}{Fore.RESET}")

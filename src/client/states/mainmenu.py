@@ -26,6 +26,7 @@ from src.client.savefileutil import get_all_savefiles
 from src.log import log, warn
 from src.client.ui.textinput import TextInput
 from src.client import helpers
+from src.client.utils import load_image_as_plane
 
 FESTIVALS = {
     "06-06": "Happy Birthday Trayambak!",
@@ -101,7 +102,8 @@ def mainMenu(instance, previous_state: int = 1):
     addr, port = getSetting("networking", "proxy")[0]["ip"], getSetting("networking", "proxy")[0]["port"]
 
     def button_singleplayer():
-        instance.change_state(5)
+        instance.change_state(3)
+        return
         instance.globals['world_select'] = 0
 
         instance.workspace.get_component('ui', 'status_text').node().setText('')
@@ -145,6 +147,16 @@ def mainMenu(instance, previous_state: int = 1):
 
     tuoLogo.setTransparency(TransparencyAttrib.MAlpha)
     tuoLogo.setScale(0.5)
+    
+    hammer_ico_64px = load_image_as_plane(instance, 'assets/img/hammer_64px.png', 256)
+    hammer_ico_64px.setTransparency(TransparencyAttrib.MAlpha)
+
+    mods_menu_btn = Button(instance,
+            text = instance.translator.translate('ui', 'mods'),
+            scale = 0.1, 
+            pos = (-0.5, 0.5, 0),
+            command = lambda: instance.change_state(7)
+    )
 
     play_button = Button(text = instance.translator.translate("ui", "singleplayer"),
                                 text_scale = 0.1, 
@@ -209,6 +221,7 @@ def mainMenu(instance, previous_state: int = 1):
     instance.workspace.add_ui("exit_button", exit_button)
     instance.workspace.add_ui("tuo_ver_text", tuo_ver_text)
     instance.workspace.add_ui("syntax_copyright_warning", syntax_copyright_warning)
+    instance.workspace.add_ui("mods_btn", mods_menu_btn)
     instance.spawnNewTask('menu_spin_task', camera_spin_task)
 
     return 'menu-close'

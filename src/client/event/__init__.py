@@ -1,5 +1,6 @@
 class Event:
-    def __init__(self):
+    def __init__(self, name: str):
+        self.name = name
         self.subscribers = []
 
     def subscribe(self, fn):
