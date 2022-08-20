@@ -32,6 +32,7 @@ h_vn
 
 
 *Thank you list:*
+
 Vardatry/Quack: Funding of the initial prototypes
 
 RDB: Being helpful [https://github.com/rdb] [https://rdb.name]
