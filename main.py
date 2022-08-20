@@ -41,9 +41,10 @@ class GameHandler:
                 if dirName == VERSION:
                     break
 
-            log("Setting client data path to ["+client_path+"]", "ClientPathDEBUG")
-            os.chdir(client_path)
-            log("Client working directory patch completed!", "ClientDirectoryWorkaround")
+            """if sys.platform == 'linux':
+                log("Setting client data path to ["+client_path+"]", "ClientPathDEBUG")
+                os.chdir(client_path)
+                log("Client working directory patch completed!", "ClientDirectoryWorkaround")"""
 
         log("Trying to find any libraries that need to be installed.", "Worker/Bootstrap")
         installAllLibraries()

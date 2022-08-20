@@ -18,7 +18,7 @@ def deploy():
     print(':info: Beginning building process; writing version to VER.')
     with open('VER', 'w') as file:
         file.write(version)
-    
+
     print(':info: Committing to GitHub repository. Continue?')
     git_commit_confirm = input('[y/n] ').lower()
     if git_commit_confirm not in ('y', 'n'):
@@ -56,11 +56,11 @@ def deploy():
 
     if do_build_confirm not in ('y', 'n'):
         print(':fatal: Expected `y` or `n` as result; got', do_build_confirm)
-    
+
     if do_build_confirm == 'y':
         print(':panda3d-build: Instructing Python to build the client.')
-        call(['python3', 'setup.py'])
-        
+        call(['python3', 'setup.py', 'build_apps'])
+
 
     print(':death: Cleaning up environment.')
     call(['rm', '-rf', 'LAUNCHER_ENVIRONMENT', '&&', 'rm', '-rf', 'build'])
