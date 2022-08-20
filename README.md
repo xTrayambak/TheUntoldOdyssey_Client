@@ -33,8 +33,11 @@ h_vn
 
 *Thank you list:*
 Vardatry/Quack: Funding of the initial prototypes
+
 RDB: Being helpful [https://github.com/rdb] [https://rdb.name]
+
 Entikan: Being helpful
+
 Amitai: Funding of the initial prototypes, motivation and being very nice in general, a really cool dude indeed!
 
 
