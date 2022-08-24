@@ -4,8 +4,8 @@ class Audio:
         self.path = path
 
         self.sound = tuo.loader.loadSfx(path)
-        
-    
+ 
+
     # Instruction functions.
 
     def play(self):
@@ -74,8 +74,11 @@ class Audio:
         """
         return self.sound.status()
 
-    def get_length(self) -> float | int:
+    def get_length(self) -> float:
         return self.sound.length()
+
+    def get_length_int(self) -> int:
+        return int(self.sound.length())
 
     def is_corrupted(self) -> bool:
         """

@@ -10,6 +10,7 @@ import time
 import datetime
 import json
 import os
+import random
 
 def _lvm_json_load(file: str):
     with open(file, 'r') as file: return json.load(file)
@@ -18,6 +19,14 @@ def _lvm_json_dump(file: str, data):
     if isinstance(data, bytes): warn('_lvm_json_dump(): Ignored request as data is bytes.')
 
     with open(file, 'w') as file: return json.dump(data, file)
+
+def _lvm_rand_choice(seq: list):
+    _seq_py = []
+
+    for idx in seq:
+        _seq_py.append(seq[idx])
+
+    return random.choice(_seq_py)
 
 INTERNAL_JSON_FUNCTIONS_LVM = {
     'load': _lvm_json_load,
@@ -57,7 +66,7 @@ class Game:
             'tags': ['SANDBOXED', 'GAME_INTERNAL_LVM']
         }
 
-        self.lvm.globals().client = tuo
+        self.lvm.globals().tuo = tuo
         self.lvm.globals().json = INTERNAL_JSON_FUNCTIONS_LVM
 
         n = SimplexNoise()
@@ -70,8 +79,21 @@ class Game:
             'floor': math.floor,
             'ceil': math.ceil,
             'cos': math.cos,
-            'cosh': math.cosh
+            'cosh': math.cosh,
         }
+
+        self.lvm.globals().random = {
+            'new': random.Random,
+            'randint': random.randint,
+            'randrange': random.randrange,
+            'choice': _lvm_rand_choice
+        }
+
+        self.lvm.globals().audio_loader = tuo.audioLoader
+        self.lvm.globals().font_loader = tuo.fontLoader
+        self.lvm.globals().texture_loader = tuo.texture_loader
+        self.lvm.globals().object_loader = tuo.objectLoader
+        self.lvm.globals().image_loader = tuo.image_loader
 
         self.game_type = game_type
 
@@ -95,8 +117,7 @@ class Game:
         """
         Load a .lua script
         """
-        with open(path, 'r') as file:
-            self.lvm.run(file.read())
+        self.lvm.run(path)
 
     def load_lua_scripts_in_dir(self, path: str):
         """
@@ -106,10 +127,10 @@ class Game:
             if os.path.isdir(path):
                 # Haha, recursion go brrrrr.
                 # (Hopefully) nobody is running the game on a Raspberry Pi Pico.
-                self.load_lua_scripts_in_dir(path)
+                self.load_lua_scripts_in_dir('src/client/game/logic/'+path)
  
             if not path.endswith('.lua'): continue
-            self.load_lua_script(path)
+            self.load_lua_script('src/client/game/logic/'+path)
 
     def load_lua_scripts(self):
         """
@@ -119,7 +140,7 @@ class Game:
             if os.path.isdir(path): self.load_lua_scripts_in_dir(path)
             if not path.endswith('.lua'): continue
 
-            self.load_lua_script(path)
+            self.load_lua_script('src/client/game/logic/'+path)
 
     def boss_fight_in_progress(self) -> bool:
         """

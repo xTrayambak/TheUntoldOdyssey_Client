@@ -29,7 +29,7 @@ process = psutil.Process()
 
 def inGameState(instance, previous_state: int = 1):
     instance.clear()
-    instance.game = Game(instance, 0)
+    #instance.game = Game(instance, 0)
     instance.set_fov(getSetting("video", "fov"))
     shaders = loadAllShaders()
     for _shd in shaders:
@@ -91,7 +91,7 @@ def inGameState(instance, previous_state: int = 1):
 
     def quit_to_menu():
         instance.quit_to_menu()
-        instance.networkClient.last_packet_ms = 0
+        #instance.networkClient.last_packet_ms = 0
 
     paused_text = Text(instance, font, "Game Paused", 0.09, position = (0, 0, 0.5))
 

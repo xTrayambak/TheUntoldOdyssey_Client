@@ -62,6 +62,8 @@ class AmbienceManager:
         self.tracks.append(self.end_credits)
 
     async def _update(self, task):
+        # To be deprecated soon.
+        return Task.done
         tuo = self.instance
         
         # Initial delay before the main menu loads up.

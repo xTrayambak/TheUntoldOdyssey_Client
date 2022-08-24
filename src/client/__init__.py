@@ -11,6 +11,7 @@ import gc
 import os
 import panda3d
 import time
+
 from datetime import datetime
 from direct.filter.CommonFilters import CommonFilters
 from direct.gui.DirectFrame import DirectFrame
@@ -19,6 +20,7 @@ from direct.task import Task
 from panda3d.core import ClockObject, loadPrcFile, WindowProperties, AntialiasAttrib
 
 from src.client import shared
+from src.log import log, warn
 from src.client.audioloader import AudioLoader
 from src.client.browserutil import BrowserUtil
 from src.client.fontloader import FontLoader
@@ -43,8 +45,9 @@ from src.client.ui.text import *
 from src.client.modloader import ModLoader
 from src.client.vfxmanager import VFXManager
 from src.client.workspace import Workspace
-from src.log import log, warn
+from src.client.game import Game
 from src.client.event import Event
+from src.client.imageloader import ImageLoader
 
 VERSION = open("VER").read()
 
@@ -98,6 +101,8 @@ class TUO(ShowBase):
 
         # Ambience Manager
         self.ambienceManager = AmbienceManager(self)
+        
+        self.image_loader = ImageLoader(self)
 
 
         self.null_lvm = 'RESTRICTED-OBJ-ACCESS-LUA'
@@ -142,7 +147,7 @@ class TUO(ShowBase):
 
         #self.disableMouse()
 
-        self.sfxManagerList[0].setVolume(
+        self.set_volume_master(
             getSetting("volumes", "master")
         )
 
@@ -166,8 +171,6 @@ class TUO(ShowBase):
 
         self.inGameTime = 0.0
         self.previousState = GameStates.MENU
-
-        self.game = None
 
         self.version = VERSION
         self.wireframeIsOn = False
@@ -202,10 +205,24 @@ class TUO(ShowBase):
             self.settings["video"]["max_framerate"]
         )
 
-        self.spawnNewTask("tuo-poll", self.poll)
+        self.new_task("tuo-poll", self.poll)
 
         log("TUO client instance initialized successfully within {} ms".format(time.time() - start_time), "Worker/StartupFinalizer")
+    
 
+    def log(self, msg: str, sender: str = None):
+        """
+        Logging function for LUA scripts.
+        """
+        return log(msg, sender)
+
+    def warn(self, msg: str, sender: str = None):
+        return warn(msg, sender)
+
+    def set_volume_master(self, value: float | int):
+        self.sfxManagerList[0].setVolume(value)
+
+    def get_volume_master(self) -> float | int: return self.sfxManagerList[0].get_volume()
 
     def pause_menu(self):
         if self.state != GameStates.INGAME and self.state != GameStates.DEBUG: return
@@ -295,7 +312,7 @@ class TUO(ShowBase):
         This is meant for the LUA modding API.
         Please refain from using this in the Python codebase, use `direct.task.Task` instead.
         """
-        return {'cont': Task.cont, 'done': Task.done}
+        return {'cont': Task.cont, 'done': Task.done, 'pause': Task.pause}
 
 
     def warn(self, title: str="Lorem Ipsum", description: str="Door Sit", button_confirm_txt: str = "OK", button_exit_txt: str = "NO", confirmFunc=None, exitFunc = None) -> bool:
@@ -361,7 +378,7 @@ class TUO(ShowBase):
 
 
     def quit_to_menu(self):
-        self.networkClient.disconnect()
+        #self.networkClient.disconnect()
         self.change_state(1)
 
 
@@ -401,9 +418,9 @@ class TUO(ShowBase):
             return
         elif self.previousState == GameStates.SETTINGS and self.state == GameStates.MENU:
             return
-        elif self.previousState == GameStates.CONNECTING and self.state == GameStates.INGAME:
+        elif self.previousState == GameStates.MENU and self.state == GameStates.MODS_LIST:
             return
-        
+
         log('Stopping music...')
         self.stop_music()
 
@@ -416,7 +433,7 @@ class TUO(ShowBase):
         self.win.requestProperties(PROPERTIES)
 
 
-    def new_task(self, name, function, args = None):
+    def new_task(self, name, function, is_lua: bool = False, args = None):
         """
         Create a new coroutine/task with the name `name` and task/function `function`.
         This function will be called every frame by Panda3D, TUO has no control over it's calling rate once it's hooked.
@@ -432,6 +449,22 @@ class TUO(ShowBase):
         `name` :: The name of the function; required by Panda3D.\n
         `function` :: The function to be converted to a task/coroutine and called by Panda3D.
         """
+
+        if is_lua:
+            async def surrogate_task(task):
+                result = function(task)
+
+                # Programming TW: Heavy abuse of try clauses.
+                # View at your own discretion.
+
+                try:
+                    await result
+                except TypeError:
+                    if result == task.done: return task.done
+
+                return task.cont
+            return self.taskMgr.add(surrogate_task, name, extraArgs=args)
+
         return self.taskMgr.add(function, name, extraArgs=args)
 
 
@@ -549,9 +582,14 @@ class TUO(ShowBase):
             self.mod_loader.run_mods()
         else:
             warn('Modding API has been explicitly disabled.', 'Worker/Client')
-        
+ 
+        self.game = Game(self, -1)
         self.get_event('on_start').fire([time.perf_counter() - start])
         log(f'Game has fully loaded up within {time.perf_counter() - start} ms.', 'Worker/start_internal_game')
+    
+
+    async def task_pause(self, delay: float | int):
+        await Task.pause(delay)
 
 
     def quit(self):

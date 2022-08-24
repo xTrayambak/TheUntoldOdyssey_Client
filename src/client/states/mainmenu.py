@@ -92,7 +92,7 @@ def mainMenu(instance, previous_state: int = 1):
         )
         return task.cont
 
-    instance.spawnNewTask("skyboxTask", skyboxTask)
+    instance.new_task("skyboxTask", skyboxTask, False)
     #instance.spawnNewTask("cameraSpinTask", cameraSpinTask)
 
 
@@ -202,8 +202,8 @@ def mainMenu(instance, previous_state: int = 1):
     else:
         splash_screen_text = None
 
-    instance.spawnNewTask(
-        "mainmenu-splash_screen_pop", splash_screen_pop, (None, instance, splash_screen_text, clip)
+    instance.new_task(
+        "mainmenu-splash_screen_pop", splash_screen_pop, False, (None, instance, splash_screen_text, clip)
     )
 
     tuo_ver_text = Text(instance, basic_font, "The Untold Odyssey {}".format(instance.version), 0.05, (1.1, 0, -0.9))
