@@ -217,9 +217,9 @@ def settingsPage(instance, previous_state: int = 1):
         # TUO-ENHANCE001: Enabling PBR no longer requires a restart
         settings['video']['pbr'] = not settings['video']['pbr']
         if settings['video']['pbr']: instance.initialize_pbr_pipeline()
-        pbr_toggle.setText(f"PBR: {BOOL_TO_STR[getSetting('video', 'pbr')]}")
+        pbr_toggle.setText(f"PBR: {BOOL_TO_STR[get_setting('video', 'pbr')]}")
 
-    pbr_toggle = Button(instance, f"PBR: {BOOL_TO_STR[getSetting('video', 'pbr')]}",
+    pbr_toggle = Button(instance, f"PBR: {BOOL_TO_STR[get_setting('video', 'pbr')]}",
         text_scale = 0.1,
         pos = (-0.2, 0, -0.2),
         text_font = basicFont,

@@ -4,15 +4,15 @@
 
 GameStates = tuo.getSharedData().GameStates
 
+local HEART_COUNT = 5
+
 function load_hud()
   tuo.log('Loading up ingame HUD.', 'Worker/IngameHUD')
-  
-  heart_full_texture = image_loader.load_image('assets/img/heart_full.png', {0.5, 0, 0}, 0.1)
-  heart_half_texture = image_loader.load_image('assets/img/heart_half.png', nil, 0.1)
 end
 
 function main(current_state, previous_state)
-  if current_state == GameStates.INGAME then
+  -- Prevent reloading the UI.
+  if current_state == GameStates.INGAME and previous_state ~= GameStates.SETTINGS then
     load_hud()
   end
 end

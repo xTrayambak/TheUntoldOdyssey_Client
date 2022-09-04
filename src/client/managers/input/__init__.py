@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from src.client.settingsreader import getSetting
+from src.client.settingsreader import get_setting
 from src.log import log, warn
 
 DEFAULT_KEYBINDS = {
@@ -17,22 +17,9 @@ class InputManager:
 
         }
 
-        def wireframe(): 
-            if instance.wireframeIsOn:
-                instance.wireframeOff()
-            else:
-                instance.wireframeOn()
-
-            instance.wireframeIsOn = not instance.wireframeIsOn
-
-        def fps_toggle():
-            instance.fpsCounterIsOn = not instance.fpsCounterIsOn
-
-            instance.setFrameRateMeter(instance.fpsCounterIsOn)
-
         self.STR_TO_FUNC = {
-            "fps_toggle": fps_toggle,
-            "wireframe_toggle": wireframe,
+            "fps_toggle": instance.toggle_fps_counter,
+            "wireframe_toggle": instance.toggle_wireframe,
             "freecam": instance.oobe,
             "pause_menu": instance.pause_menu,
             "screenshot": instance.recordingUtil.screenshot,
@@ -54,32 +41,32 @@ class InputManager:
         self.instance = instance
 
     def init(self):
-        keybinds = getSetting("keybinds")
+        keybinds = get_setting("keybinds")
         for function in keybinds:
             key = keybinds[function]
             log(f"Binding function '{function}' to key '{key}'")
             self.events.update({key: []})
 
-            self.listenfor(key)
+            self.listen_for(key)
 
-    def hookkey(self, key, func = None):
+    def hook_key(self, key, func = None):
         self.events[key].append(func)
 
-    def listenfor(self, key):
-        def sudofunc():
+    def listen_for(self, key):
+        def pseudofunc():
             for func in self.events[key]:
                 try: func()
                 except Exception as exc: warn(f"Unable to execute function for key '{key}' due to error. [{str(exc)}]")
 
-        self.instance.accept(key, sudofunc)
+        self.instance.accept(key, pseudofunc)
 
     def hook(self):
         log("Hooking input system into TUO process.", "Worker/InputManager")
 
-        _keybinds = getSetting("keybinds")
-        
+        _keybinds = get_setting("keybinds")
+
         for _func in _keybinds:
             if _func in self.STR_TO_FUNC:
                 func = self.STR_TO_FUNC[_func]
                 key = _keybinds[_func]
-                self.hookkey(key, func)
+                self.hook_key(key, func)

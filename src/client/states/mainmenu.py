@@ -48,7 +48,7 @@ def mainMenu(instance, previous_state: int = 1):
 
     default_font = basic_font
 
-    if getSetting("language") == instance.languages_enum.HINDI:
+    if get_setting("language") == instance.languages_enum.HINDI:
         log("Language is set to Hindi, font being used is set to Kriti Dev 020.")
         default_font = kritidev_font
 
@@ -72,10 +72,10 @@ def mainMenu(instance, previous_state: int = 1):
     def camera_spin_task(task):
         if instance.state != instance.states_enum.MENU and instance.state != instance.states_enum.SETTINGS:
             return task.done
-        
+
         instance.camera.setHpr(
             (
-                sin(instance.clock.getFrameTime() / 2.5) * 5.9, 
+                sin(instance.clock.getFrameTime() / 2.5) * 5.9,
                 sin(instance.clock.getFrameTime() / 1.5) * 5,
                 instance.clock.getFrameTime() * -1
             ))
@@ -99,7 +99,7 @@ def mainMenu(instance, previous_state: int = 1):
     log("The player is currently on the main menu.")
 
     ## Networking stuff ##
-    addr, port = getSetting("networking", "proxy")[0]["ip"], getSetting("networking", "proxy")[0]["port"]
+    addr, port = get_setting("networking", "proxy")[0]["ip"], get_setting("networking", "proxy")[0]["port"]
 
     def button_singleplayer():
         instance.change_state(3)
@@ -124,7 +124,7 @@ def mainMenu(instance, previous_state: int = 1):
 
     def _cmd_settings():
         instance.change_state(2)
-    
+
     ## UI stuff. ##
 
     tuoLogo_tex = instance.loader.loadTexture(getAsset("images", "logo_default"))
@@ -147,13 +147,13 @@ def mainMenu(instance, previous_state: int = 1):
 
     tuoLogo.setTransparency(TransparencyAttrib.MAlpha)
     tuoLogo.setScale(0.5)
-    
+ 
     hammer_ico_64px = load_image_as_plane(instance, 'assets/img/hammer_64px.png', 256)
     hammer_ico_64px.setTransparency(TransparencyAttrib.MAlpha)
 
     mods_menu_btn = Button(instance,
             text = instance.translator.translate('ui', 'mods'),
-            scale = 0.1, 
+            scale = 0.1,
             pos = (-0.5, 0.5, 0),
             command = lambda: instance.change_state(7)
     )

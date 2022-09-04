@@ -18,7 +18,7 @@ from panda3d.core import Vec3, TransparencyAttrib
 
 from src.client.entity import Entity
 from src.client.loader import getAsset
-from src.client.settingsreader import getSetting
+from src.client.settingsreader import get_setting
 from src.log import log, warn
 
 MOVEMENT_SPEED = 5 #m/s
@@ -55,7 +55,7 @@ class Player():
 		self.entity = Entity(self.name, self.instance, self.model, [0, 0, 0], True)
 
 	def vignette(self):
-		if not getSetting("video", "vignette"): return
+		if not get_setting("video", "vignette"): return
 		instance = self.instance
 
 		self.vignetteOverlay = instance.loader.loadModel(

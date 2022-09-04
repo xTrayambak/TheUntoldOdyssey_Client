@@ -80,13 +80,13 @@ class TUO(ShowBase):
         self.network_client = NetworkClient(self)
 
         # Narrator dialog finding utility
-        self.narrator_dialog_finder = NarratorDialogFinder(getSetting("language"))
+        self.narrator_dialog_finder = NarratorDialogFinder(get_setting("language"))
 
         # Narrator/TTS utility
         self.narrator = NarratorUtil(self)
 
         # Text translator utility
-        self.translator = TranslationUtility(getSetting("language"))
+        self.translator = TranslationUtility(get_setting("language"))
 
         # Video/screenshot capture utility
         self.recordingUtil = RecordingUtil(self)
@@ -94,16 +94,6 @@ class TUO(ShowBase):
         # Hardware specs detection utility
         self.hardware_util = HardwareUtil()
         self.hardware_util.get()
-
-        # Audio loading utility
-        self.audioLoader = AudioLoader(self)
-        self.rpcManager = None
-
-        # Ambience Manager
-        self.ambienceManager = AmbienceManager(self)
-        
-        self.image_loader = ImageLoader(self)
-
 
         self.null_lvm = 'RESTRICTED-OBJ-ACCESS-LUA'
 
@@ -121,11 +111,15 @@ class TUO(ShowBase):
             self.rpc_manager = RPCManager(self)
         except Exception as exc:
             log(f"Failed to initialize Discord rich presence. [{exc}]")
+            self.rpc_manager = None
 
         self.fontLoader = FontLoader(self)
         self.texture_loader = TextureLoader(self)
         self.objectLoader = ObjectLoader(self)
         self.mapLoader = MapLoader(self)
+        self.image_loader = ImageLoader(self)
+        self.audio_loader = AudioLoader(self)
+
         self.player = Player(self, "player", "playertest_default")
         self.token = token
         self.debug_mode = os.path.exists("DEBUG_MODE")
@@ -148,22 +142,8 @@ class TUO(ShowBase):
         #self.disableMouse()
 
         self.set_volume_master(
-            getSetting("volumes", "master")
+            get_setting("volumes", "master")
         )
-
-        #self.commonFilters = CommonFilters(self.win, self.cam)
-        #self.commonFilters.setAmbientOcclusion(16, 0.05, 2, 0.01, 0.0000002)
-
-        """self.pbrPipeline = simplepbr.init(
-            msaa_samples = getSetting("video", "antialiasing_levels"),
-            enable_shadows = True,
-            enable_fog = True,
-            use_occlusion_maps = True
-        )
-
-        if not self.pbrPipeline.use_330:
-            warn("The GPU is NOT capable of running OpenGL 3.30; shadows will not be enabled by SimplePBR.")
-            self.pbrPipeline.enable_shadows = False"""
 
         self.states_enum = GameStates
         self.languages_enum = Language
@@ -173,9 +153,11 @@ class TUO(ShowBase):
         self.previousState = GameStates.MENU
 
         self.version = VERSION
-        self.wireframeIsOn = False
-        self.fpsCounterIsOn = False
-        self.settings = getAllSettings()
+
+        self.wireframe_is_on = False
+        self.fps_counter_is_on = False
+
+        self.settings = get_all_settings()
 
         self.closing = False
 
@@ -208,7 +190,7 @@ class TUO(ShowBase):
         self.new_task("tuo-poll", self.poll)
 
         log("TUO client instance initialized successfully within {} ms".format(time.time() - start_time), "Worker/StartupFinalizer")
-    
+ 
 
     def log(self, msg: str, sender: str = None):
         """
@@ -224,6 +206,18 @@ class TUO(ShowBase):
 
     def get_volume_master(self) -> float | int: return self.sfxManagerList[0].get_volume()
 
+    def toggle_wireframe(self):
+        self.wireframe_is_on = not self.wireframe_is_on
+
+        if self.wireframe_is_on == True:
+            self.wireframe_on()
+        else:
+            self.wireframe_off()
+
+    def toggle_fps_counter(self):
+        self.fps_counter_is_on = not self.fps_counter_is_on
+        self.setFrameRateMeter(self.fps_counter_is_on)
+
     def pause_menu(self):
         if self.state != GameStates.INGAME and self.state != GameStates.DEBUG: return
 
@@ -231,6 +225,7 @@ class TUO(ShowBase):
             self.paused = True
         else:
             self.paused = False
+
         self._pause_menu(self.paused)
 
 
@@ -262,7 +257,7 @@ class TUO(ShowBase):
         """
         Debug state secret key.
         """
-        self.change_state(GameStates.END_CREDITS)
+        self.change_state(GameStates.DEBUG)
 
 
     def getDt(self) -> int | float:
@@ -383,7 +378,7 @@ class TUO(ShowBase):
 
 
     def stop_music(self):
-        self.audioLoader.stop_all_sounds()
+        self.audio_loader.stop_all_sounds()
 
 
     def poll(self, task):
@@ -501,7 +496,7 @@ class TUO(ShowBase):
         else: GAMESTATE_TO_FUNC[self.state](self, self.previousState, *extArgs)
 
 
-    def getState(self):
+    def get_state(self):
         """
         Give the state of the game.
 
@@ -510,8 +505,7 @@ class TUO(ShowBase):
         return GameStates(self.state)
 
 
-
-    def getAllStates(self):
+    def get_all_states(self):
         """
         Get a list of all game states, in case you cannot import the shared file because of a circular import.
 
@@ -538,12 +532,13 @@ class TUO(ShowBase):
                                 -> self.rpcManager.run
         """
         start = time.perf_counter()
-        if self.rpcManager != None:
-            self.rpcManager.run()
+
+        log('Starting Discord RPC.', 'Worker/Startup')
+        if self.rpc_manager != None:
+            self.rpc_manager.run()
 
         self.update()
-        self.new_task(name='ambience_manager_update', function=self.ambienceManager._update)
-        self.authenticator.start_auth()
+        #self.authenticator.start_auth()
  
         if self.max_mem < 500:
             warn("The game has lesser than 500 MB of memory allocated!")
@@ -557,15 +552,15 @@ class TUO(ShowBase):
 
         if self.hardware_util.gl_version[0] == 4 and self.hardware_util.gl_version[1] > 2:
             log(f"This GPU does support OpenGL 4.3! [MAJOR={self.hardware_util.gl_version[0]};MINOR={self.hardware_util.gl_version[1]}]", "Worker/Hardware")
-            if getSetting("video", "pbr") == True:
+            if get_setting("video", "pbr") == True:
                 log("Initializing tobspr's render pipeline! May the ricing begin!", "Worker/PBR")
                 self.initialize_pbr_pipeline()
         else:
             warn(f"This GPU does not support OpenGL 4.3! [MAJOR={self.hardware_util.gl_version[0]};MINOR={self.hardware_util.gl_version[1]}]")
-            settings = getAllSettings()
+            settings = get_all_settings()
             settings['video']['pbr'] = False
 
-            dumpSetting(settings)
+            dump_setting(settings)
             #self.warn("Your GPU does not support OpenGL 4.3!", "The game will run as usual,\nhowever, features like PBR will\nnot work. If you have a new GPU, try updating\nyour drivers.", "OK.", "HELP!", exitFunc = lambda: self.browser.open(""))
 
         # Create the events
@@ -575,6 +570,7 @@ class TUO(ShowBase):
         self.create_event('on_exit')
         self.create_event('on_progress_screen_finish')
 
+        # Initialize modding API
         if self.disable_mod_lvm == 0:
             self.mod_loader = ModLoader(self)
             self.mod_loader.load_mods()
@@ -582,14 +578,12 @@ class TUO(ShowBase):
             self.mod_loader.run_mods()
         else:
             warn('Modding API has been explicitly disabled.', 'Worker/Client')
- 
+            self.mod_loader = None
+
+        # Start internal game handler
         self.game = Game(self, -1)
         self.get_event('on_start').fire([time.perf_counter() - start])
         log(f'Game has fully loaded up within {time.perf_counter() - start} ms.', 'Worker/start_internal_game')
-    
-
-    async def task_pause(self, delay: float | int):
-        await Task.pause(delay)
 
 
     def quit(self):
@@ -600,10 +594,11 @@ class TUO(ShowBase):
                     self.finalizeExit
         """
         log("The Untold Odyssey is now stopping!", "Worker/Exit")
+
         self.get_event('on_exit').fire()
-        self.ambienceManager.running = False
-        self.closing = True
-        gc.collect()
+
         self.closeWindow(win=self.win)
         self.finalizeExit()
+
+        # Patch: Make sure after this function is called, the exit is initialized immediately so that no malicious mod gets any time to do anything.
         exit(0)

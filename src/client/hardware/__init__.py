@@ -23,6 +23,8 @@ class HardwareUtil:
             self.gl_version = gl_ver
             self.gpu_vendor = get_vendor()
             self.gl_version_string_detailed = get_version()
+
+            self.platform_util.collect()
         except Exception as exc:
             warn("An error occured whilst detecting OpenGL version!", "Worker/HardwareDetector", exc)
             if sys.platform == 'linux':

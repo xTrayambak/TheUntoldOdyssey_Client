@@ -19,8 +19,7 @@ class GameHandler:
         from src.libtraceback import log_traceback
         from src.log import log, set_enabled
 
-        log(f"PVM Environment: [{sys.executable}]")
- 
+        log(f"PVM Environment: [{sys.executable}]") 
         import gc
         if disable_gc == 0:
             gc.enable()

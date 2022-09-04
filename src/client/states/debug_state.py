@@ -1,6 +1,9 @@
 import gc
 import limeade
 import psutil
+import panda3d
+import sys
+
 from DirectGuiExtension.DirectOptionMenu import DirectOptionMenu
 from direct.gui import DirectGuiGlobals as DGG
 from direct.gui.DirectFrame import DirectFrame
@@ -20,31 +23,49 @@ from src.client.tasks import *
 from src.client.ui.button import Button
 from src.client.ui.text import Text
 from src.client.visual_shared import *
+from src.client.hardware.displayutil import DisplayServer
 from src.log import log, warn
 
 process = psutil.Process()
 
+DSP_SRV_TO_STR = {
+    DisplayServer.WAYLAND: 'Wayland',
+    DisplayServer.XORG: 'X11'
+}
+
 def debug_state(instance, previous_state: int = 1):
     limeade.refresh()
-    instance.clear()
-    instance.setFov(getSetting("video", "fov"))
-    """
-    Apply visual shaders
-    using Panda3D's built-in shader pipeline.
-    """
-    font = instance.fontLoader.load("gentium_basic")
 
+    instance.clear()
+    instance.set_fov(get_setting("video", "fov"))
+
+    font = instance.fontLoader.load("gentium_basic")
     debug_frame_info = DirectFrame()
 
-    tuo_version = Text(instance, font, text=f"Debug Mode", scale=0.05, alignment=TextNode.ALeft, position=(-1, 0, 0.8), parent=debug_frame_info)
+    tuo_version = Text(instance, font, text=f"TUO {instance.version} [DEBUGGER]", scale=0.1, alignment=TextNode.ALeft, position=(-1, 0, 0.8), parent=debug_frame_info)
+    p3d_ver_text = Text(instance, font, text = f'Python {sys.version}\nPanda3D {panda3d.__version__}', scale = 0.1, position = (-1, 0, 0.6), alignment = TextNode.ALeft, parent = debug_frame_info)
 
-    
+    if instance.mod_loader != None:
+        modloader_info = Text(instance, font, text = f'Mods: L: {len(instance.mod_loader.mods)}', scale = 0.1, position = (-1, 0, 0.3), alignment = TextNode.ALeft, parent = debug_frame_info)
+    else:
+        modloader_info = Text(instance, font, text = f'[I]Modding API explicitly disabled.', scale = 0.1, position = (-1, 0, 0.3), alignment = TextNode.ALeft, parent = debug_frame_info)
+
+    hardware_info_str = '''
+OpenGL: {}
+Vendor: {}
+Refresh Rate: {} Hz
+'''.format(instance.hardware_util.gl_version_string_detailed, instance.hardware_util.gpu_vendor, instance.hardware_util.display_util.refresh_rate)
+
+    if instance.hardware_util.platform_util.get('os.global.architecture')[0] == 'linux': # sys.platform? What is that? Never heard of it.
+        hardware_info_str += f'Display Server: {DSP_SRV_TO_STR[instance.hardware_util.display_util.get_display_server()]}\n'
+
+    hardware_info = Text(instance, font, text = hardware_info_str, scale = 0.1, position = (-1, 0, 0.2), alignment = TextNode.ALeft, parent = debug_frame_info)
+
     def settingsPage():
         instance.change_state(2)
 
     def quit_to_menu():
         instance.quit_to_menu()
-        instance.networkClient.last_packet_ms = 0
 
     paused_text = Text(instance, font, "Game Paused [DEBUG MODE]", 0.09, position = (0, 0, 0.5))
 
@@ -55,17 +76,10 @@ def debug_state(instance, previous_state: int = 1):
     return_to_menu_button.hide()
     settings_button.hide()
 
-    test_text_fx_shake = Text(instance, font, "[S]This text is shaaaaking!", 0.1)
-    test_text_fx_italic = Text(instance, font, "[I]This text is italic!", 0.1, (0, 0.5, 0))
-    test_text_fx_jumble = Text(instance, font, "[J]", 0.1, (0, 1, 0))
-    test_text_fx_jumble_text = Text(instance, font, "<- This text is jumbling!", 0.1, (0.5, 1, 0))
-    
-
     instance.workspace.add_ui("paused_text", paused_text)
     instance.workspace.add_ui("return_to_menu_button", return_to_menu_button)
     instance.workspace.add_ui("settings_button", settings_button)
     instance.workspace.add_ui("debug_stats_version", tuo_version)
-    instance.workspace.add_ui("text_fx_shake", test_text_fx_shake)
-    instance.workspace.add_ui("text_fx_italic", test_text_fx_italic)
-    instance.workspace.add_ui("text_fx_jumble", test_text_fx_jumble)
-    instance.workspace.add_ui("text_fx_jumble_text", test_text_fx_jumble_text)
+    instance.workspace.add_ui('p3d_ver_text', p3d_ver_text)
+    instance.workspace.add_ui('modloader_info', modloader_info)
+    instance.workspace.add_ui('hardware_info', hardware_info)

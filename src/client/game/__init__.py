@@ -11,6 +11,8 @@ import datetime
 import json
 import os
 import random
+import direct
+import panda3d
 
 def _lvm_json_load(file: str):
     with open(file, 'r') as file: return json.load(file)
@@ -27,6 +29,9 @@ def _lvm_rand_choice(seq: list):
         _seq_py.append(seq[idx])
 
     return random.choice(_seq_py)
+
+def _lvm_free_obj(obj: object):
+    del obj
 
 INTERNAL_JSON_FUNCTIONS_LVM = {
     'load': _lvm_json_load,
@@ -89,11 +94,14 @@ class Game:
             'choice': _lvm_rand_choice
         }
 
-        self.lvm.globals().audio_loader = tuo.audioLoader
+        self.lvm.globals().audio_loader = tuo.audio_loader
         self.lvm.globals().font_loader = tuo.fontLoader
         self.lvm.globals().texture_loader = tuo.texture_loader
         self.lvm.globals().object_loader = tuo.objectLoader
         self.lvm.globals().image_loader = tuo.image_loader
+        self.lvm.globals().direct = direct
+        self.lvm.globals().panda = panda3d
+        self.lvm.globals().free = _lvm_free_obj
 
         self.game_type = game_type
 
@@ -128,7 +136,7 @@ class Game:
                 # Haha, recursion go brrrrr.
                 # (Hopefully) nobody is running the game on a Raspberry Pi Pico.
                 self.load_lua_scripts_in_dir('src/client/game/logic/'+path)
- 
+
             if not path.endswith('.lua'): continue
             self.load_lua_script('src/client/game/logic/'+path)
 

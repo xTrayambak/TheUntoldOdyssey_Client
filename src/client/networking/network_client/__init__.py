@@ -6,7 +6,7 @@ from panda3d.core import QueuedConnectionReader
 
 from src.client.game import Game
 from src.client.game.entity import Entity
-from src.client.settingsreader import getSetting
+from src.client.settingsreader import get_setting
 from src.client.shared import DisconnectStatusCodes
 from src.client.util.conversion import *
 from src.client.util.conversion import encode, decode

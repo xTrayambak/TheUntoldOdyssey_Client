@@ -1,7 +1,7 @@
 import pyttsx3
 from multiprocessing.pool import ThreadPool
 
-from src.client.settingsreader import getSetting
+from src.client.settingsreader import get_setting
 from src.log import *
 
 
@@ -9,14 +9,15 @@ class NarratorUtil:
     def __init__(self, instance):
         self.engine = None
         self.instance = instance
-        
+ 
         try:
             self.engine = pyttsx3.init()
         except Exception as exc:
             warn(f"UNABLE TO INITIALIZE TEXT2SPEECH ENGINE! [{exc}]")
+
         self.pool = ThreadPool(4)
 
-        self.enabled = getSetting("accessibility", "narrator")
+        self.enabled = get_setting("accessibility", "narrator")
 
         if self.enabled:
             log("Narrator is enabled.")
@@ -25,7 +26,7 @@ class NarratorUtil:
 
     def refresh(self):
         if self.engine is None: return
-        self.enabled = getSetting("accessibility", "narrator")
+        self.enabled = get_Setting("accessibility", "narrator")
 
         if self.enabled:
             log("Narrator is enabled.")

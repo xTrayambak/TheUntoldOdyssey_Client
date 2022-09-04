@@ -29,11 +29,14 @@ process = psutil.Process()
 
 def inGameState(instance, previous_state: int = 1):
     instance.clear()
-    #instance.game = Game(instance, 0)
-    instance.set_fov(getSetting("video", "fov"))
+
+    instance.set_fov(get_setting("video", "fov"))
+
+
     shaders = loadAllShaders()
     for _shd in shaders:
         instance.workspace.objects["shaders"].append(_shd)
+
     log("The player is in-game now.")
 
     #instance.mapLoader.load()
@@ -48,7 +51,7 @@ def inGameState(instance, previous_state: int = 1):
     sunlightNode.setHpr(
         LVecBase3(0, -60, 0)
     )
-    
+ 
     instance.render.setLight(sunlightNode)
 
     instance.workspace.services["lighting"] = (sunlight, sunlightNode)
