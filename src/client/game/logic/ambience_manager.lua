@@ -28,6 +28,8 @@ function ambience_task()
     local audio = audio_loader.load(random.choice(songs_menu))
     audio.play()
 
+    free(audio)
+
     return Task.pause(random.randint(80, 80 + audio.get_length_int()))
   end
 

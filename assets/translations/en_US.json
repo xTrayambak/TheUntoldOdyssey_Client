@@ -1,20 +1,12 @@
 {
-    "ui": {
-        "singleplayer": "Singleplayer",
-        "multiplayer": "Multiplayer",
-        "settings": "Settings",
-        "exit": "Exit",
-        "mods": "Mods",
+    "ui.play": "Play",
+    "ui.settings": "Settings",
+    "ui.exit": "Exit",
+    "ui.mods": "Mods",
 
-        "settingmenu": {
-            "video_settings": {
-                "title": "Video Settings"
-            },
-            "accessibility": {
-                "title": "Accessibility"
-            }
-        }
-    },
+    "ui.settingmenu.video_settings.title": "Video Settings",
+    "ui.settingmenu.audio_settings.title": "Audio Settings",
+    "ui.settingmenu.accessibility.title": "Accessibility",
 
     "singleplayer_menu_createworld": {
         "create_savefile": "Creating savefile, please wait.",
@@ -24,13 +16,13 @@
         "playerdata_savefile": "Writing player information to disk.",
         "firstsave_savefile": "Saving world to disk for first time.",
         "simulation_savefile": "Loading up internal server and simulating world.",
-        
+
         "corruption_savefile": "The savefile may be invalid or corrupted.",
 
         "convert_savefile": "This savefile is made for TUO {}, and you are running TUO {}. We are going to convert the world."
     },
 
     "dialogs": {
-        
+
     }
 }

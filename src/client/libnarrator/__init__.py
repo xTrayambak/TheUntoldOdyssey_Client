@@ -9,11 +9,11 @@ class NarratorUtil:
     def __init__(self, instance):
         self.engine = None
         self.instance = instance
- 
+
         try:
             self.engine = pyttsx3.init()
         except Exception as exc:
-            warn(f"UNABLE TO INITIALIZE TEXT2SPEECH ENGINE! [{exc}]")
+            warn(f"Unable to initialize TTS engine.", err=exc)
 
         self.pool = ThreadPool(4)
 
@@ -26,7 +26,7 @@ class NarratorUtil:
 
     def refresh(self):
         if self.engine is None: return
-        self.enabled = get_Setting("accessibility", "narrator")
+        self.enabled = get_setting("accessibility", "narrator")
 
         if self.enabled:
             log("Narrator is enabled.")
@@ -40,8 +40,8 @@ class NarratorUtil:
         """
         if self.enabled != True: return self.enabled
 
-        self.pool.apply_async(self._say, (self.instance.narrator_dialog_finder.get_dialog(text)))
-
+        #self._say(self.instance.narrator_dialog_finder.get_dialog(text))
+        self.pool.apply_async(self._say, (self.instance.narrator_dialog_finder.get_dialog(text),))
         return True
 
     def _say(self, text: str = "Hello, World!") -> int:

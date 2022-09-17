@@ -56,7 +56,7 @@ class InputManager:
         def pseudofunc():
             for func in self.events[key]:
                 try: func()
-                except Exception as exc: warn(f"Unable to execute function for key '{key}' due to error. [{str(exc)}]")
+                except Exception as exc: raise exc
 
         self.instance.accept(key, pseudofunc)
 

@@ -9,30 +9,28 @@ from src.log import log, warn
 
 class Object:
     """
-    A W.I.P replacement to funky NodePath(s).
-
     WHY WOULD YOU NOT WANT TO USE THESE? INTELLISENSE ACTUALLY WORKS ON THEM UNLIKE `panda3d.core.NodePath` :DD
     """
     def __init__(self, instance, model: str):
         self.instance = instance
-        self.model = instance.objectLoader.loadObject(model)
+        self.model = instance.objectLoader.load_object(model)
 
-        self.canCollide = True
+        self.can_collide = True
 
         self.model.reparentTo(instance.render)
 
-    def reparentTo(self, parent):
+    def reparent_to(self, parent):
         self.model.reparentTo(parent)
 
     def set_two_sided(self, value: bool):
         self.model.set_two_sided(value)
 
-    def setHpr(self, vector):
+    def set_hpr(self, vector):
         self.model.setHpr(vector)
 
-    def setScale(self, scale):
+    def set_scale(self, scale):
         self.model.setScale(scale)
-    
+ 
     def set_compass(self):
         self.model.setCompass()
 
@@ -52,18 +50,15 @@ class Object:
         self.model.set_depth_write(value)
 
     def set_collision(self, value: bool):
-        self.setCollision(value)
+        self.can_collide = value
 
-    def setCollision(self, value: bool):
-        self.canCollide = value
-
-    def setTexture(self, texture: str):
+    def set_texture(self, texture: str):
         self.model.setTexture(
-            self.instance.textureLoader.loadTexture(texture)
+            self.instance.texture_loader.load_texture(texture)
         )
 
-    def getObject(self):
+    def get_object(self):
         return self.model
 
-    def setPos(self, position = (0, 0, 0)):
+    def set_pos(self, position = (0, 0, 0)):
         self.model.setPos(position)

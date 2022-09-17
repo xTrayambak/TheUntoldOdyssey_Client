@@ -2,14 +2,27 @@
     "button.play.hover": "hover over play button",
     "button.quit.hover": "hover over quit button",
     "button.settings.hover": "hover over settings button",
-    "button.accessibility.hover": "hover over accessibility button",
-    "button.video.hover": "hover over video settings button",
-    "button.audio.hover": "hover over audio settings button",
-    "button.account.hover": "hover over account settings button",
 
-    "menu.pause.enable": "open pause menu",
+    "button.settings.video": "hover over video settings",
+    "button.settings.video.pbr": "Enable physically based rendering (PBR)",
+
+    "button.settings.audio": "hover over audio settings",
+    "button.settings.accessibility": "hover over accessibility settings",
+    "button.settings.account": "hover over account settings",
+
+    "button.settings.accessibility.hover": "hover over accessibility button",
+    "button.settings.video.hover": "hover over video settings button",
+    "button.settings.audio.hover": "hover over audio settings button",
+    "button.settings.account.hover": "hover over account settings button",
+
+    "menu.pause.enable": "open game menu, press buttons to either go to the main menu, or to the settings panel",
     "menu.pause.disable": "close pause menu",
-    
+
+    "gamestate.mainmenu.enter": "Now on the main menu",
+    "gamestate.ingame.enter": "Now playing the game",
+    "gamestate.settings.enter": "Now in the settings menu",
+    "gamestate.exit.enter": "The Untold Odyssey is now closing",
+
     "button.play.click": "click play button",
     "button.quit.click": "click quit button",
     "button.settings.click": "click settings button",
@@ -17,7 +30,7 @@
     "button.video.click": "click video settings button",
     "button.audio.click": "click audio settings button",
     "button.account.click": "click account settings button",
-    
+
     "events.weather.thunder": "thunder has begun",
     "events.weather.clear": "the weather has cleared",
 
@@ -29,7 +42,7 @@
     "events.game.close": "the game has been closed",
     "events.game.disconnected": "disconnected from the server",
     "events.game.connectionscreen": "connecting to the game server",
-    
+
     "events.player.slain": "yoe were slain by {}",
     "events.player.slay": "you have slain {}",
     "events.player.potion_effect_start": "{} is applied on you and you have it's effects for {}",

@@ -9,23 +9,23 @@ from src.log import log, warn
 class RPCManager:
     def __init__(self, instance):
         self.instance = instance
-        self.presenceClient = pypresence.Presence('922003305381638144')
+        self.presence_client = pypresence.Presence('922003305381638144')
 
     def run(self):
         log("Rich presence started. Binding RPCManager._run to taskManager.", "Worker/RPCManager")
-        taskManager = self.instance.taskMgr
         try:
-            self.presenceClient.connect()
-
-            taskManager.add(self._run, "run_rpc")
-        except:
-            warn("RPC Client binding failed.")
+            self.presence_client.connect()
+            self.instance.new_task('run_discord_rpc', self._run)
+        except Exception as exc:
+            warn("RPC Client binding failed.", err=exc)
 
     def _run(self, task):
         details = "Playing The Untold Odyssey, a MMORPG-camping experience developed by Syntax Studios!"
-        if self.instance.debug_mode:
-            details = "Playing The Untold Odyssey, a MMORPG-camping experience developed by Syntax Studios! [DEVELOPER MODE]"
-        self.presenceClient.update(
+
+        if self.instance.globals['debug_mode']:
+            details += '[DEBUG MODE]'
+
+        self.presence_client.update(
             state = GAMESTATES_TO_STRING[self.instance.state],
             details = details,
             buttons = [

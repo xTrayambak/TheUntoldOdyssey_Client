@@ -23,7 +23,7 @@ from src.client.ui.text import Text
 from src.log import log, warn
 
 
-def connectingPage(instance, previous_state: int = 1):
+def connecting_page(instance, previous_state: int = 1):
     """
     The "connecting to servers, please wait" page.
 

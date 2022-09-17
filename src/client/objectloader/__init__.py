@@ -10,7 +10,7 @@ class ObjectLoader:
 
         }
 
-    def loadObject(self, path, texture: str = None, loadFromCache: bool = True):
+    def load_object(self, path, texture: str = None, loadFromCache: bool = True):
         #if name in self.cache and loadFromCache: return self.cache[name]
 
         #log(f"Loading 3D model '{name}' ({path})")

@@ -1,19 +1,11 @@
 {
-    "ui": {
-        "play": "Start posting about Among Us!",
-        "settings": "Change how sussy you are!",
+    "ui.play": "Start posting about Among Us!",
+    "ui.settings": "Change how sussy you are!",
 
-        "settingmenu": {
-            "video_settings": {
-                "title": "How sussy the game looks!"
-            },
-            "accessibility": {
-                "title": "Sussier settings for sussier people!"
-            }
-        }
-    },
+    "ui.settingmenu.video_settings.title": "How sussy the game looks!",
+    "ui.settingmenu.accessibility.title": "Sussier settings for sussier people!",
 
     "dialogs": {
-        
+
     }
 }

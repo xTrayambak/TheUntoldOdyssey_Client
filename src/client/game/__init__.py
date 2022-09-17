@@ -3,6 +3,7 @@ from src.log import *
 from src.client.module import Module, ModuleCodes
 from src.client.lvm import VM
 from src.libs.noise.perlin import SimplexNoise
+from src.client.objects import Object
 
 import math
 import requests
@@ -97,7 +98,7 @@ class Game:
         self.lvm.globals().audio_loader = tuo.audio_loader
         self.lvm.globals().font_loader = tuo.fontLoader
         self.lvm.globals().texture_loader = tuo.texture_loader
-        self.lvm.globals().object_loader = tuo.objectLoader
+        self.lvm.globals().Object = Object
         self.lvm.globals().image_loader = tuo.image_loader
         self.lvm.globals().direct = direct
         self.lvm.globals().panda = panda3d

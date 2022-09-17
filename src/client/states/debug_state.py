@@ -3,6 +3,8 @@ import limeade
 import psutil
 import panda3d
 import sys
+import cpuinfo
+import platform
 
 from DirectGuiExtension.DirectOptionMenu import DirectOptionMenu
 from direct.gui import DirectGuiGlobals as DGG
@@ -34,10 +36,9 @@ DSP_SRV_TO_STR = {
 }
 
 def debug_state(instance, previous_state: int = 1):
+    if not instance.debug_mode: exit(-1)
     limeade.refresh()
-
     instance.clear()
-    instance.set_fov(get_setting("video", "fov"))
 
     font = instance.fontLoader.load("gentium_basic")
     debug_frame_info = DirectFrame()
@@ -57,7 +58,12 @@ Refresh Rate: {} Hz
 '''.format(instance.hardware_util.gl_version_string_detailed, instance.hardware_util.gpu_vendor, instance.hardware_util.display_util.refresh_rate)
 
     if instance.hardware_util.platform_util.get('os.global.architecture')[0] == 'linux': # sys.platform? What is that? Never heard of it.
-        hardware_info_str += f'Display Server: {DSP_SRV_TO_STR[instance.hardware_util.display_util.get_display_server()]}\n'
+        distro_data = instance.hardware_util.platform_util.get('os.linux.distro_data')
+        cpu_data = cpuinfo.get_cpu_info()
+
+        hardware_info_str += f'Display Server: {DSP_SRV_TO_STR[instance.hardware_util.display_util.get_display_server()]}\n\n'
+        hardware_info_str += f'Distro: {distro_data["name"]}\nBased On: {distro_data["based_on"]}\n\n'
+    hardware_info_str += f'CPU: {platform.processor()}\nBITS: {cpu_data["bits"]}\nARCH: {cpu_data["arch"]}\nFREQ: {cpu_data["hz_actual_friendly"]} GHz'
 
     hardware_info = Text(instance, font, text = hardware_info_str, scale = 0.1, position = (-1, 0, 0.2), alignment = TextNode.ALeft, parent = debug_frame_info)
 

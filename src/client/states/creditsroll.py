@@ -23,7 +23,7 @@ from src.client.ui.text import Text
 from src.log import log, warn
 
 
-def endCredits(instance, previous_state: int = 1):
+def end_credits(instance, previous_state: int = 1):
     """
     The end credits. Show the credits in the end, duhh.
     """

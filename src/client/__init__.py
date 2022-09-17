@@ -48,6 +48,7 @@ from src.client.workspace import Workspace
 from src.client.game import Game
 from src.client.event import Event
 from src.client.imageloader import ImageLoader
+from src.client.camera import Camera
 
 VERSION = open("VER").read()
 
@@ -68,6 +69,11 @@ class TUO(ShowBase):
 
         # TUO Authlib
         self.authenticator = Authenticator(self)
+
+        # Override camera
+        #print(self.camera.getParent()); exit()
+        camera = Camera(self)
+        self.camera = camera
 
         # GameState
         self.state = GameStates.MENU
@@ -94,18 +100,12 @@ class TUO(ShowBase):
         # Hardware specs detection utility
         self.hardware_util = HardwareUtil()
         self.hardware_util.get()
+        
+        # This is what LUA scripts get redirected to when they try to access a forbidden object
+        self.null_lvm = None
 
-        self.null_lvm = 'RESTRICTED-OBJ-ACCESS-LUA'
-
-        # VFX manager (TUOFX)
-        #self.vfxmanager = VFXManager(self)
-        #self.vfxmanager.load_file(open('assets/effects/menu_panorama_spin.tuofx'))
-
-        log(f"OpenGL: {self.hardware_util.gl_version} || Vendor: {self.hardware_util.gpu_vendor}", "Worker/Bootstrap")
-
+        # Internal clock for fancy math
         self.clock = ClockObject()
-
-        log(f"Panda3D lib location: [{panda3d.__file__}]", "Worker/Bootstrap")
 
         try:
             self.rpc_manager = RPCManager(self)
@@ -116,30 +116,31 @@ class TUO(ShowBase):
         self.fontLoader = FontLoader(self)
         self.texture_loader = TextureLoader(self)
         self.objectLoader = ObjectLoader(self)
-        self.mapLoader = MapLoader(self)
         self.image_loader = ImageLoader(self)
         self.audio_loader = AudioLoader(self)
 
-        self.player = Player(self, "player", "playertest_default")
+        self.player = Player(self, "player", "assets/models/monke.egg", [0, 0, 0])
         self.token = token
-        self.debug_mode = os.path.exists("DEBUG_MODE")
 
         self.events = []
         self.modules = []
+        self.globals = {
+            'world_select': -1,
+            'wireframe_is_on': False,
+            'fps_counter_is_on': False,
+            'time_now': datetime.now(),
+            'debug_mode': os.path.exists('DEBUG_MODE')
+        }
 
         self.time_now = datetime.now()
 
         self.date_info = time_now.strftime("%d-%m-%y")
         self.time_info = time_now.strftime('%H:%M:%S')
 
-        self.globals = {'world_select': -1}
-
         log(f"Date info: {self.date_info}\nTime info: {self.time_info}", "Worker/TimeDetector")
         log(f"Syntax Studios account token is [{token}]", "Worker/Config")
 
         self.authenticationServerStatus = self.authenticator.get_auth_server_status()
-
-        #self.disableMouse()
 
         self.set_volume_master(
             get_setting("volumes", "master")
@@ -149,11 +150,11 @@ class TUO(ShowBase):
         self.languages_enum = Language
         self.max_mem = int(memory_max)
 
-        self.inGameTime = 0.0
         self.previousState = GameStates.MENU
 
         self.version = VERSION
 
+        # TODO: Add this to TUO.globals instead.
         self.wireframe_is_on = False
         self.fps_counter_is_on = False
 
@@ -199,26 +200,47 @@ class TUO(ShowBase):
         return log(msg, sender)
 
     def warn(self, msg: str, sender: str = None):
+        """
+        Warn function for LUA scripts.
+        """
         return warn(msg, sender)
 
     def set_volume_master(self, value: float | int):
+        """
+        Set the master volume to something.
+        """
         self.sfxManagerList[0].setVolume(value)
 
-    def get_volume_master(self) -> float | int: return self.sfxManagerList[0].get_volume()
+    def get_volume_master(self) -> float | int:
+        """
+        Get the master volume.
+        """
+        return self.sfxManagerList[0].get_volume()
 
     def toggle_wireframe(self):
-        self.wireframe_is_on = not self.wireframe_is_on
+        """
+        Toggle the wireframe rendering option.
+        """
+        self.globals['wireframe_on'] = not self.globals['wireframe_is_on']
 
-        if self.wireframe_is_on == True:
+        if self.globals['wireframe_on']:
             self.wireframe_on()
         else:
             self.wireframe_off()
 
+
     def toggle_fps_counter(self):
-        self.fps_counter_is_on = not self.fps_counter_is_on
-        self.setFrameRateMeter(self.fps_counter_is_on)
+        """
+        Toggle the Panda3D built-in FPS counter.
+        """
+        self.globals['fps_counter_is_on'] = not self.globals['fps_counter_is_on']
+        self.setFrameRateMeter(self.globals['fps_counter_is_on'])
+
 
     def pause_menu(self):
+        """
+        Go to the pause menu.
+        """
         if self.state != GameStates.INGAME and self.state != GameStates.DEBUG: return
 
         if self.paused == False:
@@ -230,11 +252,17 @@ class TUO(ShowBase):
 
 
     def add_module(self, module):
+        """
+        Add a module (oversimplified DIRECT task) to the execution task.
+        """
         self.modules.append(module)
         self.new_task(module.name, module.call_task, (self,))
 
 
     def create_event(self, name: str) -> Event:
+        """
+        Create a new event with the name `name`.
+        """
         event = Event(name)
         self.events.append(event)
 
@@ -242,6 +270,10 @@ class TUO(ShowBase):
 
 
     def get_event(self, name: str) -> Event:
+        """
+        Get an event with the name `name`.
+        If no event with said name is found, then None is returned.
+        """
         for event in self.events:
             if event.name == name: return event
 
@@ -278,11 +310,11 @@ class TUO(ShowBase):
         return self.getTimeElapsed()
 
 
-    def _pause_menu(self, isPaused: bool):
+    def _pause_menu(self, is_paused: bool):
         """
         Show/hide the pause menu based on the `bool` passed.
         """
-        if isPaused:
+        if is_paused:
             self.narrator.say("menu.pause.enable")
             self.workspace.getComponent("ui", "paused_text").show()
             self.workspace.getComponent("ui", "return_to_menu_button").show()
@@ -295,10 +327,16 @@ class TUO(ShowBase):
 
 
     def getSharedData(self):
+        """
+        Get all the shared data from src.client.shared
+        """
         return shared
 
 
     def set_fov(self, value: int):
+        """
+        Set the FOV.
+        """
         self.camLens.setFov(value)
 
 
@@ -310,7 +348,9 @@ class TUO(ShowBase):
         return {'cont': Task.cont, 'done': Task.done, 'pause': Task.pause}
 
 
-    def warn(self, title: str="Lorem Ipsum", description: str="Door Sit", button_confirm_txt: str = "OK", button_exit_txt: str = "NO", confirmFunc=None, exitFunc = None) -> bool:
+    def warn(self, title: str = "Lorem Ipsum", description: str = "Door Sit", 
+             button_confirm_txt: str = "OK", button_exit_txt: str = "NO", 
+             confirmFunc = None, exitFunc = None) -> bool:
         """
         Shows a warning onto the screen.
 
@@ -373,11 +413,16 @@ class TUO(ShowBase):
 
 
     def quit_to_menu(self):
-        #self.networkClient.disconnect()
+        """
+        Quit to the menu screen.
+        """
         self.change_state(1)
 
 
     def stop_music(self):
+        """
+        Stop all the music that is currently playing.
+        """
         self.audio_loader.stop_all_sounds()
 
 
@@ -397,7 +442,11 @@ class TUO(ShowBase):
         Change the game's story/part "state"; basically tell the game at which point of gameplay it should switch to.
         Eg. menu, loading screen, in-game or connecting screen.
         """
-        self.previousState = self.state
+        self.previous_state = self.state
+
+        # TODO: Deprecate this sometime as this is a violation of PEP-8. Keeping this here for backwards compatibility.
+        self.previousState = self.previous_state
+
         self.state = GameStates(state)
         self.update(extArgs)
 
@@ -405,22 +454,27 @@ class TUO(ShowBase):
 
         self.set_title('The Untold Odyssey {} | {}'.format(self.version, GAMESTATES_TO_STRING[self.state]))
 
-        if self.state == GameStates.SETTINGS and self.previousState == GameStates.INGAME:
+        if self.state == GameStates.SETTINGS and self.previous_state == GameStates.INGAME:
             return
-        elif self.state == GameStates.INGAME and self.previousState == GameStates.SETTINGS:
+        elif self.state == GameStates.INGAME and self.previous_state == GameStates.SETTINGS:
             return
-        elif self.previousState == GameStates.MENU and self.state == GameStates.SETTINGS:
+        elif self.previous_state == GameStates.MENU and self.state == GameStates.SETTINGS:
             return
-        elif self.previousState == GameStates.SETTINGS and self.state == GameStates.MENU:
+        elif self.previous_state == GameStates.SETTINGS and self.state == GameStates.MENU:
             return
-        elif self.previousState == GameStates.MENU and self.state == GameStates.MODS_LIST:
+        elif self.previous_state == GameStates.MENU and self.state == GameStates.MODS_LIST:
             return
 
         log('Stopping music...')
         self.stop_music()
 
+        self.narrator.say(NARRATOR_GAMESTATE_TO_TAG[self.state])
+
 
     def set_title(self, title: str):
+        """
+        Set the game's caption.
+        """
         assert type(title) == str, 'Window title must be string!'
         PROPERTIES = WindowProperties()
         PROPERTIES.setTitle(title)
@@ -441,7 +495,7 @@ class TUO(ShowBase):
 
         :: ARGS
 
-        `name` :: The name of the function; required by Panda3D.\n
+        `name` :: The name of the function; required by Panda3D.
         `function` :: The function to be converted to a task/coroutine and called by Panda3D.
         """
 
@@ -515,6 +569,9 @@ class TUO(ShowBase):
 
 
     def initialize_pbr_pipeline(self):
+        """
+        Initialize Tobspr's RenderPipeline for PBR.
+        """
         sys.path.insert(0, "src/client/render_pipeline")
         from src.client.render_pipeline.rpcore.render_pipeline import RenderPipeline
         self.renderPipeline = RenderPipeline()
@@ -538,17 +595,6 @@ class TUO(ShowBase):
             self.rpc_manager.run()
 
         self.update()
-        #self.authenticator.start_auth()
- 
-        if self.max_mem < 500:
-            warn("The game has lesser than 500 MB of memory allocated!")
-            self.warn(
-                "You have allocated less than 500MB to the game!",
-                "The game may crash and you may face lag!\nChange this in the launcher settings if possible.",
-                "I understand.",
-                "I will restart the game.",
-                exitFunc = self.quit
-            )
 
         if self.hardware_util.gl_version[0] == 4 and self.hardware_util.gl_version[1] > 2:
             log(f"This GPU does support OpenGL 4.3! [MAJOR={self.hardware_util.gl_version[0]};MINOR={self.hardware_util.gl_version[1]}]", "Worker/Hardware")
@@ -561,7 +607,6 @@ class TUO(ShowBase):
             settings['video']['pbr'] = False
 
             dump_setting(settings)
-            #self.warn("Your GPU does not support OpenGL 4.3!", "The game will run as usual,\nhowever, features like PBR will\nnot work. If you have a new GPU, try updating\nyour drivers.", "OK.", "HELP!", exitFunc = lambda: self.browser.open(""))
 
         # Create the events
         log('Creating all the events necessary for the game to function (on_state_change, on_exit, on_progress_screen_finish)', 'Worker/PostInit')
@@ -574,7 +619,6 @@ class TUO(ShowBase):
         if self.disable_mod_lvm == 0:
             self.mod_loader = ModLoader(self)
             self.mod_loader.load_mods()
-
             self.mod_loader.run_mods()
         else:
             warn('Modding API has been explicitly disabled.', 'Worker/Client')
@@ -594,6 +638,7 @@ class TUO(ShowBase):
                     self.finalizeExit
         """
         log("The Untold Odyssey is now stopping!", "Worker/Exit")
+        self.narrator.say('gamestate.exit.enter')
 
         self.get_event('on_exit').fire()
 

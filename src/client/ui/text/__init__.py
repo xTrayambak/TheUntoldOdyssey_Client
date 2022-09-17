@@ -49,9 +49,10 @@ class Text:
         self.text = text
         self.parent = None
 
-        self.nodePath = instance.aspect2d.attachNewNode(self.node)
+        self.nodePath = instance.aspect2dp.attachNewNode(self.node)
         self.nodePath.setPos(position)
         self.nodePath.setScale(scale)
+        #self.nodePath.reparentTo(instance.a2dTopLeft)
 
         self.instance = instance
         self.pos = position

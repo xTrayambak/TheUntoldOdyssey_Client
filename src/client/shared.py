@@ -4,12 +4,12 @@ Contains the data that is going to be shared amongst multiple client scripts so 
 """
 from enum import IntEnum, Enum
 
-from src.client.states.connectingscreen import connectingPage
-from src.client.states.creditsroll import endCredits
+from src.client.states.connectingscreen import connecting_page
+from src.client.states.creditsroll import end_credits
 from src.client.states.debug_state import debug_state
-from src.client.states.ingame import inGameState
-from src.client.states.mainmenu import mainMenu
-from src.client.states.settings import settingsPage
+from src.client.states.ingame import in_game_state
+from src.client.states.mainmenu import main_menu
+from src.client.states.settings import settings_page
 from src.client.states.mods_menu import mods_menu
 
 
@@ -45,18 +45,24 @@ GAMESTATES_TO_STRING = {
     GameStates.INGAME: "In-Game",
     GameStates.END_CREDITS: "Watching the End Credits",
     GameStates.CONNECTING: "Connecting to The Server",
-    GameStates.DEBUG: "Are ya coding son?",
+    GameStates.DEBUG: "Debugging the game",
     GameStates.MODS_LIST: "Customizing Mods"
 }
 
 GAMESTATE_TO_FUNC = {
-    GameStates.MENU: mainMenu,
-    GameStates.END_CREDITS: endCredits,
-    GameStates.INGAME: inGameState,
-    GameStates.CONNECTING: connectingPage,
-    GameStates.SETTINGS: settingsPage,
+    GameStates.MENU: main_menu,
+    GameStates.END_CREDITS: end_credits,
+    GameStates.INGAME: in_game_state,
+    GameStates.CONNECTING: connecting_page,
+    GameStates.SETTINGS: settings_page,
     GameStates.DEBUG: debug_state,
     GameStates.MODS_LIST: mods_menu
+}
+
+NARRATOR_GAMESTATE_TO_TAG = {
+    GameStates.INGAME: 'gamestate.ingame.enter',
+    GameStates.MENU: 'gamestate.mainmenu.enter',
+    GameStates.SETTINGS: 'gamestate.settings.enter'
 }
 
 class Language:

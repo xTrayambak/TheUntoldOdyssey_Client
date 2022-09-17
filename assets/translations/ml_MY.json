@@ -1,19 +1,8 @@
 {
-    "ui": {
-        "play": "Play",
-        "settings": "Keluar",
+    "ui.play": "Play",
+    "ui.settings": "Keluar",
 
-        "settingmenu": {
-            "video_settings": {
-                "title": "Video Setings"
-            },
-            "accessibility": {
-                "title": "Aksessabiliti"
-            }
-        }
-    },
-
-    "dialogs": {
-        
-    }
+    "ui.settingmenu.video_settings.title": "Video Setings",
+    "ui.settingmenu.accessibility.title": "Aksessabiliti",
+    "ui.settingmenu.audio_settings.title": "Audio Setings"
 }

@@ -8,7 +8,9 @@ class Button:
         import limeade; limeade.refresh()
         self.text = text
         def command_extra():
-            instance.narrator.say(click_text)
+            if len(click_text) >= 1:
+                instance.narrator.say(click_text)
+
             if command != None: command()
 
         if geom == None and overlay_img == None:
@@ -36,11 +38,23 @@ class Button:
         self.direct.bind(DGG.ENTER, self.on_hover)
 
     def destroy(self):
+        """
+        Destroy this UI object.
+        """
         self.direct.destroy()
 
-    def setText(self, text: str):
+    def set_text(self, text: str):
+        """
+        Set the text of this UI object.
+        """
         self.text = text
         self.direct.setText(text)
+
+    def setText(self, text: str):
+        """
+        This is to be deprecated soon as per the refactoring.
+        """
+        return self.set_text(text=text)
 
     def hide(self):
         self.direct.hide()
@@ -49,4 +63,5 @@ class Button:
         self.direct.show()
 
     def on_hover(self, args) -> None:
+        if len(self.hover_text) == 0: return
         self.instance.narrator.say(self.hover_text)

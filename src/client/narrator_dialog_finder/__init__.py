@@ -7,7 +7,7 @@ class NarratorDialogFinder():
     def __init__(self, language: str):
         self.language = language
         narrator_data = getAsset("narrator_dialogs", language)
-        
+
         if language not in narrator_data:
             warn(f"Narrator data for '{language}' could not be found!", "Worker/NarratorDialog")
             self.data = {}
@@ -25,7 +25,7 @@ class NarratorDialogFinder():
         else:
             self.language = language
             self.data = json.load(fp=open(narrator_data, "r"))
-        
+
     def get_dialog(self, tag: str):
         if tag in self.data:
             return self.data[tag]

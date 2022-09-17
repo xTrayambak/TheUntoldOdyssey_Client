@@ -32,14 +32,14 @@ BOOL_TO_STR = {
     False: "Off"
 }
 
-def settingsPage(instance, previous_state: int = 1):
+def settings_page(instance, previous_state: int = 1):
     """
     The settings page.
     """
     instance.clear()
 
     basicFont = instance.fontLoader.load("gentium_basic")
-    settings = getAllSettings()
+    settings = get_all_settings()
 
     videoFrame = DirectFrame(
         frameColor = (0.5, 0.5, 0.5, 0.5),
@@ -101,7 +101,7 @@ def settingsPage(instance, previous_state: int = 1):
             audioSettingsFrame.hide()
 
     videoFrameButton = Button(
-        text = "Video Settings",
+        text = instance.translator.translate('ui.settingmenu.video_settings.title'),
         pos = (-1, 0, 0.8),
         scale = 0.2,
         command = hideVF,
@@ -109,7 +109,7 @@ def settingsPage(instance, previous_state: int = 1):
     )
 
     audioSettingsButton = Button(
-        text = "Audio Settings",
+        text = instance.translator.translate('ui.settingmenu.audio_settings.title'),
         pos = (-1, 0, 0.4),
         scale = 0.2,
         instance = instance,
@@ -119,7 +119,7 @@ def settingsPage(instance, previous_state: int = 1):
     audioSettingsFrame.hide()
 
     accessibilitySettingsButton = Button(
-        text = "Accessibility",
+        text = instance.translator.translate('ui.settingmenu.accessibility.title'),
         pos = (-1, 0, 0),
         scale = 0.2,
         command = hideAccessibilityF,
@@ -156,7 +156,7 @@ def settingsPage(instance, previous_state: int = 1):
     )
 
     audio_volume_header = DirectLabel(
-        text = f"Master ({int(getSetting('volumes', 'master'))}%)", scale = 0.2, pos = (-0.2, 0, 0.8), text_font=basicFont,
+        text = f"Master ({int(get_setting('volumes', 'master'))}%)", scale = 0.2, pos = (-0.2, 0, 0.8), text_font=basicFont,
         parent = audioSettingsFrame
     )
 
@@ -205,7 +205,7 @@ def settingsPage(instance, previous_state: int = 1):
 
     def close():
         instance.change_state(previous_state)
-        dumpSetting(settings)
+        dump_setting(settings)
 
     fps_slider = DirectSlider(
         range = (10, 240), value = settings['video']['max_framerate'], pageSize = 3, command = FPS_change,
@@ -228,7 +228,7 @@ def settingsPage(instance, previous_state: int = 1):
     )
 
     audio_volume_slider = DirectSlider(
-        range = (0, 100), value = getSetting('volumes', 'master'), pageSize = 3, command = volumeMasterChange, scale = 0.5,
+        range = (0, 100), value = get_setting('volumes', 'master'), pageSize = 3, command = volumeMasterChange, scale = 0.5,
         pos = (-0.2, 0, 0.5),
         parent = audioSettingsFrame
     )
@@ -250,7 +250,7 @@ def settingsPage(instance, previous_state: int = 1):
 
     if instance.narrator.enabled == None:
         narrator_toggleButton.setText("Narrator: Not Available.")
-        
+
     backBtn = Button(
         instance = instance,
         text = "Back",

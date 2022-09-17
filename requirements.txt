@@ -16,3 +16,6 @@ elevate
 lupa
 !!linux!! python-xlib
 !!mac!! pyobjc-framework-cocoa
+py-cpuinfo
+numpy
+google-api-python-client

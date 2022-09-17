@@ -29,14 +29,11 @@ class TranslationUtility:
             open(TRANSLATION_PATH + language + ".json", "r", encoding = 'utf-8')
         )
 
-    def translate(self, category: str, text: str):
+    def translate(self, string_text: str):
         """
         Translate something from category and text. 
         """
-        if category not in self.translations:
-            return category + ":" + text
+        if string_text not in self.translations:
+            return string_text
 
-        if text not in self.translations[category]:
-            return category + ":"+ text
-
-        return self.translations[category][text]
+        return self.translations[string_text]
