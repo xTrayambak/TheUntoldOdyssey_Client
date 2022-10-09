@@ -1,4 +1,6 @@
 import pypresence
+import struct
+
 from direct.task import Task
 
 from src.client.loader import getAsset
@@ -25,15 +27,19 @@ class RPCManager:
         if self.instance.globals['debug_mode']:
             details += '[DEBUG MODE]'
 
-        self.presence_client.update(
-            state = GAMESTATES_TO_STRING[self.instance.state],
-            details = details,
-            buttons = [
-                {"label": "Get the Game for Free!", "url": "https://github.com/xTrayambak/TheUntoldOdyssey_Client/"},
-                {"label": "End User License Agreement", "url": getAsset("links", "eula")}
-            ],
-            large_text = "The Untold Odyssey {}".format(self.instance.version),
-            large_image = "tuo_logo"
-        )
+        try:
+            self.presence_client.update(
+                state = GAMESTATES_TO_STRING[self.instance.state],
+                details = details,
+                buttons = [
+                    {"label": "Get the game!", "url": "https://github.com/xTrayambak/TheUntoldOdyssey_Client/"},
+                    {"label": "End User License Agreement", "url": getAsset("links", "eula")}
+                ],
+                large_text = "The Untold Odyssey {}".format(self.instance.version),
+                large_image = "tuo_logo"
+            )
+        except struct.error:
+            warn('Discord RPC gateway shut down unexpectedly. Crash handled successfully!', 'Worker/DiscordRPC')
+            return Task.done
 
         return Task.cont

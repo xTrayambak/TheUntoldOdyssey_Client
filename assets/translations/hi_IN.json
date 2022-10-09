@@ -1,0 +1,20 @@
+{
+    "ui": {
+        "play": "प्ले",
+        "settings": "सेटिंग्स",
+        "exit": "एक्सईट",
+
+        "settingmenu": {
+            "video_settings": {
+                "title": "विडिओ की सेटिंग्स"
+            },
+            "accessibility": {
+                "title": "ऐक्सेसबिलिटी"
+            }
+        }
+    },
+
+    "dialogs": {
+        
+    }
+}

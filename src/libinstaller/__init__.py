@@ -1,3 +1,6 @@
+import os
+import subprocess
+
 from subprocess import check_call as call
 from sys import executable, platform
 from pkg_resources import get_distribution, DistributionNotFound
@@ -14,7 +17,22 @@ def exists(package: str):
     except DistributionNotFound:
         return False
 
-def installAllLibraries():
+
+def install_nim_packages():
+    """
+    Install all Nim packages (not required for non-debug mode runtimes)
+    """
+    if os.path.exists('FIRSTRUN'):
+        log('Installing Nim libraries.')
+        try:
+            call(['nimble', 'build'])
+        except subprocess.CalledProcessError:
+            warn('Failed to run Nimble.')
+            return
+
+        os.remove('FIRSTRUN')
+
+def install_all_libraries():
     """
     Check if all the libraries required for the game to run are installed or not, if not, then install them
     by querying PyPi through `py -m pip install <package>`
@@ -23,7 +41,7 @@ def installAllLibraries():
 
     for lib in libs:
         if lib.startswith('#'): continue
-        
+
         # Your CPU fans will make demonic screeching noises whilst running this segment of code. I am to blame, but you will never catch me alive!!!!!!!
         if lib.startswith('!!windows!!') and platform not in ('win32', 'win64'): continue
         if lib.startswith('!!mac!!') and platform != 'darwin': continue
@@ -33,12 +51,12 @@ def installAllLibraries():
         lib = lib.replace('!!mac!!', '', 1)
         lib = lib.replace('!!linux!!', '', 1)
 
-        lib = lib.split("\n")[0]
+        lib = lib.split("\n")[0].replace(' ', '', 1)
         log(f"Checking if library '{lib}' is installed or not.", "Worker/Requirements")
         if not exists(lib):
             warn(f"Library '{lib}' is not installed for the virtual environment.", "Worker/LibInstaller")
             log(f"Installing library [{lib}]; querying PyPi.", "Worker/LibInstaller")
-        
+
             try:
                 call(
                     [executable, "-m", "pip", "install", lib]

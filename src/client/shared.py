@@ -62,7 +62,8 @@ GAMESTATE_TO_FUNC = {
 NARRATOR_GAMESTATE_TO_TAG = {
     GameStates.INGAME: 'gamestate.ingame.enter',
     GameStates.MENU: 'gamestate.mainmenu.enter',
-    GameStates.SETTINGS: 'gamestate.settings.enter'
+    GameStates.SETTINGS: 'gamestate.settings.enter',
+    GameStates.END_CREDITS: 'gamestate.credits.enter'
 }
 
 class Language:

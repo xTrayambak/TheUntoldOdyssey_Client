@@ -4,8 +4,6 @@
 __pycache__/
 *.py[cod]
 
-*.so
-
 bin/
 build/
 develop-eggs/

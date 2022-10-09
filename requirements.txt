@@ -19,3 +19,4 @@ lupa
 py-cpuinfo
 numpy
 google-api-python-client
+pillow

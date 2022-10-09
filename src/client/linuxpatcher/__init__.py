@@ -29,7 +29,7 @@ def elevate_privileges(b: bool = True):
         print(f"SET DIRECTORY TO '{current_wdir_before_escalate}' AGAIN!")
 
     # unelevate
-    else: 
+    else:
         warn("De-escalating privileges of TUO process.", "Worker/PrivilegeEscalator")
         subprocess.call(
             [
@@ -57,7 +57,7 @@ def apt_install(package: str):
 
 def zypper_install(package: str):
     subprocess.call(
-        ['sudo', 'zypper', 'install', package]
+        ['sudo', 'zypper', 'ins', package]
     )
 
 def patch():
@@ -87,6 +87,6 @@ def patch():
         pacman_install('python-espeak')
     elif distro_name == 'debian':
         apt_install('espeak')
-    
+
     f_confirm_lnx_patch.change_mode('w')
     f_confirm_lnx_patch.write('1')

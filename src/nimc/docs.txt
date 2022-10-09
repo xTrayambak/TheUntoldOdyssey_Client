@@ -1,0 +1,19 @@
+This folder houses the compiled binaries/shared objects/dynamically linked libraries for the game's Nim code.
+
+1) What is Nim?
+First of all, use Wikipedia. Second of all, it's a statically-typed, compiled language that integrates very smoothly with Python.
+Hence, we use it to write some intensive parts of the code in it as it's usually around 14x faster than Python as it turns into C code.
+
+2) How can I compile these binaries myself?
+First, install the Nim runtime and then, run the game. It will automatically install all libraries needed to build the Nim stuff.
+Then, run this for every file in src/client that ends with the .nim extension.
+
+```
+nim c -d:release --app:lib --out:src/nimc/<PLATFORM YOU WANT TO BUILD FOR HERE [NT = WINDOWS, NIX = Linux&Mac]>/<FILE NAME HERE> --threads:on src/client/<FILE NAME HERE>
+```
+
+I recommend using -d:release as it removes the extra debug stuff and makes the execution faster.
+
+Use .so for *NIX systems and .pyd for NT systems.
+
+We describe Windows as the NT kernel, and *NIX as the collective of MacOS and Linux.

@@ -7,7 +7,7 @@ import sys
 
 DEFAULT_MEM = 1500
 
-VERSION = "0.1.5-dev2" #NOTE TO DEVELOPERS: MAKE SURE TO CHANGE THIS AS THE VERSION INCREASES, THIS IS NECESSARY SO THE CLIENT CAN LOCATE IT'S PROPER WORKING DIRECTORY.
+VERSION = "0.1.6-dev1" # NOTE TO DEVELOPERS: MAKE SURE TO CHANGE THIS AS THE VERSION INCREASES, THIS IS NECESSARY SO THE CLIENT CAN LOCATE IT'S PROPER WORKING DIRECTORY.
 
 class GameHandler:
     """
@@ -15,12 +15,13 @@ class GameHandler:
     the TUO class and the raw CLI arguments.
     """
     def __init__(self, max_mem: int = DEFAULT_MEM, token: str = None, disable_gc: int = 0, disable_logging: int = 0, disable_mod_lvm: int = 0, gc_routine_delay: int = 120):
-        from src.libinstaller import installAllLibraries
+        from src.libinstaller import install_all_libraries, install_nim_packages
         from src.libtraceback import log_traceback
         from src.log import log, set_enabled
 
-        log(f"PVM Environment: [{sys.executable}]") 
+        log(f"PVM Environment: [{sys.executable}]")
         import gc
+
         if disable_gc == 0:
             gc.enable()
         else:
@@ -46,7 +47,9 @@ class GameHandler:
                 log("Client working directory patch completed!", "ClientDirectoryWorkaround")"""
 
         log("Trying to find any libraries that need to be installed.", "Worker/Bootstrap")
-        installAllLibraries()
+
+        install_all_libraries()
+        install_nim_packages()
 
         if os.path.exists("DEBUG_MODE"):
             log("Library installation process complete.", "Worker/Bootstrap")
@@ -86,17 +89,13 @@ class GameHandler:
                 pdb.main()
                 exit(1)
 
-    def getInstance(self):
-        """
-        Get the current running instance of TUO.
-        """
-        return self.tuo
 
     def get_instance(self):
         """
         Get the current running instance of TUO.
         """
         return self.tuo
+
 
     def run(self):
         """
@@ -123,6 +122,7 @@ class GameHandler:
                 exit(1)
 
         exit(0)
+
 
 if __name__ == "__main__":
     mem_max = None

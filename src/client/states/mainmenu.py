@@ -29,6 +29,8 @@ from src.client.ui.textinput import TextInput
 from src.client import helpers
 from src.client.utils import load_image_as_plane
 
+from src.nimc.nix.optMath import lcm
+
 FESTIVALS = {
     "06-06": "Happy Birthday Trayambak!",
     "18-01": "We all must strive for a free internet, with no monopolies!",
@@ -205,4 +207,8 @@ def main_menu(instance, previous_state: int = 1):
     instance.workspace.add_ui("syntax_copyright_warning", syntax_copyright_warning)
     instance.workspace.add_ui("mods_btn", mods_menu_btn)
 
-    return 'menu-close'
+    def testnix(task):
+        lcm(50, 25)
+        return task.cont
+
+    instance.new_task('testnix', testnix)

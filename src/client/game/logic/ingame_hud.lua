@@ -7,7 +7,9 @@ GameStates = tuo.getSharedData().GameStates
 local HEART_COUNT = 5
 
 function load_hud()
-  tuo.log('Loading up ingame HUD.', 'Worker/IngameHUD')
+  log('Loading up ingame HUD.', 'Worker/IngameHUD')
+
+  v = Vector3(4, 5, 6)
 end
 
 function main(current_state, previous_state)

@@ -12,6 +12,7 @@ def call(cmd_list):
 def deploy():
     print("Adding fake launcher tag.")
     call(['touch', 'LAUNCHER_ENVIRONMENT'])
+    call(['rm', '-rf', 'DEBUG_MODE'])
     print('=-'*4, ' The Untold Odyssey Deployer ', '=-'*4)
     if sys.platform in ('win32', 'win64'): print(":warning: You are running Windows. The build may fail.")
     version = input('Enter the version of this client: ')

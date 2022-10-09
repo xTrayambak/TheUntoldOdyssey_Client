@@ -11,10 +11,11 @@ local songs_ingame_overworld = {'assets/music/gone.mp3', 'assets/music/harbinger
 local songs_ingame_hell = {}
 local songs_ingame_void = {'assets/music/mist001.flac', 'assets/music/mist002.flac'}
 
-local songs_menu = {'assets/music/unlighted.mp3'}
+local songs_menu = {'assets/music/unlighted.mp3', 'assets/music/white_phantom.mp3'}
 
 function ambience_task()
   if tuo.get_volume_master() == 0 then
+    -- Don't waste resources loading songs for nothing.
     return Task.cont
   end
 
@@ -24,16 +25,16 @@ function ambience_task()
   end
 
 
-  if tuo.getState() == GameStates.MENU then
+  if tuo.get_state() == GameStates.MENU then
     local audio = audio_loader.load(random.choice(songs_menu))
     audio.play()
 
     free(audio)
 
-    return Task.pause(random.randint(80, 80 + audio.get_length_int()))
+    return Task.pause(random.randint(128, 128 + audio.get_length_int()))
   end
 
-  if tuo.getState() == GameStates.INGAME then
+  if tuo.get_state() == GameStates.INGAME then
     local audio = audio_loader.load(random.choice(songs_ingame_overworld))
     audio.play()
 

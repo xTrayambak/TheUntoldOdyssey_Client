@@ -1,9 +1,10 @@
 from src.client.game.entitymanager import EntityManager
-from src.log import *
+from src.log import log, warn
 from src.client.module import Module, ModuleCodes
 from src.client.lvm import VM
 from src.libs.noise.perlin import SimplexNoise
 from src.client.objects import Object
+from src.client.types.vector import Vector3, Vector2
 
 import math
 import requests
@@ -14,6 +15,7 @@ import os
 import random
 import direct
 import panda3d
+import sys
 
 def _lvm_json_load(file: str):
     with open(file, 'r') as file: return json.load(file)
@@ -47,7 +49,7 @@ class Game:
     def __init__(self, tuo, game_type: int, extra_data: dict = None):
         self.entity_manager = EntityManager()
 
-        self.isFightingBoss = False
+        self.is_fighting_boss = False
         self.bossID = None
         self.players = {}
         self.tuo = tuo
@@ -103,6 +105,10 @@ class Game:
         self.lvm.globals().direct = direct
         self.lvm.globals().panda = panda3d
         self.lvm.globals().free = _lvm_free_obj
+        self.lvm.globals().Vector3 = Vector3
+        self.lvm.globals().Vector2 = Vector2
+        self.lvm.globals().log = log
+        self.lvm.globals().warn = warn
 
         self.game_type = game_type
 
@@ -155,7 +161,7 @@ class Game:
         """
         Determines whether a boss fight is in progress.
         """
-        return self.isFightingBoss
+        return self.is_fighting_boss
 
     def get_boss_id(self) -> int | None:
         """
@@ -171,7 +177,6 @@ class Game:
 
     def get_dimension(self): 
         """
-        TODO: What.
         """
         if self.game_type == 0:
             return self.dimension

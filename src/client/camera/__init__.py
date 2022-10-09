@@ -1,4 +1,4 @@
-from panda3d.core import NodePath
+from panda3d.core import NodePath, LVecBase3f
 
 from src.client.types.vector import Vector3
 from src.log import log, warn
@@ -27,7 +27,7 @@ class Camera:
                 self.cam.setHpr((hpr[0], hpr[1], hpr[2]))
             else:
                 raise TypeError(
-                    'Received HPR as a type that is neither a',
+                    'Received HPR as a type that is neither a' +
                     'Vector3, list or tuple. WTF?'
                 )
 
@@ -37,7 +37,7 @@ class Camera:
         Set the position of the camera.
         """
         if isinstance(position, Vector3):
-            self.cam.setPos([position.x, position.y, position.z])
+            self.cam.setPos(LVecBase3f(position.x, position.y, position.z))
         else:
             warn(f'Camera.set_pos() expects Vector3, got {type(position)}. Attempting to handle situation.', 'Worker/Camera')
             if isinstance(position, tuple):

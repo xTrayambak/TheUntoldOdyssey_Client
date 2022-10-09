@@ -24,7 +24,7 @@ from src.log import log, warn
 STATUS_TO_STR = {
     "OK.": "Online",
     "MAINTENANCE.": "Down for Maintenance",
-    "NO.": "Offline; likely crashed."
+    "NO.": "Offline; likely crashed"
 }
 
 BOOL_TO_STR = {
@@ -248,8 +248,8 @@ def settings_page(instance, previous_state: int = 1):
     else:
         narrator_toggleButton.setText("Narrator: Off")
 
-    if instance.narrator.enabled == None:
-        narrator_toggleButton.setText("Narrator: Not Available.")
+    if instance.narrator.engine == None:
+        narrator_toggleButton.setText("Narrator: X")
 
     backBtn = Button(
         instance = instance,

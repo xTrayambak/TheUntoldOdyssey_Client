@@ -7,41 +7,47 @@ networking.
 Very good already, doesn't need too much refactoring later.
 """
 
+# Foreign Imports
 import gc
 import os
 import panda3d
 import time
 
 from datetime import datetime
+
+
+# Panda3D imports
 from direct.filter.CommonFilters import CommonFilters
 from direct.gui.DirectFrame import DirectFrame
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
 from panda3d.core import ClockObject, loadPrcFile, WindowProperties, AntialiasAttrib
 
+
+# Internal Modules
 from src.client import shared
 from src.log import log, warn
+
 from src.client.audioloader import AudioLoader
 from src.client.browserutil import BrowserUtil
 from src.client.fontloader import FontLoader
 from src.client.hardware import HardwareUtil
-from src.client.libnarrator import *
+from src.client.libnarrator import Narrator
 from src.client.managers.ambience import AmbienceManager
 from src.client.managers.input import InputManager
 from src.client.managers.presence import RPCManager
 from src.client.maploader import MapLoader
-from src.client.narrator_dialog_finder import NarratorDialogFinder
 from src.client.networking import NetworkClient
 from src.client.objectloader import ObjectLoader
 from src.client.player import Player
 from src.client.recordingutil import RecordingUtil
-from src.client.settingsreader import *
+from src.client.settingsreader import get_setting, get_all_settings, dump_setting
 from src.client.shared import *
 from src.client.syntaxutil.authlib import Authenticator
 from src.client.textureloader import TextureLoader
 from src.client.translationutil import TranslationUtility
-from src.client.ui.button import *
-from src.client.ui.text import *
+from src.client.ui.button import Button
+from src.client.ui.text import Text, TextFormatting
 from src.client.modloader import ModLoader
 from src.client.vfxmanager import VFXManager
 from src.client.workspace import Workspace
@@ -49,6 +55,7 @@ from src.client.game import Game
 from src.client.event import Event
 from src.client.imageloader import ImageLoader
 from src.client.camera import Camera
+from src.client.notification import Notification, NotificationType
 
 VERSION = open("VER").read()
 
@@ -72,8 +79,8 @@ class TUO(ShowBase):
 
         # Override camera
         #print(self.camera.getParent()); exit()
-        camera = Camera(self)
-        self.camera = camera
+        #camera = Camera(self)
+        #self.camera = camera
 
         # GameState
         self.state = GameStates.MENU
@@ -85,11 +92,8 @@ class TUO(ShowBase):
         # Network client
         self.network_client = NetworkClient(self)
 
-        # Narrator dialog finding utility
-        self.narrator_dialog_finder = NarratorDialogFinder(get_setting("language"))
-
         # Narrator/TTS utility
-        self.narrator = NarratorUtil(self)
+        self.narrator = Narrator(self)
 
         # Text translator utility
         self.translator = TranslationUtility(get_setting("language"))
@@ -100,7 +104,7 @@ class TUO(ShowBase):
         # Hardware specs detection utility
         self.hardware_util = HardwareUtil()
         self.hardware_util.get()
-        
+
         # This is what LUA scripts get redirected to when they try to access a forbidden object
         self.null_lvm = None
 
@@ -119,7 +123,7 @@ class TUO(ShowBase):
         self.image_loader = ImageLoader(self)
         self.audio_loader = AudioLoader(self)
 
-        self.player = Player(self, "player", "assets/models/monke.egg", [0, 0, 0])
+        self.player = Player(self, "player", "assets/models/monke.egg", [0, 0, 0], )
         self.token = token
 
         self.events = []
@@ -134,8 +138,8 @@ class TUO(ShowBase):
 
         self.time_now = datetime.now()
 
-        self.date_info = time_now.strftime("%d-%m-%y")
-        self.time_info = time_now.strftime('%H:%M:%S')
+        self.date_info = self.time_now.strftime("%d-%m-%y")
+        self.time_info = self.time_now.strftime('%H:%M:%S')
 
         log(f"Date info: {self.date_info}\nTime info: {self.time_info}", "Worker/TimeDetector")
         log(f"Syntax Studios account token is [{token}]", "Worker/Config")
@@ -221,9 +225,9 @@ class TUO(ShowBase):
         """
         Toggle the wireframe rendering option.
         """
-        self.globals['wireframe_on'] = not self.globals['wireframe_is_on']
+        self.globals['wireframe_is_on'] = not self.globals['wireframe_is_on']
 
-        if self.globals['wireframe_on']:
+        if self.globals['wireframe_is_on']:
             self.wireframe_on()
         else:
             self.wireframe_off()
@@ -233,6 +237,7 @@ class TUO(ShowBase):
         """
         Toggle the Panda3D built-in FPS counter.
         """
+        log('heheheha')
         self.globals['fps_counter_is_on'] = not self.globals['fps_counter_is_on']
         self.setFrameRateMeter(self.globals['fps_counter_is_on'])
 
@@ -289,7 +294,7 @@ class TUO(ShowBase):
         """
         Debug state secret key.
         """
-        self.change_state(GameStates.DEBUG)
+        self.change_state(GameStates.END_CREDITS)
 
 
     def getDt(self) -> int | float:
@@ -536,9 +541,6 @@ class TUO(ShowBase):
             except:
                 obj.destroy()
 
-        gc.collect()
-
-
 
     def update(self, extArgs: list = None):
         """
@@ -605,6 +607,12 @@ class TUO(ShowBase):
             warn(f"This GPU does not support OpenGL 4.3! [MAJOR={self.hardware_util.gl_version[0]};MINOR={self.hardware_util.gl_version[1]}]")
             settings = get_all_settings()
             settings['video']['pbr'] = False
+
+            gpu_warning_notif = Notification(self, 'GPU does not support PBR.', '''Your GPU does not support the latest features needed to enable\nPBR (physically based rendering). 
+                                             This will not affect gameplay. This only degrades the quality of visuals. Some weaker/integrated GPUs may be able to run the game with PBR enabled, 
+                                             but they will probably not be very performant or be able to run the game at a smooth framerate.''', NotificationType.POPUP)
+
+            gpu_warning_notif.play_out()
 
             dump_setting(settings)
 

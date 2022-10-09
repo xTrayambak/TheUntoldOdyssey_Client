@@ -32,6 +32,7 @@ def in_game_state(instance, previous_state: int = 1):
     instance.clear()
     instance.set_fov(get_setting("video", "fov"))
 
+
     log("The player is in-game now.")
 
     basic_font = instance.fontLoader.load("gentium_basic")

@@ -68,7 +68,7 @@ def end_credits(instance, previous_state: int = 1):
 
     instance.workspace.add_ui("dialogText", dialogText)
 
-    def threaded():
+    async def task(task):
         for line in end_credits_dialog:
             dialogText.setText(line.split("\n")[0].format(instance.player.name))
 
@@ -81,15 +81,6 @@ def end_credits(instance, previous_state: int = 1):
             if line.isspace():
                 delay = 2
 
-            if instance.is_closing(): break
-            try:
-                sleep(int(delay))
-            except:
-                warn(f'Unable to pause credits speed (value is {delay})')
-        
-        if not instance.is_closing():
-            instance.ambienceManager.end_credits.stop()
-            instance.change_state(previous_state)
+            await task.pause(int(delay))
 
-    threading.Thread(target = threaded, args = ()).start()
-    return 'credits-complete'
+    instance.new_task('end_credits_task', task)
